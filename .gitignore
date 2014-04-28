@@ -1,0 +1,13 @@
+# vendor
+/app/bower_components/
+/node_modules/
+dist
+
+# build
+/.tmp
+
+# eclipse
+/.project
+/.settings
+/.buildpath
+/.tern-project

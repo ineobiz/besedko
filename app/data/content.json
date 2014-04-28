@@ -1,0 +1,64 @@
+{
+    "library" : [{
+        "image" : [{
+            "00001" : [{
+                "key" : "sample png image",
+                "val" : "00001.png"
+            }]
+        }],
+        "audio" : [{
+            "00002" : [{
+                "key" : "sample m4a audio",
+                "val"  : "00002.m4a"
+            }],
+            "00009" : [{
+                "key" : "sample mp3 audio",
+                "val"  : "00009.mp3"
+            }]
+        }],
+        "color" : [{            
+            "00004" : [{
+                "key" : "sample white color",
+                "val" : "#ffffff"
+            }]
+        }],
+        "content" : [{
+            "00005" : [{
+                "key" : "category image",
+                "val" : [{
+                    "image": "00001",
+                    "color": "00004"
+                }]
+            }],
+            "00006" : [{
+                "key" : "category audio",
+                "val" : [{
+                    "image": "00001",
+                    "audio": "00002",
+                    "color": "00004"
+                }]
+            }],
+            "00007" : [{
+                "key" : "content audio 1",
+                "val" : [{
+                    "image": "00001",
+                    "audio": "00002",
+                    "color": "00004"
+                }]
+            }],
+            "00008" : [{
+                "key" : "content audio 2",
+                "val" : [{
+                    "image": "00001",
+                    "audio": "00009",
+                    "color": "00004"
+                }]
+            }]
+        }]
+    }],
+    "structure" : [{
+         "root" :  ["00005","00006"],
+         "00005" : ["00007","00008"],
+         "00006" : ["00007","00008"]
+     }]
+}
