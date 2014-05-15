@@ -1,10 +1,9 @@
 'use strict';
 
-angular.module('webApp')
-  .controller('MainCtrl', function ($scope, $route) {
+angular.module('webApp').controller('MainCtrl', function ($scope, $route) {
     $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
+        'HTML5 Boilerplate',
+        'AngularJS',
+        'Karma'
     ];
-  });
+});

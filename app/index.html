@@ -7,7 +7,10 @@
     <meta charset="utf-8">
     <title>povej naprej! | totalka.net</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+<!--
+    <base href="./">
+-->
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=0.777, initial-scale=0.777, maximum-scale=0.777">
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
@@ -18,11 +21,13 @@
     <!-- endbuild -->
   </head>
   <body ng-app="webApp">
+
     <!--[if lt IE 7]>
 	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+	<povej ng-if="fullScreen"></povej>
 
-    <div class="container">
+    <div class="container" ng-if="!fullScreen">
 		<div class="header">
 			<ul class="nav nav-pills pull-right">
 				<li ng-class="{active: activetab=='/'}"><a ng-href="#/">@</a></li>
@@ -60,10 +65,12 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
+    <script src="scripts/config.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/povej.js"></script>
 	<script src="scripts/controllers/mobile.js"></script>
 	<script src="scripts/controllers/login.js"></script>
+	<script src="scripts/directives/povej.js"></script>
 	<!-- endbuild -->
 </body>
 </html>
