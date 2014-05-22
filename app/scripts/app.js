@@ -29,7 +29,7 @@ var webApp = angular
                 redirectTo : '/'
             })
         ;
-
+        // @todo check cordova routing, apps
         //$locationProvider.html5Mode(true);
     }])
     .run(['CONFIG', '$rootScope', '$location', function(config, $rootScope, $location) {
@@ -41,6 +41,7 @@ var webApp = angular
             $rootScope.activetab = newVal;
         });
 
+        // @todo persist via localstorage?
         $rootScope.fullScreen = config.startFS
             ? true
             : false
