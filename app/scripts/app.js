@@ -15,7 +15,7 @@ var webApp = angular
             })
             .when('/povej', {
                 controller : 'PovejCtrl',
-                template : '<povej></povej>'
+                template : '<povej>'
             })
             .when('/mobile', {
                 controller : 'MobileCtrl',
