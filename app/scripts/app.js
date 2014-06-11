@@ -30,7 +30,7 @@ var webApp = angular
             })
         ;
         // @todo check cordova routing, apps
-        //$locationProvider.html5Mode(true);
+        $locationProvider.html5Mode(true);
     }])
     .run(['CONFIG', '$rootScope', '$location', function(config, $rootScope, $location) {
         var path = function() {
