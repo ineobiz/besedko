@@ -15,7 +15,7 @@ var webApp = angular
             })
             .when('/povej', {
                 controller : 'PovejCtrl',
-                template : '<povej></povej>'
+                template : '<povej>'
             })
             .when('/mobile', {
                 controller : 'MobileCtrl',
@@ -29,8 +29,8 @@ var webApp = angular
                 redirectTo : '/'
             })
         ;
-
-        //$locationProvider.html5Mode(true);
+        // @todo check cordova routing, apps
+        $locationProvider.html5Mode(true);
     }])
     .run(['CONFIG', '$rootScope', '$location', function(config, $rootScope, $location) {
         var path = function() {
@@ -41,6 +41,7 @@ var webApp = angular
             $rootScope.activetab = newVal;
         });
 
+        // @todo persist via localstorage?
         $rootScope.fullScreen = config.startFS
             ? true
             : false
