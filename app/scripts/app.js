@@ -25,6 +25,10 @@ var webApp = angular
                 controller : 'LoginCtrl',
                 templateUrl : 'views/login.html'
             })
+            .when('/uredi', {
+                controller: 'UrediCtrl',
+                templateUrl: 'views/uredi.html'
+            })
             .otherwise({
                 redirectTo : '/'
             })

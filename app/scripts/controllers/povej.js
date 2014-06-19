@@ -1,5 +1,7 @@
 'use strict';
 
-angular.module('webApp').controller('PovejCtrl', function ($scope) {
-    //$scope.fullScreen = false;
-});
+angular.module('webApp').controller('PovejCtrl',
+    ['$scope', function ($scope) {
+        //$scope.fullScreen = false;
+    }]
+);
