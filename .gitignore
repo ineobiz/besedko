@@ -11,3 +11,6 @@ dist
 /.settings
 /.buildpath
 /.tern-project
+
+# data
+/app/data/packs

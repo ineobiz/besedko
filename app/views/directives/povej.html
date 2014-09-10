@@ -2,8 +2,9 @@
 	<div class="panel-heading">
 		<div class="btn-group">
 			<button type="button" class="btn btn-default btn-hg navbar-btn" ng-repeat="i in [1, 2, 3, 4, 5]">
-				<span class="glyphicon glyph-mid glyphicon-picture"></span>
- 				<!-- <img alt="{{i}}" style="height: 50px; width: 100%; display: block;" ng-src="/data/packs/letnicasi.jpg"> -->
+				<!-- <span class="glyphicon glyph-mid glyphicon-picture"></span>  -->
+ 				<!-- <img alt="{{i}}" style="height: 50px; width: 100%; display: block;" ng-src="/data/packs/letnicasi.jpg" /> -->
+ 				<img class="playlistImg" alt="{{i}}" style="height: 60px; display: block;" src="data:image/gif;base64,R0lGODdhLAEsAeMAAMzMzJaWlsXFxaqqqpycnKOjo76+vre3t7GxsQAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAALAEsAQAE/hDISau9OOvNu/9gKI5kaZ5oqq5s675wLM90bd94ru987//AoHBILBqPyKRyyWw6n9CodEqtWq/YrHbL7Xq/4LB4TC6bz+i0es1uu9/wuHxOr9vv+Lx+z+/7/4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAMKHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8eP/iBDihxJsqTJkyhTqlzJsqXLlzB1CRhAIACBAgY0zKxJYIAAnTRt+ryx0yZOoDyHZija82ewAwGiSg2AAIOBmlMJ5LxwdarNrTOgeqVqFatUrWW9ov1lYKzUAxYEmM16Qa5bAjTaug0At4LdsXjjzj0LzCwCAWKjOp2AQKrPAVKrVmgc9XHkGYYRT10sgXIAy1ElU/AMmmwvvaYBeO47gbAEsxZcA4AdA7Xo1RVk06agW6ovAY0DSxDgmIJtxlLBAjjeOXkM4DYpEK9s/HLzqMqZq3b+izMAqQVGc19u/XoAsNqf544aHjn2Cek9oy8vbPpnCgV882aPX39r/hmY/tUeAPlFJdwH9g3QX1TrBTAggf5JAF4xuE2A1YGzGUjBhRVwmIFXP9nHYAgVvqbhhieaGB2KKwIjgACoPZhhiyoe6KGFKV7gVVWejdjBizF2mOOMNg554y9qeTfhggHs52AFBTa51F94mfXiB0k2KGOUTm4ZoS9eKSchgBNw+d+TTHKwGn0dhBkbmRKYOSaaZX7Zy1iszemlj9/BCSGfAaolAp5aQhnhknUCypaVXRrKJ6Jx2nlBYlHlCUJXijWa5pl7SjlMYqIRKSSNR4ragVkYhgAqixgeWWqpwchmKo6kGjlkBlHKOGiOr/JqK43CyPmnp3puymkHlPJlgrDC/vZJ57CF9gKcpcJ6tph9oVo7AbanCvojAtRGqO1w9I0LALe8iNVqjqixJl91lbp3HgeJ1Uvvrwe2K292b+3by6oSpOescLudSbCkFmAVXoGpWgAweaE1eLCivSmaS2aYBuAdadBFPJljHaeGQchwgepdwpHByKh4lYUcqnk+efayLslONfNfWfo1mIEnN9jiYBrUzOa5O9t0Ms5Z9ZyL0Apy5ZaY8D3Ngc3yWkwB01ZJ7fRYUPNSlIOW+hVUU0gJpbTP19K1wdcFhC3d2EqNDPfZMdVt991456333nz37fffgAcu+OCEF2744YgnrvjijDfu+OOQRy755JRXbvnlaZhnrvnmnHfu+eeghy766KSXbvrpqKeu+uqst+7667DHLvvstNdu++2456777rz37vvvwAcv/PDEF2/88cgnr/zyzDfv/PPQRy/99NRXb/312Gev/fbcd+/99+CHL/745Jdv/vnopz9MBAA7" />
 			</button>
 		</div>
 		<div class="btn-group pull-right">
@@ -21,11 +22,11 @@
 	</div>
 	<div class="panel-body">
 		<div class="row">
-<!-- 			<div class="col-xs-3 col-md-3" ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8]"> -->
-<!-- 			<div class="col-xs-3 col-md-3" ng-repeat="i in [1, 2, 3, 4]"> -->
-			<div class="col-xs-3 col-md-3" ng-repeat="i in ['letnicasi', 'pomlad', 'poletje', 'zvoncki']">
- 				<a class="thumbnail"> <img alt="100%x170" style="height: 170px; width: 100%; display: block;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNzEiIGhlaWdodD0iMTgwIj48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9Ijg1LjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcxeDE4MDwvdGV4dD48L3N2Zz4="></a>
-<!-- 				<a class="thumbnail"> <img alt="{{i}}" style="height: 170px; width: 100%; display: block;" ng-src="/data/packs/{{i}}.jpg"></a> -->
+			<div class="col-lg-3 col-md-3 col-xs-3 thumb" ng-repeat="i in ['red', 'magenta', 'blue', 'white', 5, 'green', 'cyan', 'yellow']">
+				<a class="thumbnail" href="#">
+					<img class="img-responsive" alt="{{i}}" src="data:image/gif;base64,R0lGODdhLAEsAeMAAMzMzJaWlsXFxaqqqpycnKOjo76+vre3t7GxsQAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAALAEsAQAE/hDISau9OOvNu/9gKI5kaZ5oqq5s675wLM90bd94ru987//AoHBILBqPyKRyyWw6n9CodEqtWq/YrHbL7Xq/4LB4TC6bz+i0es1uu9/wuHxOr9vv+Lx+z+/7/4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAMKHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8eP/iBDihxJsqTJkyhTqlzJsqXLlzB1CRhAIACBAgY0zKxJYIAAnTRt+ryx0yZOoDyHZija82ewAwGiSg2AAIOBmlMJ5LxwdarNrTOgeqVqFatUrWW9ov1lYKzUAxYEmM16Qa5bAjTaug0At4LdsXjjzj0LzCwCAWKjOp2AQKrPAVKrVmgc9XHkGYYRT10sgXIAy1ElU/AMmmwvvaYBeO47gbAEsxZcA4AdA7Xo1RVk06agW6ovAY0DSxDgmIJtxlLBAjjeOXkM4DYpEK9s/HLzqMqZq3b+izMAqQVGc19u/XoAsNqf544aHjn2Cek9oy8vbPpnCgV882aPX39r/hmY/tUeAPlFJdwH9g3QX1TrBTAggf5JAF4xuE2A1YGzGUjBhRVwmIFXP9nHYAgVvqbhhieaGB2KKwIjgACoPZhhiyoe6KGFKV7gVVWejdjBizF2mOOMNg554y9qeTfhggHs52AFBTa51F94mfXiB0k2KGOUTm4ZoS9eKSchgBNw+d+TTHKwGn0dhBkbmRKYOSaaZX7Zy1iszemlj9/BCSGfAaolAp5aQhnhknUCypaVXRrKJ6Jx2nlBYlHlCUJXijWa5pl7SjlMYqIRKSSNR4ragVkYhgAqixgeWWqpwchmKo6kGjlkBlHKOGiOr/JqK43CyPmnp3puymkHlPJlgrDC/vZJ57CF9gKcpcJ6tph9oVo7AbanCvojAtRGqO1w9I0LALe8iNVqjqixJl91lbp3HgeJ1Uvvrwe2K292b+3by6oSpOescLudSbCkFmAVXoGpWgAweaE1eLCivSmaS2aYBuAdadBFPJljHaeGQchwgepdwpHByKh4lYUcqnk+efayLslONfNfWfo1mIEnN9jiYBrUzOa5O9t0Ms5Z9ZyL0Apy5ZaY8D3Ngc3yWkwB01ZJ7fRYUPNSlIOW+hVUU0gJpbTP19K1wdcFhC3d2EqNDPfZMdVt991456333nz37fffgAcu+OCEF2744YgnrvjijDfu+OOQRy755JRXbvnlaZhnrvnmnHfu+eeghy766KSXbvrpqKeu+uqst+7667DHLvvstNdu++2456777rz37vvvwAcv/PDEF2/88cgnr/zyzDfv/PPQRy/99NRXb/312Gev/fbcd+/99+CHL/745Jdv/vnopz9MBAA7" />
+					<span class="caption {{i}}">Opis besede</span>
+				</a>
 			</div>
 		</div>
 	</div>
@@ -35,15 +36,15 @@
 				<span ng-class="{'glyphicon-volume-up' : volume, 'glyphicon-volume-off' : !volume}" class="glyphicon glyph-mid"></span>
 			</button>
 			<button ng-if="canToggleFS" type="button" class="btn btn-default btn-hg navbar-btn" ng-click="toggleFS()">
-				<span class="glyphicon glyph-mid glyphicon-fullscreen"></span>
+				<span ng-class="{'glyphicon-resize-small' : fullScreen, 'glyphicon-fullscreen' : !fullScreen}" class="glyphicon glyph-mid"></span>
 			</button>
 		</div>
 		
 		<div class="btn-group-wrap">
 			<div class="btn-group">
-<!-- 				<button type="button" class="btn btn-default btn-hg navbar-btn" ng-repeat="i in [1, 2, 3, 4, 5, 6, 7]"> -->
 				<button type="button" class="btn btn-default btn-hg navbar-btn" ng-repeat="i in [1, 2, 3, 4, 5, 6]">
-					<span class="glyphicon glyph-mid glyphicon-picture"></span>
+ 					<!-- <span class="glyphicon glyph-mid glyphicon-picture"></span> -->
+ 					<img class="playlistImg" alt="{{i}}" style="height: 60px; display: block;" src="data:image/gif;base64,R0lGODdhLAEsAeMAAMzMzJaWlsXFxaqqqpycnKOjo76+vre3t7GxsQAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAALAEsAQAE/hDISau9OOvNu/9gKI5kaZ5oqq5s675wLM90bd94ru987//AoHBILBqPyKRyyWw6n9CodEqtWq/YrHbL7Xq/4LB4TC6bz+i0es1uu9/wuHxOr9vv+Lx+z+/7/4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAMKHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8eP/iBDihxJsqTJkyhTqlzJsqXLlzB1CRhAIACBAgY0zKxJYIAAnTRt+ryx0yZOoDyHZija82ewAwGiSg2AAIOBmlMJ5LxwdarNrTOgeqVqFatUrWW9ov1lYKzUAxYEmM16Qa5bAjTaug0At4LdsXjjzj0LzCwCAWKjOp2AQKrPAVKrVmgc9XHkGYYRT10sgXIAy1ElU/AMmmwvvaYBeO47gbAEsxZcA4AdA7Xo1RVk06agW6ovAY0DSxDgmIJtxlLBAjjeOXkM4DYpEK9s/HLzqMqZq3b+izMAqQVGc19u/XoAsNqf544aHjn2Cek9oy8vbPpnCgV882aPX39r/hmY/tUeAPlFJdwH9g3QX1TrBTAggf5JAF4xuE2A1YGzGUjBhRVwmIFXP9nHYAgVvqbhhieaGB2KKwIjgACoPZhhiyoe6KGFKV7gVVWejdjBizF2mOOMNg554y9qeTfhggHs52AFBTa51F94mfXiB0k2KGOUTm4ZoS9eKSchgBNw+d+TTHKwGn0dhBkbmRKYOSaaZX7Zy1iszemlj9/BCSGfAaolAp5aQhnhknUCypaVXRrKJ6Jx2nlBYlHlCUJXijWa5pl7SjlMYqIRKSSNR4ragVkYhgAqixgeWWqpwchmKo6kGjlkBlHKOGiOr/JqK43CyPmnp3puymkHlPJlgrDC/vZJ57CF9gKcpcJ6tph9oVo7AbanCvojAtRGqO1w9I0LALe8iNVqjqixJl91lbp3HgeJ1Uvvrwe2K292b+3by6oSpOescLudSbCkFmAVXoGpWgAweaE1eLCivSmaS2aYBuAdadBFPJljHaeGQchwgepdwpHByKh4lYUcqnk+efayLslONfNfWfo1mIEnN9jiYBrUzOa5O9t0Ms5Z9ZyL0Apy5ZaY8D3Ngc3yWkwB01ZJ7fRYUPNSlIOW+hVUU0gJpbTP19K1wdcFhC3d2EqNDPfZMdVt991456333nz37fffgAcu+OCEF2744YgnrvjijDfu+OOQRy755JRXbvnlaZhnrvnmnHfu+eeghy766KSXbvrpqKeu+uqst+7667DHLvvstNdu++2456777rz37vvvwAcv/PDEF2/88cgnr/zyzDfv/PPQRy/99NRXb/312Gev/fbcd+/99+CHL/745Jdv/vnopz9MBAA7" />
 				</button>
 			</div>
 		</div>

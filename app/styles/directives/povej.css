@@ -1,0 +1,75 @@
+/**
+ * povej
+ */
+.panel-body {
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+
+povej div.panel-primary {
+	margin: 2px;	
+}
+
+
+/**
+ * thumbnails
+ */
+
+povej a.thumbnail {
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 10px;
+	padding: 2px;
+}
+/*
+povej .img-responsive {
+	width: 100%;
+}
+*/
+povej .playlistImg {
+	line-height: 1;
+    position: relative;
+}
+
+povej span.caption {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: auto;
+    width: 100%;
+	border-top: 1px solid #fff;
+	background: rgba(0, 0, 0, 0.1);
+	color: #fff !important;
+	text-align: center;
+}
+
+/**
+ * colors
+ */
+povej .white {
+	background: rgba(255, 255, 255, 0.1) !important;
+}
+
+povej .red {
+	background: rgba(255, 0, 0, 0.1) !important;
+}
+
+povej .green {
+	background: rgba(0, 255, 0, 0.1) !important;
+}
+
+povej .blue {
+	background: rgba(0, 0, 255, 0.1) !important;
+}
+
+povej .yellow {
+	background: rgba(255, 255, 0, 0.1) !important;
+}
+
+povej .magenta {
+	background: rgba(255, 0, 255, 0.1) !important;
+}
+
+povej .cyan {
+	background: rgba(0, 255, 255, 0.1) !important;
+}
