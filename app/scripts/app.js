@@ -51,7 +51,7 @@ var webApp = angular
             : false
         ;
 
-        $rootScope.$on('event:toggleFullscreen', function(event) {
+        $rootScope.$on('event::toggleFullscreen', function(event) {
             $rootScope.fullScreen = !$rootScope.fullScreen;
         });
     }])

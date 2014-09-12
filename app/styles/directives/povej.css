@@ -73,3 +73,30 @@ povej .magenta {
 povej .cyan {
 	background: rgba(0, 255, 255, 0.1) !important;
 }
+
+/**
+ * back button
+ */
+povej .glyph-back {
+	vertical-align: middle;
+}
+
+povej .btn-back {
+    font-size: 6em;
+	border-color: #fff;
+	margin-left: 20px;
+	color: #428bca;
+}
+
+povej .btn-back-fs {
+    font-size: 13em;
+	margin-left: 65px;
+}
+
+povej .btn-back:hover,
+povej .btn-back:focus,
+povej .btn-back:active {
+	background-color: #fff;
+	border-color: #fff;
+	color: #428bca;
+}
