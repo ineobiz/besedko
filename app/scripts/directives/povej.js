@@ -16,6 +16,7 @@ angular.module('webApp').directive('povej', ['CONFIG', 'content', function (conf
                 }
 
                 //@todo add to playlist
+                //@todo check/mark favorites
                 if (cnt.audio) {
                     console.log([ "add content audio '" + cnt.audio + "' to playlist", cnt.audio]);
                 }
@@ -27,6 +28,8 @@ angular.module('webApp').directive('povej', ['CONFIG', 'content', function (conf
                 scope.content = content.getStruct(level);
                 scope.parent  = content.getParent(level);
             };
+
+            // @todo select favorite
 
             scope.toggleFS = function() {
                 scope.$emit('event::toggleFullscreen');

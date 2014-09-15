@@ -5,7 +5,8 @@ var webApp = angular
         'ngCookies',
         'ngResource',
         'ngSanitize',
-        'ngRoute'
+        'ngRoute',
+        'angularBootstrapNavTree'
     ])
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
         $routeProvider

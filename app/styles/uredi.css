@@ -1,0 +1,62 @@
+/**
+ * uredi
+ */
+#uredi td {
+	vertical-align: top;
+}
+
+#uredi div.structure {
+	width: 250px;
+	background: whitesmoke;
+	border: 1px solid lightgray;
+	border-radius: 5px;
+}
+
+#uredi .urejevalnik {
+	padding-left: 20px;
+}
+
+/**
+ * Thumb
+ */
+#uredi .uploadedImage {
+	width: 300px;
+}
+
+/**
+ * Remove input text
+ */
+#uredi .input-file {
+	color: transparent;
+}
+
+/**
+ * Colors
+ */
+#uredi .white {
+	background: rgba(255, 255, 255, 1) !important;
+}
+
+#uredi .red {
+	background: rgba(255, 0, 0, 1) !important;
+}
+
+#uredi .green {
+	background: rgba(0, 255, 0, 1) !important;
+}
+
+#uredi .blue {
+	background: rgba(0, 0, 255, 1) !important;
+}
+
+#uredi .yellow {
+	background: rgba(255, 255, 0, 1) !important;
+}
+
+#uredi .magenta {
+	background: rgba(255, 0, 255, 1) !important;
+}
+
+#uredi .cyan {
+	background: rgba(0, 255, 255, 1) !important;
+}
