@@ -21,11 +21,13 @@ povej a.thumbnail {
 	margin-bottom: 10px;
 	padding: 2px;
 }
-/*
-povej .img-responsive {
-	width: 100%;
+
+povej .thumbnail > img,
+povej .thumbnail a > img {
+    //max-height: 138px;
+    //max-width: 138px;
 }
-*/
+
 povej .playlistImg {
 	line-height: 1;
     position: relative;
@@ -37,41 +39,49 @@ povej span.caption {
 	left: 0;
 	height: auto;
     width: 100%;
-	border-top: 1px solid #fff;
-	background: rgba(0, 0, 0, 0.1);
-	color: #fff !important;
+	border-top: 1px solid #dddddd;
+	background: rgba(60, 60, 60, 0.5);
+	color: #333 !important;
 	text-align: center;
+	text-shadow: 2px 2px 1px rgba(160, 160, 160, 1);
+	font-weight: bold;
+}
+
+povej .center-content {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
 }
 
 /**
  * colors
  */
 povej .white {
-	background: rgba(255, 255, 255, 0.1) !important;
+	background: rgba(255, 255, 255, 0.5) !important;
 }
 
 povej .red {
-	background: rgba(255, 0, 0, 0.1) !important;
+	background: rgba(255, 0, 0, 0.5) !important;
 }
 
 povej .green {
-	background: rgba(0, 255, 0, 0.1) !important;
+	background: rgba(0, 255, 0, 0.5) !important;
 }
 
 povej .blue {
-	background: rgba(0, 0, 255, 0.1) !important;
+	background: rgba(0, 0, 255, 0.5) !important;
 }
 
 povej .yellow {
-	background: rgba(255, 255, 0, 0.1) !important;
+	background: rgba(255, 255, 0, 0.5) !important;
 }
 
 povej .magenta {
-	background: rgba(255, 0, 255, 0.1) !important;
+	background: rgba(255, 0, 255, 0.5) !important;
 }
 
 povej .cyan {
-	background: rgba(0, 255, 255, 0.1) !important;
+	background: rgba(0, 255, 255, 0.5) !important;
 }
 
 /**

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webApp').directive('povej', ['CONFIG', 'content', function (config, content) {
+angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (config, content) {
     return {
         restrict: 'E',
         templateUrl: 'views/directives/povej.html',
@@ -11,7 +11,10 @@ angular.module('webApp').directive('povej', ['CONFIG', 'content', function (conf
             });
 
             scope.select = function(selected) {
-                if (angular.isObject(selected.children)) {
+                if (
+                    angular.isObject(selected.children)
+                    && selected.children.length
+                ) {
                     scope.content = selected.children;
                     // @todo
                     scope.parent = false;

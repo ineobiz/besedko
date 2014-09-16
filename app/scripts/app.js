@@ -12,23 +12,28 @@ var webApp = angular
         $routeProvider
             .when('/', {
                 controller : 'MainCtrl',
-                templateUrl : 'views/main.html'
+                templateUrl : 'views/main.html',
+                title: 'info'
             })
             .when('/povej', {
                 controller : 'PovejCtrl',
-                template : '<povej>'
+                template : '<povej>',
+                title: 'webapp'
             })
             .when('/mobile', {
                 controller : 'MobileCtrl',
-                templateUrl : 'views/mobile.html'
+                templateUrl : 'views/mobile.html',
+                title: 'mobilna aplikacija'
             })
             .when('/login', {
                 controller : 'LoginCtrl',
-                templateUrl : 'views/login.html'
+                templateUrl : 'views/login.html',
+                title: 'prijavi se'
             })
             .when('/uredi', {
                 controller: 'UrediCtrl',
-                templateUrl: 'views/uredi.html'
+                templateUrl: 'views/uredi.html',
+                title: 'urejevalnik'
             })
             .otherwise({
                 redirectTo : '/'
@@ -54,6 +59,10 @@ var webApp = angular
 
         $rootScope.$on('event::toggleFullscreen', function(event) {
             $rootScope.fullScreen = !$rootScope.fullScreen;
+        });
+        
+        $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+            $rootScope.title = current.$$route.title;
         });
     }])
 ;

@@ -1,12 +1,16 @@
 'use strict';
 
-angular.module('webApp').controller('UrediCtrl', ['$scope', '$timeout', '$sce', 'content', function ($scope, $timeout, $sce, content) {
-    $scope.content = $scope.tree = [];
+angular.module('webApp').controller('UrediCtrl', ['$scope', '$timeout', '$sce', 'Content', function ($scope, $timeout, $sce, content) {
+    $scope.content = $scope.treeCtl = [];
     $scope.selected = null;
 
     content.get().then(function(data) {
         $scope.content = data;
     });
+
+    $scope.treeHandler = function(branch) {
+        processContent(branch);
+    };
 
     var processContent = function(content) {
         if (!content) {
@@ -27,39 +31,9 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$timeout', '$sce', 
         }
     };
 
-    $scope.treeHandler = function(branch) {
-        processContent(branch);
-    };
-
-    $scope.selectRoot = function() {
-        $scope.tree.select_branch(null);
-        $scope.selected = null;
-    };
-
-    $scope.save = function() {
-        console.log([ "save", ]);
-    };
-
-    $scope.remove = function() {
-        var parent = $scope.tree.remove_selected_branch();
-        $scope.tree.select_branch(parent);
-        processContent(parent);
-    };
-
-    $scope.addBranch = function() {
-        var selected = $scope.tree.get_selected_branch();
-        var created = $scope.tree.add_branch(selected, {
-            label: 'Naziv',
-        });
-        $scope.tree.select_branch(created);
-        $scope.selected = created;
-    };
-
     $scope.fileUpload = function(element) {
-        var
-            file = element.files[0],
-            reader = new FileReader()
-        ;
+        var file = element.files[0],
+            reader = new FileReader();
 
         reader.onload = function(e) {
             $scope.$apply(function() {
@@ -68,5 +42,31 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$timeout', '$sce', 
         };
 
         reader.readAsDataURL(file);
-   };
+    };
+
+    // @todo
+    $scope.save = function() {
+        //console.log([ "save", ]);
+    };
+
+    $scope.remove = function() {
+        var parent = $scope.treeCtl.remove_selected_branch();
+        $scope.treeCtl.select_branch(parent);
+        processContent(parent);
+    };
+
+    $scope.selectRoot = function() {
+        $scope.treeCtl.select_branch(null);
+        $scope.selected = null;
+    };
+
+    $scope.addBranch = function() {
+        var selected = $scope.treeCtl.get_selected_branch();
+        var created = $scope.treeCtl.add_branch(selected, {
+            label: 'Naziv',
+        });
+
+        $scope.treeCtl.select_branch(created);
+        $scope.selected = created;
+    };
 }]);

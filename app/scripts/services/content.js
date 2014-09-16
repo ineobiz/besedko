@@ -7,9 +7,8 @@
  * # content
  * Factory in the webApp.
  */
-angular.module('webApp').factory('content', ['CONFIG', '$http', function (config, $http) {
-	var
-		url = '/data/content.json',
+angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config, $http) {
+	var url = '/data/content.json',
 		promise, data
 	;
 

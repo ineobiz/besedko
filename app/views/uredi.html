@@ -6,17 +6,25 @@
 					<ul class="nav nav-list nav-pills nav-stacked abn-tree ng-isolate-scope">
 						<li class="abn-tree-row" ng-class="!selected ? 'active' : ''"><a ng-click="selectRoot()"><span class="indented tree-label">Naslovka</span></a></li>
 					</ul>
-					<abn-tree tree-data="content" tree-control="tree" on-select="treeHandler(branch)" expand-level="0"></abn-tree>
+					<abn-tree tree-data="content" tree-control="treeCtl" on-select="treeHandler(branch)" expand-level="0"></abn-tree>
 				</div>
 			</td>
 			<td>
 				<div class="form-group urejevalnik">
 					<button type="button" class="btn btn-primary" ng-click="addBranch()">Dodaj vsebino</button>
-					<button type="button" class="btn btn-danger" ng-click="remove()" ng-show="selected">Odstrani vsebino</button>
+					<button type="button" class="btn btn-primary" ng-click="treeCtl.expand_all()">Razširi vse</button>
+					<button type="button" class="btn btn-primary" ng-click="treeCtl.collapse_all()">Skrči vse</button>
+					<button type="button" class="btn btn-success" ng-click="save()">Shrani</button>
 				</div>
-				<form class="form-horizontal urejevalnik" ng-if="selected">
+				<div class="panel panel-primary urejevalnik" ng-show="!selected">
+					<div class="panel-heading">
+						<h3 class="panel-title">Navodila za uporabo urejevalnika</h3>
+					</div>
+					<div class="panel-body">Lorem ipsum</div>
+				</div>
+				<form class="form-horizontal urejevalnik" ng-show="selected">
 					<fieldset>
-						<legend>Urejevalnik</legend>
+						<legend>Urejevalnik vsebine</legend>
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="label">Naziv</label>
 							<div class="col-md-8">
@@ -59,13 +67,11 @@
 								<img class="img-thumbnail uploadedImage" alt="{{selected.label}}" ng-src="{{selected.image}}" />
 							</div>
 						</div>
-<!--
 						<div class="form-group">
 							<div class="col-md-offset-4">
-								<button type="button" class="btn btn-success" ng-click="save()">Shrani</button>
+								<button type="button" class="btn btn-danger" ng-click="remove()" ng-show="selected">Odstrani vsebino</button>
 							</div>
 						</div>
--->
 					</fieldset>
 				</form>
 			</td>

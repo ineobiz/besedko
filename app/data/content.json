@@ -84,5 +84,35 @@
     {
         "label" : "vsebina 5",
         "color" : "white"
+    },
+    {
+        "label" : "vsebina 6",
+        "color" : "white"
+    },
+    {
+        "label" : "kategorija 4",
+        "color" : "yellow",
+        "children": [
+            {
+                "label" : "vsebina 1 kategorije 4",
+                "color" : "blue"
+            },
+            {
+                "label" : "vsebina 2 kategorije 4",
+                "color" : "yellow"
+            },
+            {
+                "label" : "vsebina 3 kategorije 4",
+                "color" : "green"
+            },
+            {
+                "label" : "vsebina 4 kategorije 4",
+                "color" : "cyan"
+            }
+        ]
+    },
+    {
+        "label" : "vsebina 8",
+        "color" : "green"
     }
 ]
