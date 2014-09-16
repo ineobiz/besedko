@@ -6,18 +6,20 @@ angular.module('webApp').directive('povej', ['CONFIG', 'content', function (conf
         templateUrl: 'views/directives/povej.html',
         link: function(scope, element, attrs) {
             content.get().then(function(data) {
-                scope.content = content.getStruct('root');
+                scope.content = data;
                 scope.parent = false;
             });
 
-            scope.select = function(cnt) {
-                if (content.getStruct(cnt.id)) {
-                    scope.getStructure(cnt.id);
+            scope.select = function(selected) {
+                if (angular.isObject(selected.children)) {
+                    scope.content = selected.children;
+                    // @todo
+                    scope.parent = false;
                 }
 
                 //@todo add to playlist
                 //@todo check/mark favorites
-                if (cnt.audio) {
+                if (selected.audio) {
                     console.log([ "add content audio '" + cnt.audio + "' to playlist", cnt.audio]);
                 }
             };

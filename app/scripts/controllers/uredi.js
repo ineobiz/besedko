@@ -18,6 +18,7 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$timeout', '$sce', 
         if (!content.color) {
             $scope.selected.color = 'white';
         }
+
         if (content.audio) {
             $scope.selected.audio = angular.isObject(content.audio)
                 ? content.audio
