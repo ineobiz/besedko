@@ -7,31 +7,27 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (conf
         link: function(scope, element, attrs) {
             content.get().then(function(data) {
                 scope.content = data;
-                scope.parent = false;
+                scope.parent = [];
             });
 
-            scope.select = function(selected) {
+            scope.select = function(selected, parent) {
                 if (
                     angular.isObject(selected.children)
                     && selected.children.length
                 ) {
                     scope.content = selected.children;
-                    // @todo
-                    scope.parent = false;
+                    scope.parent.push(parent);
                 }
 
                 //@todo add to playlist
                 //@todo check/mark favorites
                 if (selected.audio) {
-                    console.log([ "add content audio '" + cnt.audio + "' to playlist", cnt.audio]);
+                    //console.log([ "add content audio '" + cnt.audio + "' to playlist", cnt.audio]);
                 }
             };
 
-            scope.getStructure = function(level) {
-                //@todo transition
-                //@todo multipage / left,right
-                scope.content = content.getStruct(level);
-                scope.parent  = content.getParent(level);
+            scope.selectParent = function(parent) {
+                scope.content = parent.pop();
             };
 
             // @todo select favorite
@@ -41,6 +37,21 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (conf
             };
 
             scope.canToggleFS = config.canToggleFS;
+            
+            scope.currentPage = 0;
+            scope.pageSize = 8;
+
+            scope.numberOfPages=function(){
+                return Math.ceil(scope.content.length/scope.pageSize);                
+            }
+            
         }
     };
 }]);
+
+angular.module('webApp').filter('startFrom', function() {
+    return function(input, start) {
+        start = +start;
+        return input.slice(start);
+    }
+});

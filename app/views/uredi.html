@@ -14,13 +14,20 @@
 					<button type="button" class="btn btn-primary" ng-click="addBranch()">Dodaj vsebino</button>
 					<button type="button" class="btn btn-primary" ng-click="treeCtl.expand_all()">Razširi vse</button>
 					<button type="button" class="btn btn-primary" ng-click="treeCtl.collapse_all()">Skrči vse</button>
-					<button type="button" class="btn btn-success" ng-click="save()">Shrani</button>
+					<!-- <button type="button" class="btn btn-danger" ng-click="remove(true)">Odstrani vse</button>  -->
+					<!-- <button type="button" class="btn btn-success" ng-click="save()">Shrani</button>  -->
 				</div>
 				<div class="panel panel-primary urejevalnik" ng-show="!selected">
 					<div class="panel-heading">
-						<h3 class="panel-title">Navodila za uporabo urejevalnika</h3>
+						<h3 class="panel-title">Navodila za uporabo</h3>
 					</div>
-					<div class="panel-body">Lorem ipsum</div>
+					<div class="panel-body">
+						<p>Izberi vsebino za urejanje v seznamu na levi.</p>
+						<p>Za dodajanje nove vsebine izberi obstoječ vnos na levi in pritisni gumb <button type="button" class="btn btn-primary">Dodaj vsebino</button>.</p>
+						<p>Gumb <button type="button" class="btn btn-danger">Odstrani vsebino</button> odstrani vse na izbranem nivoju, tudi podvsebine.</p>
+						<p>Vse spremembe so objavljene takoj.</p>
+						<p><span class="label label-danger">Opozorilo</span> Shranjevanje na strežnik (še) ne deluje. Ob vsakem reloadu/refreshu strani (F5 / CTRL-R / <button class="btn"><span class="glyphicon glyphicon-repeat"></span></button> gumb v brskalniku) se vsebine ponastavijo na privzete vrednosti.</p>
+					</div>
 				</div>
 				<form class="form-horizontal urejevalnik" ng-show="selected">
 					<fieldset>
