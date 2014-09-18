@@ -3,7 +3,6 @@
 angular.module('webApp').controller('UrediCtrl', ['$scope', '$timeout', '$sce', 'Content', function ($scope, $timeout, $sce, content) {
     $scope.content = $scope.treeCtl = [];
     $scope.selected = null;
-
     content.get().then(function(data) {
         $scope.content = data;
     });
@@ -44,6 +43,10 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$timeout', '$sce', 
         reader.readAsDataURL(file);
     };
 
+    $scope.fileRemove = function(type) {
+        $scope.selected[type] = null;
+    };
+
     // @todo
     $scope.save = function() {
         //console.log([ "save", ]);
@@ -65,8 +68,5 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$timeout', '$sce', 
         var created = $scope.treeCtl.add_branch(selected, {
             label: 'beseda',
         });
-
-        //$scope.treeCtl.select_branch(created);
-        //$scope.selected = created;
     };
 }]);
