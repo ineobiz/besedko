@@ -8,7 +8,15 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (conf
             content.get().then(function(data) {
                 scope.content = data;
                 scope.parent = [];
+                scope.playlist = [];
             });
+
+            scope.currentPage = 0;
+            scope.pageSize = 8;
+
+            scope.numberOfPages = function(){
+                return Math.ceil(scope.content.length/scope.pageSize);
+            };
 
             scope.select = function(selected, parent) {
                 if (
@@ -19,11 +27,26 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (conf
                     scope.parent.push(parent);
                 }
 
-                //@todo add to playlist
-                //@todo check/mark favorites
-                if (selected.audio) {
-                    //console.log([ "add content audio '" + cnt.audio + "' to playlist", cnt.audio]);
+                if (
+                    angular.isObject(selected.audio)
+                    && scope.playlist.length < 5
+                ) {
+                    //@todo audio player
+                    scope.playlist.push({
+                        label : selected.label,
+                        color : selected.color
+                    });
                 }
+
+                //@todo check/mark favorites
+            };
+
+            scope.plsClear = function() {
+                scope.playlist = [];
+            };
+
+            scope.plsRemove = function(index) {
+                scope.playlist.splice(index, 1);
             };
 
             scope.selectParent = function(parent) {
@@ -37,14 +60,6 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (conf
             };
 
             scope.canToggleFS = config.canToggleFS;
-            
-            scope.currentPage = 0;
-            scope.pageSize = 8;
-
-            scope.numberOfPages=function(){
-                return Math.ceil(scope.content.length/scope.pageSize);                
-            }
-            
         }
     };
 }]);
