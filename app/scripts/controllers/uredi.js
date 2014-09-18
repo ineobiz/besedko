@@ -63,10 +63,10 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$timeout', '$sce', 
     $scope.addBranch = function() {
         var selected = $scope.treeCtl.get_selected_branch();
         var created = $scope.treeCtl.add_branch(selected, {
-            label: 'Naziv',
+            label: 'beseda',
         });
 
-        $scope.treeCtl.select_branch(created);
-        $scope.selected = created;
+        //$scope.treeCtl.select_branch(created);
+        //$scope.selected = created;
     };
 }]);

@@ -4,38 +4,44 @@
 			<td>
 				<div class="structure">
 					<ul class="nav nav-list nav-pills nav-stacked abn-tree ng-isolate-scope">
-						<li class="abn-tree-row" ng-class="!selected ? 'active' : ''"><a ng-click="selectRoot()"><span class="indented tree-label">Naslovka</span></a></li>
+						<li class="abn-tree-row" ng-class="!selected ? 'active' : ''"><a ng-click="selectRoot()"><span class="indented tree-label">besedko</span></a></li>
 					</ul>
 					<abn-tree tree-data="content" tree-control="treeCtl" on-select="treeHandler(branch)" expand-level="0"></abn-tree>
 				</div>
 			</td>
 			<td>
 				<div class="form-group urejevalnik">
-					<button type="button" class="btn btn-primary" ng-click="addBranch()">Dodaj vsebino</button>
-					<button type="button" class="btn btn-primary" ng-click="treeCtl.expand_all()">Razširi vse</button>
-					<button type="button" class="btn btn-primary" ng-click="treeCtl.collapse_all()">Skrči vse</button>
+					<button type="button" class="btn btn-info" ng-click="addBranch()">Dodaj</button>
+					<button type="button" class="btn btn-primary" ng-click="treeCtl.expand_all()">Prikaži vse</button>
+					<button type="button" class="btn btn-primary" ng-click="treeCtl.collapse_all()">Samo naslovka</button>
 					<!-- <button type="button" class="btn btn-danger" ng-click="remove(true)">Odstrani vse</button>  -->
 					<!-- <button type="button" class="btn btn-success" ng-click="save()">Shrani</button>  -->
 				</div>
 				<div class="panel panel-primary urejevalnik" ng-show="!selected">
 					<div class="panel-heading">
-						<h3 class="panel-title">Navodila za uporabo</h3>
+						<h3 class="panel-title">kako naprej?</h3>
 					</div>
 					<div class="panel-body">
-						<p>Izberi vsebino za urejanje v seznamu na levi.</p>
-						<p>Za dodajanje nove vsebine izberi obstoječ vnos na levi in pritisni gumb <button type="button" class="btn btn-primary">Dodaj vsebino</button>.</p>
-						<p>Gumb <button type="button" class="btn btn-danger">Odstrani vsebino</button> odstrani vse na izbranem nivoju, tudi podvsebine.</p>
-						<p>Vse spremembe so objavljene takoj.</p>
-						<p><span class="label label-danger">Opozorilo</span> Shranjevanje na strežnik (še) ne deluje. Ob vsakem reloadu/refreshu strani (F5 / CTRL-R / <button class="btn"><span class="glyphicon glyphicon-repeat"></span></button> gumb v brskalniku) se vsebine ponastavijo na privzete vrednosti.</p>
+						<p>izberi besedo iz levega seznama oz.</p>
+					<ul>
+						<li>dodaj novo besedo s klikom na <button type="button" class="btn btn-info" ng-click="addBranch()">Dodaj</button></li>
+						<li><button type="button" class="btn btn-danger">Odstrani besedo</button> s pomočjo tega gumba</li>
+						<li><button type="button" class="btn btn-primary" ng-click="treeCtl.expand_all()">Prikaži vse</button> besede oz. <button type="button" class="btn btn-primary" ng-click="treeCtl.collapse_all()">Samo naslovko</button></li>
+						<li>shrani na strežnik s klikom na <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
+					</ul>
+						<p>
+							<span class="label label-warning"><span class="glyphicon glyphicon-warning-sign"></span></span> shranjevanje na strežnik (še) ne deluje,<br>
+							ponoven obisk strani (F5 / CTRL-R / <button class="btn"><span class="glyphicon glyphicon-repeat"></span></button>) prikaže privzete besede.
+						</p>
 					</div>
 				</div>
 				<form class="form-horizontal urejevalnik" ng-show="selected">
 					<fieldset>
-						<legend>Urejevalnik vsebine</legend>
+						<legend>uredi predstavitev</legend>
 						<div class="form-group">
-							<label class="col-md-4 control-label" for="label">Naziv</label>
+							<label class="col-md-4 control-label" for="label">Beseda</label>
 							<div class="col-md-8">
-								<input name="label" placeholder="naziv" class="form-control input-md" type="text" ng-model="selected.label" >
+								<input name="label" placeholder="izbrana beseda" class="form-control input-md" type="text" ng-model="selected.label" >
 							</div>
 						</div>
 						<div class="form-group">
@@ -61,6 +67,7 @@
 						<div class="form-group" ng-show="selected.audio">
 							<div class="col-md-6 col-md-offset-4">
 								<audio controls="controls" preload="none" ng-src="{{selected.audio}}" />
+								<span>odstrani audio</span>
 							</div>
 						</div>
 						<div class="form-group">
@@ -72,11 +79,12 @@
 						<div class="form-group" ng-show="selected.image">
 							<div class="col-md-6 col-md-offset-4">
 								<img class="img-thumbnail uploadedImage" alt="{{selected.label}}" ng-src="{{selected.image}}" />
+								<span>odstrani sliko</span>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-md-offset-4">
-								<button type="button" class="btn btn-danger" ng-click="remove()" ng-show="selected">Odstrani vsebino</button>
+								<button type="button" class="btn btn-danger" ng-click="remove()" ng-show="selected">Odstrani besedo</button>
 							</div>
 						</div>
 					</fieldset>
