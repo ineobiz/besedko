@@ -14,8 +14,7 @@
 					<button type="button" class="btn btn-info" ng-click="addBranch()">Dodaj</button>
 					<button type="button" class="btn btn-primary" ng-click="treeCtl.expand_all()">Prikaži vse</button>
 					<button type="button" class="btn btn-primary" ng-click="treeCtl.collapse_all()">Samo naslovka</button>
-					<!-- <button type="button" class="btn btn-danger" ng-click="remove(true)">Odstrani vse</button>  -->
-					<!-- <button type="button" class="btn btn-success" ng-click="save()">Shrani</button>  -->
+					<button type="button" class="btn" ng-click="save()" ng-class="{'btn-success' : !contentUpdated, 'btn-warning' : uploading}" ng-show="credentials" ng-disabled="uploading"><span class="glyphicon glyphicon-cloud-upload"></span></button></button>
 				</div>
 				<div class="panel panel-primary urejevalnik" ng-show="!selected">
 					<div class="panel-heading">

@@ -30,6 +30,9 @@ var webApp = angular
                 templateUrl : 'views/login.html',
                 title: 'prijavi se'
             })
+            .when('/logout', {
+                controller : 'LoginCtrl',
+            })
             .when('/uredi', {
                 controller: 'UrediCtrl',
                 templateUrl: 'views/uredi.html',
@@ -42,7 +45,7 @@ var webApp = angular
         // @todo check cordova routing, apps
         $locationProvider.html5Mode(true);
     }])
-    .run(['CONFIG', '$rootScope', '$location', function(config, $rootScope, $location) {
+    .run(['CONFIG', '$rootScope', '$location', 'Authentication', function(config, $rootScope, $location, Authentication) {
         var path = function() {
             return $location.path();
         };
@@ -64,5 +67,11 @@ var webApp = angular
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
             $rootScope.title = current.$$route.title;
         });
+        
+        Authentication.CheckCredentials();
+
+        $rootScope.logout = function() {
+            Authentication.ClearCredentials();
+        };
     }])
 ;

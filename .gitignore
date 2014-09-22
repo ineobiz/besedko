@@ -1,7 +1,7 @@
 # vendor
 /app/bower_components/
 /node_modules/
-dist
+/dist
 
 # build
 /.tmp
@@ -14,3 +14,4 @@ dist
 
 # data
 /app/data/packs
+/app/data/user-generated

@@ -39,7 +39,8 @@
 				<li ng-class="{active: activetab=='/povej'}"><a ng-href="/povej">besedko</a></li>
 				<li ng-class="{active: activetab=='/uredi'}"><a ng-href="/uredi">urejevalnik</a></li>
 				<li ng-class="{active: activetab=='/mobile'}"><a ng-href="/mobile">mobilna aplikacija</a></li>
-				<li ng-class="{active: activetab=='/login'}"><a ng-href="/login" class="btn btn-default">prijavi se</a></li>
+				<li ng-class="{active: activetab=='/login'}" ng-show="!credentials"><a ng-href="/login" class="btn btn-default">prijavi se</a></li>
+				<li ng-show="credentials"><a ng-click="logout()" class="btn btn-danger">odjavi se</a></li>
 			</ul>
 			<h3 class="text-muted">&nbsp;</h3>
 		</div>
@@ -79,6 +80,7 @@
 	<script src="scripts/directives/povej.js"></script>
 	<script src="scripts/directives/abn_tree_directive.js"></script>
 	<script src="scripts/services/content.js"></script>
+	<script src="scripts/services/authentication.js"></script>
 	<!-- endbuild -->
 </body>
 </html>

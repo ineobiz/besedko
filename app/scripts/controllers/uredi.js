@@ -1,9 +1,14 @@
 'use strict';
 
-angular.module('webApp').controller('UrediCtrl', ['$scope', '$timeout', '$sce', 'Content', function ($scope, $timeout, $sce, content) {
+angular.module('webApp').controller('UrediCtrl', ['$scope', '$rootScope', '$timeout', '$http', '$sce', 'Content', function ($scope, $rootScope, $timeout, $http, $sce, Content) {
     $scope.content = $scope.treeCtl = [];
     $scope.selected = null;
-    content.get().then(function(data) {
+    $scope.contentUpdated = false;
+    
+    // @todo move to service
+    $scope.credentials = $rootScope.credentials;
+
+    Content.get().then(function(data) {
         $scope.content = data;
     });
 
@@ -49,7 +54,24 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$timeout', '$sce', 
 
     // @todo
     $scope.save = function() {
-        //console.log([ "save", ]);
+        //console.log([ "save", $scope.content ]);
+        $scope.uploading = true;
+        Content
+            .set($rootScope.credentials)
+            .success(function (data) {
+                $scope.uploading = false;
+            }).error(function (data) {
+                $scope.uploading = false;
+            })
+        ;
+/*
+        $http.put('/process', $scope.content, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Auth-Credentials': $rootScope.credentials.email + ":" + $rootScope.credentials.password
+            }
+        });
+*/
     };
 
     $scope.remove = function() {

@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (config, content) {
+angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (config, Content) {
     return {
         restrict: 'E',
         templateUrl: 'views/directives/povej.html',
         link: function(scope, element, attrs) {
-            content.get().then(function(data) {
+            Content.get().then(function(data) {
                 scope.content = data;
                 scope.parent = [];
                 scope.playlist = [];
