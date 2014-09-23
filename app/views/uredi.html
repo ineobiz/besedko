@@ -14,7 +14,8 @@
 					<button type="button" class="btn btn-info" ng-click="addBranch()">Dodaj</button>
 					<button type="button" class="btn btn-primary" ng-click="treeCtl.expand_all()">Prikaži vse</button>
 					<button type="button" class="btn btn-primary" ng-click="treeCtl.collapse_all()">Samo naslovka</button>
-					<button type="button" class="btn" ng-click="save()" ng-class="{'btn-success' : !contentUpdated, 'btn-warning' : uploading}" ng-show="credentials" ng-disabled="uploading"><span class="glyphicon glyphicon-cloud-upload"></span></button></button>
+					<button type="button" class="btn" ng-click="save()" ng-class="{'btn-success' : !contentUpdated, 'btn-warning' : uploading || contentUpdated}" ng-show="credentials" ng-disabled="uploading || !contentUpdated"><span class="glyphicon glyphicon-cloud-upload"></span></button></button>
+					<p class="text-danger" ng-show="uploadError">Napaka pri shranjevanju na strežnik, poskusi znova.</p>
 				</div>
 				<div class="panel panel-primary urejevalnik" ng-show="!selected">
 					<div class="panel-heading">
@@ -26,7 +27,7 @@
 						<li>dodaj novo besedo s klikom na <button type="button" class="btn btn-info" ng-click="addBranch()">Dodaj</button></li>
 						<li><button type="button" class="btn btn-danger">Odstrani besedo</button> oz. le sliko / zvok <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></li>
 						<li><button type="button" class="btn btn-primary" ng-click="treeCtl.expand_all()">Prikaži vse</button> besede oz. <button type="button" class="btn btn-primary" ng-click="treeCtl.collapse_all()">Samo naslovko</button></li>
-						<li>shrani na strežnik s klikom na <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
+						<li>shrani na strežnik s klikom na <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
 					</ul>
 						<p>
 							<span class="label label-warning"><span class="glyphicon glyphicon-warning-sign"></span></span> shranjevanje na strežnik (še) ne deluje,<br>
@@ -34,19 +35,19 @@
 						</p>
 					</div>
 				</div>
-				<form class="form-horizontal urejevalnik" ng-show="selected">
+				<form name="form" class="form-horizontal urejevalnik" ng-show="selected">
 					<fieldset>
 						<legend>uredi predstavitev</legend>
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="label">Beseda</label>
 							<div class="col-md-8">
-								<input name="label" placeholder="izbrana beseda" class="form-control input-md" type="text" ng-model="selected.label" >
+								<input name="label" placeholder="izbrana beseda" class="form-control input-md" type="text" ng-model="selected.label" ng-change="updated()">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="color">Barva</label>
 							<div class="col-md-6">
-								<select name="color" class="form-control" ng-model="selected.color">
+								<select name="color" class="form-control" ng-model="selected.color"  ng-change="updated()">
 									<option value="white" class="white">bela</option>
 									<option value="red" class="red">rdeča</option>
 									<option value="green" class="green">zelena</option>

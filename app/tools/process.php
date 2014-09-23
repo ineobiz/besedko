@@ -66,6 +66,9 @@ class Processor {
 			//echo "<pre>", print_r($this->getRequest(), true) . "</pre>";die;
 
 			$this->storeContent();
+
+			//header("HTTP/1.1 403 Unauthorized");
+
 			return;
 		}
 
@@ -111,12 +114,12 @@ class Processor {
 	 */
 	public function storeContent() {
 		$auth = $this->getAuthHeader();
+		$file = $this->getUserFile($auth[0], $auth[1]);
 		$data = [
 			'email'     => $auth[0],
 			'timestamp' => $this->time,
 			'content'   => $this->processContent($this->getRequest())
 		];
-		$file = $this->getUserFile($auth[0], $auth[1]);
 
 		return file_put_contents($file, json_encode($data))
 			? true
@@ -138,10 +141,11 @@ class Processor {
 		$response = $data = [];
 
 	    foreach ($content as $child) {
-	    	$data['label'] = $child['label'];
-	    	$data['color'] = $child['color'];
-	    	$data['image'] = $child['image'];
-	    	$data['audio'] = $child['audio'];
+			foreach(['label', 'color', 'image', 'audio'] as $prop) {
+				if (isset($child[$prop])) {
+					$data[$prop] = $child[$prop];
+				}
+			}
 
 	    	if (!empty($child['children'])) {
 	    		$data['children'] = $this->processContent($child['children']);

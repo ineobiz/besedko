@@ -3,7 +3,7 @@
 angular.module('webApp').controller('UrediCtrl', ['$scope', '$rootScope', '$timeout', '$http', '$sce', 'Content', function ($scope, $rootScope, $timeout, $http, $sce, Content) {
     $scope.content = $scope.treeCtl = [];
     $scope.selected = null;
-    $scope.contentUpdated = false;
+    $scope.uploading = $scope.uploadError = $scope.contentUpdated = false;
     
     // @todo move to service
     $scope.credentials = $rootScope.credentials;
@@ -42,6 +42,7 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$rootScope', '$time
         reader.onload = function(e) {
             $scope.$apply(function() {
                 $scope.selected[angular.element(element).attr('name')] = $sce.trustAsResourceUrl(e.target.result);
+                $scope.contentUpdated = true;
             });
         };
 
@@ -50,34 +51,25 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$rootScope', '$time
 
     $scope.fileRemove = function(type) {
         $scope.selected[type] = null;
+        $scope.contentUpdated = true;
     };
 
-    // @todo
     $scope.save = function() {
-        //console.log([ "save", $scope.content ]);
         $scope.uploading = true;
-        Content
-            .set($rootScope.credentials)
-            .success(function (data) {
-                $scope.uploading = false;
-            }).error(function (data) {
-                $scope.uploading = false;
-            })
-        ;
-/*
-        $http.put('/process', $scope.content, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Auth-Credentials': $rootScope.credentials.email + ":" + $rootScope.credentials.password
+
+        $scope.uploading = Content.set($rootScope.credentials, function (response){
+            if (!response) {
+                return $scope.uploadError = true;
             }
+            $scope.uploadError = $scope.uploading = $scope.contentUpdated = false;
         });
-*/
     };
 
     $scope.remove = function() {
         var parent = $scope.treeCtl.remove_selected_branch();
         $scope.treeCtl.select_branch(parent);
         processContent(parent);
+        $scope.contentUpdated = true;
     };
 
     $scope.selectRoot = function() {
@@ -90,5 +82,10 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$rootScope', '$time
         var created = $scope.treeCtl.add_branch(selected, {
             label: 'beseda',
         });
+        $scope.contentUpdated = true;
     };
+
+    $scope.updated = function() {
+        $scope.contentUpdated = true;
+    }
 }]);
