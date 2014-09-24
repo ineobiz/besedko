@@ -50,10 +50,10 @@ class Processor {
 		if (
 				$this->method == 'GET'
 				&& $this->getRequest() == false
-				&& $this->checkCredentials()
+				&& ($file = $this->checkCredentials())
 		) {
-			echo "<pre>", print_r(["return json", $this->getRequest()], true) . "</pre>";die();
-			return;
+			echo file_get_contents($file);
+			return ;
 		}
 
 		// store content on valid non-empty PUT request
@@ -62,13 +62,7 @@ class Processor {
 				&& $this->getRequest() !== false
 				&& $this->checkCredentials()
 		) {
-			//echo "<pre>", print_r($this->request, true) . "</pre>";die;
-			//echo "<pre>", print_r($this->getRequest(), true) . "</pre>";die;
-
 			$this->storeContent();
-
-			//header("HTTP/1.1 403 Unauthorized");
-
 			return;
 		}
 

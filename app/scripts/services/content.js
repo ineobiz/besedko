@@ -11,6 +11,10 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 		promise
 	;
 
+	function setData(req) {
+	    data = req;
+	}
+
 	function processTree(root, callback) {
 	    var i, l;
 
@@ -50,12 +54,23 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 	}
 
 	return {
-		get: function() {
+		get: function(credentials) {
 			if (!promise) {
-				promise = $http.get(url).then(function(response) {
-					data = response.data;
-					return data;
-				});
+			    if (angular.isObject(credentials)) {
+			        promise = $http.get('/process', {
+                            headers: {
+                                'Auth-Credentials': credentials.email + ":" + credentials.password
+                            }
+                        }).then(function(response) {
+                            data = response.data.content || {};
+                            return data;
+                        });
+			    } else {
+	                promise = $http.get(url).then(function(response) {
+	                    data = response.data;
+	                    return data;
+	                });
+			    }
 			}
 			return promise;
 		},
@@ -72,6 +87,9 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
                     .error(function (data) { return response(false); })
                 ;
 		    });
+		},
+		resetPromise: function(data) {
+		    promise = null;
 		}
 	};
 }]);

@@ -3,12 +3,14 @@
 angular.module('webApp').controller('UrediCtrl', ['$scope', '$rootScope', '$timeout', '$http', '$sce', 'Content', function ($scope, $rootScope, $timeout, $http, $sce, Content) {
     $scope.content = $scope.treeCtl = [];
     $scope.selected = null;
-    $scope.uploading = $scope.uploadError = $scope.contentUpdated = false;
+    $scope.uploading = true;
+    $scope.uploadError = $scope.contentUpdated = false;
     
     // @todo move to service
     $scope.credentials = $rootScope.credentials;
 
-    Content.get().then(function(data) {
+    Content.get($scope.credentials).then(function(data) {
+        $scope.uploading = false;
         $scope.content = data;
     });
 
@@ -56,8 +58,9 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$rootScope', '$time
 
     $scope.save = function() {
         $scope.uploading = true;
+        $scope.uploadError = false;
 
-        $scope.uploading = Content.set($rootScope.credentials, function (response){
+        Content.set($rootScope.credentials, function (response){
             if (!response) {
                 return $scope.uploadError = true;
             }

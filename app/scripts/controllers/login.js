@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webApp').controller('LoginCtrl',
-    ['$scope', '$rootScope', '$location', 'Authentication',
-    function($scope, $rootScope, $location, Authentication) {
+    ['$scope', '$rootScope', '$location', 'Authentication', 'Content',
+    function($scope, $rootScope, $location, Authentication, Content) {
         $scope.login = function() {
             $scope.dataLoading = true;
 
@@ -11,7 +11,7 @@ angular.module('webApp').controller('LoginCtrl',
                 .success(function(data) {
                     Authentication.SetCredentials($scope.email, $scope.password);
                     $scope.dataLoading = $scope.error = false;
-                    // @todo load user data
+                    Content.resetPromise();
                     $location.path('/');
                 }).error(function(data) {
                     $scope.error = "Napačni dostopni podatki.";
@@ -22,7 +22,7 @@ angular.module('webApp').controller('LoginCtrl',
         
         $scope.logout = function() {
             Authentication.ClearCredentials();
-            // @todo load default data
+            Content.resetPromise();
         };
      }]
 );

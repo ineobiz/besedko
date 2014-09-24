@@ -1,11 +1,12 @@
 'use strict';
 
-angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (config, Content) {
+angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', function (config, $rootScope, Content) {
     return {
         restrict: 'E',
         templateUrl: 'views/directives/povej.html',
         link: function(scope, element, attrs) {
-            Content.get().then(function(data) {
+            // @todo move $rootScope.credentials to service
+            Content.get($rootScope.credentials).then(function(data) {
                 scope.content = data;
                 scope.parent = [];
                 scope.playlist = [];
