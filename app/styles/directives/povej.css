@@ -70,10 +70,12 @@ povej .carousel-control {
 povej .pointer {
 	left: 7px !important;
 	top: 9px !important;
+	cursor: pointer;
 }
 
 povej .level {
 	top: 7px !important;
+	cursor: pointer;
 }
 
 /**

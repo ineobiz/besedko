@@ -6,7 +6,7 @@
  * @description Content factory
  */
 angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config, $http) {
-	var url = '/data/content.json',
+	var url = '/data/sample.json',
     	data = [],
 		promise
 	;

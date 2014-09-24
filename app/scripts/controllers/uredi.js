@@ -61,10 +61,13 @@ angular.module('webApp').controller('UrediCtrl', ['$scope', '$rootScope', '$time
         $scope.uploadError = false;
 
         Content.set($rootScope.credentials, function (response){
-            if (!response) {
-                return $scope.uploadError = true;
-            }
             $scope.uploadError = $scope.uploading = $scope.contentUpdated = false;
+
+            if (!response) {
+                $scope.uploading = false;
+                $scope.uploadError = true;
+                $scope.contentUpdated = true;
+            }
         });
     };
 

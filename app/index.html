@@ -36,9 +36,9 @@
 		<div class="header">
 			<ul class="nav nav-pills pull-right">
 				<li ng-class="{active: activetab=='/'}"><a ng-href="/">@</a></li>
-				<li ng-class="{active: activetab=='/povej'}"><a ng-href="/povej">besedko</a></li>
-				<li ng-class="{active: activetab=='/uredi'}"><a ng-href="/uredi">urejevalnik</a></li>
-				<li ng-class="{active: activetab=='/mobile'}"><a ng-href="/mobile">mobilna aplikacija</a></li>
+				<li ng-class="{active: activetab=='/povej'}"><a ng-href="/povej"><span class="glyphicon glyphicon-comment"></span> besedko</a></li>
+				<li ng-class="{active: activetab=='/uredi'}"><a ng-href="/uredi"><span class="glyphicon glyphicon-wrench"></span> urejevalnik</a></li>
+				<li ng-class="{active: activetab=='/mobile'}"><a ng-href="/mobile"><span class="glyphicon glyphicon-phone"></span>  mobilna aplikacija</a></li>
 				<li ng-class="{active: activetab=='/login'}" ng-show="!credentials"><a ng-href="/login" class="btn btn-default">prijavi se</a></li>
 				<li ng-show="credentials"><a ng-click="logout()" class="btn btn-danger">odjavi se</a></li>
 			</ul>

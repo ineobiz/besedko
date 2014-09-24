@@ -14,7 +14,7 @@
 					<button type="button" class="btn btn-info" ng-click="addBranch()">Dodaj</button>
 					<button type="button" class="btn btn-primary" ng-click="treeCtl.expand_all()">Prikaži vse</button>
 					<button type="button" class="btn btn-primary" ng-click="treeCtl.collapse_all()">Samo naslovka</button>
-					<button type="button" class="btn" ng-click="save()" ng-class="{'btn-success' : !uploading, 'btn-warning' : uploading}" ng-show="credentials" ng-disabled="uploading || !contentUpdated"><span class="glyphicon glyphicon-cloud-upload"></span></button></button>
+					<button type="button" class="btn" ng-click="save()" ng-class="{'btn-success' : !uploading, 'btn-warning' : uploading}" ng-show="credentials" ng-disabled="uploading || !contentUpdated"><span class="glyphicon" ng-class="{'glyphicon-cloud-upload' : !uploading, 'glyphicon-refresh' : uploading}"></span></button></button>
 					<p class="text-danger" ng-show="uploadError">Napaka pri shranjevanju na strežnik, poskusi znova.</p>
 				</div>
 				<div class="panel panel-primary urejevalnik" ng-show="!selected">
@@ -29,7 +29,7 @@
 						<li><button type="button" class="btn btn-primary" ng-click="treeCtl.expand_all()">Prikaži vse</button> besede oz. <button type="button" class="btn btn-primary" ng-click="treeCtl.collapse_all()">Samo naslovko</button></li>
 						<li><a ng-href="/login" class="btn btn-default">prijavi se</a> za shranjevanje</li>
 						<li>shrani na strežnik s klikom na <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
-						<li><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-cloud-upload"></span></button> nakazuje prenašanje podatkov</li>
+						<li><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"></span></button> se prikaže med prenosom podatkov.</li>
 					</ul>
 <!-- 
 						<p>

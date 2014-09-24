@@ -29,10 +29,17 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 }
 
                 if (
-                    angular.isObject(selected.audio)
+                    //angular.isObject(selected.audio)
+                    selected.audio
                     && scope.playlist.length < 5
                 ) {
-                    //@todo audio player
+/*
+                    $scope.selected.audio = angular.isObject(content.audio)
+                        ? content.audio
+                        : $sce.trustAsResourceUrl(content.audio)
+                    ;
+*/
+                    //@todo audio, audio player
                     scope.playlist.push({
                         label : selected.label,
                         color : selected.color
