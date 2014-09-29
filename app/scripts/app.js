@@ -6,7 +6,8 @@ var webApp = angular
         'ngResource',
         'ngSanitize',
         'ngRoute',
-        'angularBootstrapNavTree'
+        'angularBootstrapNavTree',
+        'mediaPlayer'
     ])
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
         $routeProvider

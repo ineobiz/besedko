@@ -29,37 +29,51 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 }
 
                 if (
-                    //angular.isObject(selected.audio)
                     selected.audio
                     && scope.playlist.length < 5
                 ) {
-/*
-                    $scope.selected.audio = angular.isObject(content.audio)
-                        ? content.audio
-                        : $sce.trustAsResourceUrl(content.audio)
-                    ;
-*/
-                    //@todo audio, audio player
                     scope.playlist.push({
                         label : selected.label,
-                        color : selected.color
+                        color : selected.color,
+                        src   : selected.audio
                     });
                 }
 
                 //@todo check/mark favorites
             };
 
+            scope.play = function() {
+                scope.player.playPause();
+            };
+
+            scope.mute = function() {
+                scope.player.toggleMute();
+            };
+
             scope.plsClear = function() {
                 scope.playlist = [];
+                scope.player.stop();
             };
 
             scope.plsRemove = function(index) {
                 scope.playlist.splice(index, 1);
+                scope.player.stop();
             };
 
             scope.selectParent = function(parent) {
                 scope.content = parent.pop();
             };
+
+            scope.player.on('ended', function() {
+                if (scope.player.currentTrack == scope.player.tracks) {
+                    // @todo find proper way to restart playlist?
+                    var label = scope.playlist[0].label;
+                    scope.playlist[0].label = scope.playlist[0].label.slice(0, -1);
+                    scope.$apply();
+                    scope.playlist[0].label = label;
+                    scope.player.stop();
+                }
+            });
 
             // @todo select favorite
 

@@ -1,14 +1,15 @@
 <div class="panel panel-primary">
 	<div class="panel-heading">
 		<div class="btn-group">
+			<audio media-player="player" data-playlist="playlist"></audio>
 			<button type="button" class="btn btn-default navbar-btn" ng-repeat="p in playlist" ng-click="plsRemove($index)">
  				<img class="playlistImg" alt="{{p.label}}" style="height: 60px; display: block;" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
  				<span class="caption" ng-class="p.color ? p.color : 'white'">{{p.label}}</span>
 			</button>
 		</div>
 		<div class="btn-group pull-right">
-			<button ng-init="play=true" ng-click="play=!play" type="button" class="btn btn-default btn-hg navbar-btn" ng-disabled="!playlist.length">
-				<span ng-class="{'glyphicon-play' : play, 'glyphicon-stop' : !play}" class="glyphicon glyph-mid"></span>
+			<button ng-click="play()" type="button" class="btn btn-default btn-hg navbar-btn" ng-disabled="!playlist.length">
+				<span ng-class="{'glyphicon-play' : !player.playing, 'glyphicon-pause' : player.playing && !player.ended}" class="glyphicon glyph-mid"></span>
 			</button>
 			<button ng-click="plsClear()" type="button" class="btn btn-default btn-hg navbar-btn">
 				<span class="glyphicon glyph-mid glyphicon-trash"></span>
@@ -34,8 +35,8 @@
 	</div>
 	<div class="panel-footer">
 		<div class="btn-group pull-right">
-			<button ng-init="volume=true" ng-click="volume=!volume" type="button" class="btn btn-default btn-hg navbar-btn">
-				<span ng-class="{'glyphicon-volume-up' : volume, 'glyphicon-volume-off' : !volume}" class="glyphicon glyph-mid"></span>
+			<button ng-click="mute()" type="button" class="btn btn-default btn-hg navbar-btn">
+				<span ng-class="{'glyphicon-volume-up' : !player.muted, 'glyphicon-volume-off' : player.muted}" class="glyphicon glyph-mid"></span>
 			</button>
 			<button ng-if="canToggleFS" type="button" class="btn btn-default btn-hg navbar-btn" ng-click="toggleFS()">
 				<span ng-class="{'glyphicon-resize-small' : fullScreen, 'glyphicon-resize-full' : !fullScreen}" class="glyphicon glyph-mid"></span>
