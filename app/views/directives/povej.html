@@ -14,7 +14,7 @@
 			<button ng-click="plsClear()" type="button" class="btn btn-default btn-hg navbar-btn" ng-disabled="!playlist.length">
 				<span class="glyphicon glyph-mid glyphicon-trash"></span>
 			</button>
-			<button ng-click="favorite()" type="button" class="btn btn-default btn-hg navbar-btn" ng-disabled="!playlist.length || favorites.length > 5">
+			<button ng-click="favorite()" type="button" class="btn btn-default btn-hg navbar-btn" ng-disabled="!playlist.length || (favorites.length > 5 && !isFavorite)">
 				<span ng-class="{'glyphicon-star-empty' : !isFavorite, 'glyphicon-star' : isFavorite}" class="glyphicon glyph-mid"></span>
 			</button>
 		</div>
