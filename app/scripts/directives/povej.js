@@ -5,14 +5,60 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
         restrict: 'E',
         templateUrl: 'views/directives/povej.html',
         link: function(scope, element, attrs) {
+            var favoriteFind = function() {
+                    var isFavorite = false;
+                    if (scope.favorites.length) {
+                        var favWords = [];
+
+                        angular.forEach(scope.playlist, function(key) {
+                            favWords.push(key.label);
+                        });
+
+                        angular.forEach(scope.favorites, function(key) {
+                            if (angular.equals(key.words, favWords)) {
+                                isFavorite = true;
+                            };
+                        });
+                    }
+                    return isFavorite;
+                },
+                favoriteAdd = function() {
+                    if (scope.favorites.length < 6) {
+                        console.log([ "add selected favorite"]);
+                        var words = [];
+
+                        angular.forEach(scope.playlist, function(key) {
+                            words.push(key.label);
+                        });
+
+                        scope.favorites.push({
+                            label : scope.playlist[0].label,
+                            color : scope.playlist[0].color,
+                            words : words
+                        });
+
+                        favoriteCheck();
+                    }
+                },
+                favoriteRemove = function() {
+                    //scope.isFavorite = findFavorite();
+                    console.log([ "remove selected favorite"]);
+                },
+                favoriteCheck = function() {
+                    scope.isFavorite = favoriteFind();
+                }
+            ;
+
             // @todo move $rootScope.credentials to service
             Content.get($rootScope.credentials).then(function(data) {
                 scope.content = data;
-                scope.parent = [];
-                scope.playlist = [];
             });
 
-            scope.currentPage = 0;
+            scope.favorites = [],
+            scope.playlist = [],
+            scope.parent = [],
+            scope.isFavorite = false,
+            scope.currentPage = 0,
             scope.pageSize = 8;
 
             scope.numberOfPages = function(){
@@ -37,9 +83,9 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                         color : selected.color,
                         src   : selected.audio
                     });
-                }
 
-                //@todo check/mark favorites
+                    favoriteCheck();
+                }
             };
 
             scope.play = function() {
@@ -53,11 +99,13 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
             scope.plsClear = function() {
                 scope.playlist = [];
                 scope.player.stop();
+                favoriteCheck();
             };
 
             scope.plsRemove = function(index) {
                 scope.playlist.splice(index, 1);
                 scope.player.stop();
+                favoriteCheck();
             };
 
             scope.selectParent = function(parent) {
@@ -75,7 +123,17 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 }
             });
 
-            // @todo select favorite
+            scope.favorite = function() {
+                favoriteFind()
+                    ? favoriteRemove()
+                    : favoriteAdd()
+                ;
+            };
+
+            scope.selectFavorite = function(selected) {
+                console.log([ "selected favorite", selected]);
+                console.log([ "replace current playlist"]);
+            };
 
             scope.toggleFS = function() {
                 scope.$emit('event::toggleFullscreen');
