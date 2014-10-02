@@ -5,11 +5,15 @@
 	vertical-align: top;
 }
 
-#uredi div.structure {
+#uredi div.structure, #uredi div.favorites {
 	width: 250px;
 	background: whitesmoke;
 	border: 1px solid lightgray;
 	border-radius: 5px;
+}
+
+#uredi div.favorites {
+	margin-top: 10px;
 }
 
 #uredi .urejevalnik {

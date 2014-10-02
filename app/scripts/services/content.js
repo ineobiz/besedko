@@ -7,15 +7,13 @@
  */
 angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config, $http) {
 	var url = '/data/sample.json',
-    	data = [],
+	    content = [],
+	    favorites = [],
 		promise
 	;
 
-	function setData(req) {
-	    data = req;
-	}
-
-	function processTree(root, callback) {
+	// process content
+	function processContent(root, callback) {
 	    var i, l;
 
 	    function processNode(node) {
@@ -30,28 +28,52 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 	        });
 	    }
 
+	    function contentCleanup(node, callback) {
+	        for(var key in node) {
+	            if (['uid','label','color','image','audio','children'].indexOf(key) == -1) {
+	                delete node[key];
+	            }
+	        }
+	        callback(node);
+	    }
+
 	    for (i = 0, l = root.length; i < l; i++) {
 	        (function(node) {
-	            treeCleanup(node, function() {
+	            contentCleanup(node, function() {
 	                if (node.children.length) {
-	                    processTree(node.children, processNode);
+	                    processContent(node.children, processNode);
 	                }
-	                processTree(node, processNode);
+	                processContent(node, processNode);
 	            });
 	        }(root[i]));
 	    }
 
-	    callback(root);
+	    callback(root, processFavorites(angular.copy(favorites)));
 	}
 
-	function treeCleanup(node, callback) {
-	    for(var key in node) {
-	        if (['label','color','image','audio','children'].indexOf(key) == -1) {
-	            delete node[key];
-	        }
-	    }
-	    callback(node);
-	}
+	// process favorites
+    function processFavorites(root) {
+        var i, l;
+
+        function favoriteCleanup(node, callback) {
+            for(var key in node) {
+                if (['label','color','content'].indexOf(key) == -1) {
+                    delete node[key];
+                }
+            }
+            callback(node);
+        }
+
+        for (i = 0, l = root.length; i < l; i++) {
+            (function(node) {
+                favoriteCleanup(node, function() {
+                    processFavorites(node, favoriteCleanup);
+                });
+            }(root[i]));
+        }
+
+        return root;
+    }
 
 	return {
 		get: function(credentials) {
@@ -62,31 +84,41 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
                                 'Auth-Credentials': credentials.email + ":" + credentials.password
                             }
                         }).then(function(response) {
-                            data = response.data.content || {};
-                            return data;
+                            content = response.data.content || [];
+                            favorites = response.data.favorites || [];
+
+                            return {
+                                content : content,
+                                favorites : favorites
+                            };
                         });
 			    } else {
 	                promise = $http.get(url).then(function(response) {
-	                    data = response.data;
-	                    return data;
+	                    content = response.data;
+
+                        return {
+                            content : content,
+                            favorites : []
+                        };
+
 	                });
 			    }
 			}
 			return promise;
 		},
 		set: function(credentials, response) {
-		    processTree(angular.copy(data), function(processed){
+	        processContent(angular.copy(content), function(processed, favorites){
 	            $http
-	                .put('/process', processed, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Auth-Credentials': credentials.email + ":" + credentials.password
-                        }
-                    })
-                    .success(function (data) { return response(true); })
-                    .error(function (data) { return response(false); })
-                ;
-		    });
+	                .put('/process', {content: processed, favorites: favorites}, {
+	                    headers: {
+	                        'Content-Type': 'application/json',
+	                        'Auth-Credentials': credentials.email + ":" + credentials.password
+	                    }
+	                })
+	                .success(function (data) { return response(true); })
+	                .error(function (data) { return response(false); })
+	            ;
+	        });
 		},
 		resetPromise: function(data) {
 		    promise = null;

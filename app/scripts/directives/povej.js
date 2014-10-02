@@ -12,14 +12,14 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
         find : function(scope) {
             var foundIndex = false;
             if (scope.favorites.length) {
-                var favWords = [];
+                var favContent = [];
 
                 angular.forEach(scope.playlist, function(val) {
-                    favWords.push(val.label);
+                    favContent.push(val.uid);
                 });
 
                 angular.forEach(scope.favorites, function(val, key) {
-                    if (angular.equals(val.words, favWords)) {
+                    if (angular.equals(val.content, favContent)) {
                         foundIndex = key;
                     };
                 });
@@ -28,16 +28,16 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
         },
         add : function(scope) {
             if (scope.favorites.length < 6) {
-                var words = [];
+                var content = [];
 
                 angular.forEach(scope.playlist, function(val) {
-                    words.push(val.label);
+                    content.push(val.uid);
                 });
 
                 scope.favorites.push({
-                    label : scope.favorites.length,
+                    label : scope.playlist[0].label,
                     color : scope.playlist[0].color,
-                    words : words
+                    content : content
                 });
 
                 scope.isFavorite = true;
@@ -49,10 +49,58 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 scope.favorites.splice(selected, 1);
                 scope.isFavorite = false;
             }
+        },
+        toPlaylist : function(scope, selected) {
+            if (angular.isObject(selected.content)) {
+
+                var found = [];
+
+                contentIterator(scope.content, function(b) {
+                    if (selected.content.indexOf(b.uid) !== -1) {
+                        return found[b.uid] = b;
+                    }
+                });
+
+                scope.playlist = [];
+
+                angular.forEach(selected.content, function(val) {
+                    scope.playlist.push(imageBrowser.getContent(found[val]));
+                });
+
+                scope.isFavorite = true;
+            }
         }
     };
 
-    // @todo
+    // iterate content
+    var contentIterator = function(root, f) {
+        var root_branch, i, len, ref, results;
+
+        var callback = function(branch, level) {
+            var child, i, len, ref, results;
+            f(branch, level);
+            if (branch.children != null) {
+                ref = branch.children;
+                results = [];
+                for (i = 0, len = ref.length; i < len; i++) {
+                    child = ref[i];
+                    results.push(callback(child, level + 1));
+                }
+                return results;
+            }
+        };
+
+        ref = root;
+        results = [];
+
+        for (i = 0, len = ref.length; i < len; i++) {
+            root_branch = ref[i];
+            results.push(callback(root_branch, 1));
+        }
+
+        return results;
+    };
+
     var imageBrowser = {
         select : function(scope, selected, parent) {
             if (
@@ -67,14 +115,17 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 selected.audio
                 && scope.playlist.length < 5
             ) {
-                scope.playlist.push({
-                    label : selected.label,
-                    color : selected.color,
-                    src   : selected.audio
-                });
-
+                scope.playlist.push(this.getContent(selected));
                 favorites.check(scope);
             }
+        },
+        getContent : function(selected) {
+            return {
+                uid   : selected.uid,
+                label : selected.label,
+                color : selected.color,
+                src   : selected.audio
+            };
         }
     };
 
@@ -84,7 +135,8 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
         link: function(scope, element, attrs) {
             // @todo move $rootScope.credentials to service
             Content.get($rootScope.credentials).then(function(data) {
-                scope.content = data;
+                scope.content = data.content;
+                scope.favorites = data.favorites;
             });
 
             scope.favorites = [], scope.playlist = [], scope.parent = [],
@@ -141,8 +193,10 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 ;
             };
 
-            scope.selectFavorite = function(selected) {
-                //console.log([ "replace current playlist", selected.words]);
+            scope.favoriteSelect = function(selected) {
+                if (!favorites.check(scope)) {
+                    favorites.toPlaylist(scope, selected);
+                }
             };
 
             scope.toggleFS = function() {
@@ -153,10 +207,3 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
         }
     };
 }]);
-
-angular.module('webApp').filter('startFrom', function() {
-    return function(input, start) {
-        start = +start;
-        return input.slice(start);
-    }
-});

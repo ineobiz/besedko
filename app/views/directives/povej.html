@@ -36,7 +36,7 @@
 	<div class="panel-footer">
 		<div class="btn-group">
 			<!-- <button type="button" class="btn btn-default navbar-btn" ng-repeat="f in [1, 2, 3, 4, 5, 6]"> -->
-			<button type="button" class="btn btn-default navbar-btn" ng-repeat="f in favorites" ng-click="selectFavorite(f)">
+			<button type="button" class="btn btn-default navbar-btn" ng-repeat="f in favorites" ng-click="favoriteSelect(f)">
 				<img class="playlistImg" alt="{{f.label}}" style="height: 60px; display: block;" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
 				<span class="caption" ng-class="f.color ? f.color : 'white'">{{f.label}}</span>
 			</button>

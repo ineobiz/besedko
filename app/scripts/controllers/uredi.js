@@ -1,97 +1,151 @@
 'use strict';
 
-angular.module('webApp').controller('UrediCtrl', ['$scope', '$rootScope', '$timeout', '$http', '$sce', 'Content', function ($scope, $rootScope, $timeout, $http, $sce, Content) {
-    $scope.content = $scope.treeCtl = [];
-    $scope.selected = null;
-    $scope.uploading = true;
-    $scope.uploadError = $scope.contentUpdated = false;
-    
-    // @todo move to service
-    $scope.credentials = $rootScope.credentials;
+angular.module('webApp')
+    .constant('UrediCtrl.config', {
+        content: [],
+        contentCtl: [],
+        contentSelected : null,
+        favorites: [],
+        favoritesCtl: [],
+        favoriteSelected : false,
+        uploading: true,
+        uploadError: false,
+        contentUpdated: false
+    })
+    .controller('UrediCtrl', ['$scope', '$rootScope', '$timeout', '$http', '$sce', 'UrediCtrl.config', 'Content', function ($scope, $rootScope, $timeout, $http, $sce, ctrlCfg, Content) {
+        var processContent = function(content) {
+            if (!content) {
+                return $scope.contentSelected = null;
+            }
 
-    Content.get($scope.credentials).then(function(data) {
-        $scope.uploading = false;
-        $scope.content = data;
-    });
+            $scope.contentSelected = content;
 
-    $scope.treeHandler = function(branch) {
-        processContent(branch);
-    };
+            if (!content.color) {
+                $scope.contentSelected.color = 'white';
+            }
 
-    var processContent = function(content) {
-        if (!content) {
-            return $scope.selected = null;
-        }
+            if (content.audio) {
+                $scope.contentSelected.audio = angular.isObject(content.audio)
+                    ? content.audio
+                    : $sce.trustAsResourceUrl(content.audio)
+                ;
+            }
+        };
 
-        $scope.selected = content;
+        var processFavorite = function(favorite) {
+            if (!favorite) {
+                return $scope.favoriteSelected = null;
+            }
 
-        if (!content.color) {
-            $scope.selected.color = 'white';
-        }
+            $scope.favoriteSelected = favorite;
 
-        if (content.audio) {
-            $scope.selected.audio = angular.isObject(content.audio)
-                ? content.audio
-                : $sce.trustAsResourceUrl(content.audio)
-            ;
-        }
-    };
+            if (!favorite.color) {
+                $scope.favoriteSelected.color = 'white';
+            }
 
-    $scope.fileUpload = function(element) {
-        var file = element.files[0],
-            reader = new FileReader();
+            if (favorite.content) {
+                angular.forEach(favorite.content, function(val) {
+                    //@todo build content list
+                    //console.log([ "data", val]);
+                });
+            }
+        };
 
-        reader.onload = function(e) {
-            $scope.$apply(function() {
-                $scope.selected[angular.element(element).attr('name')] = $sce.trustAsResourceUrl(e.target.result);
-                $scope.contentUpdated = true;
+        // config
+        angular.extend($scope, ctrlCfg);
+
+        // @todo move to service
+        $scope.credentials = $rootScope.credentials;
+
+        // content, favorites
+        Content.get($scope.credentials).then(function(data) {
+            $scope.uploading = false;
+            $scope.content = data.content;
+            $scope.favorites = data.favorites;
+        });
+
+        $scope.contentHandler = function(branch) {
+            processContent(branch);
+            $scope.favoriteSelected = false;
+            $scope.favoritesCtl.select_branch(null);
+        };
+
+        $scope.contentSelectRoot = function() {
+            $scope.favoriteSelected = false;
+            $scope.favoritesCtl.select_branch(null);
+            $scope.contentSelected = null;
+            $scope.contentCtl.select_branch(null);
+        };
+
+        $scope.favoritesHandler = function(branch) {
+            processFavorite(branch);
+            $scope.contentSelected = false;
+            $scope.contentCtl.select_branch(null);
+        };
+
+        $scope.favoritesSelectRoot = function() {
+            $scope.contentSelected = false;
+            $scope.contentCtl.select_branch(null);
+            $scope.favoriteSelected = null;
+            $scope.favoritesCtl.select_branch(null);
+        };
+
+        // file processing
+        $scope.fileUpload = function(element) {
+            var file = element.files[0],
+                reader = new FileReader();
+
+            reader.onload = function(e) {
+                $scope.$apply(function() {
+                    $scope.contentSelected[angular.element(element).attr('name')] = $sce.trustAsResourceUrl(e.target.result);
+                    $scope.contentUpdated = true;
+                });
+            };
+
+            reader.readAsDataURL(file);
+        };
+
+        $scope.fileRemove = function(type) {
+            $scope.contentSelected[type] = null;
+            $scope.contentUpdated = true;
+        };
+
+        // content saving
+        $scope.save = function() {
+            $scope.uploading = true;
+            $scope.uploadError = false;
+
+            Content.set($rootScope.credentials, function (response){
+                $scope.uploadError = $scope.uploading = $scope.contentUpdated = false;
+
+                if (!response) {
+                    $scope.uploading = false;
+                    $scope.uploadError = true;
+                    $scope.contentUpdated = true;
+                }
             });
         };
 
-        reader.readAsDataURL(file);
-    };
+        // content removing
+        $scope.remove = function() {
+            var parent = $scope.contentCtl.remove_selected_branch();
+            $scope.contentCtl.select_branch(parent);
+            processContent(parent);
+            $scope.contentUpdated = true;
+        };
 
-    $scope.fileRemove = function(type) {
-        $scope.selected[type] = null;
-        $scope.contentUpdated = true;
-    };
+        // add new branch
+        $scope.addBranch = function() {
+            var contentSelected = $scope.contentCtl.get_selected_branch();
+            var created = $scope.contentCtl.add_branch(contentSelected, {
+                label: 'beseda',
+            });
+            $scope.contentUpdated = true;
+        };
 
-    $scope.save = function() {
-        $scope.uploading = true;
-        $scope.uploadError = false;
-
-        Content.set($rootScope.credentials, function (response){
-            $scope.uploadError = $scope.uploading = $scope.contentUpdated = false;
-
-            if (!response) {
-                $scope.uploading = false;
-                $scope.uploadError = true;
-                $scope.contentUpdated = true;
-            }
-        });
-    };
-
-    $scope.remove = function() {
-        var parent = $scope.treeCtl.remove_selected_branch();
-        $scope.treeCtl.select_branch(parent);
-        processContent(parent);
-        $scope.contentUpdated = true;
-    };
-
-    $scope.selectRoot = function() {
-        $scope.treeCtl.select_branch(null);
-        $scope.selected = null;
-    };
-
-    $scope.addBranch = function() {
-        var selected = $scope.treeCtl.get_selected_branch();
-        var created = $scope.treeCtl.add_branch(selected, {
-            label: 'beseda',
-        });
-        $scope.contentUpdated = true;
-    };
-
-    $scope.updated = function() {
-        $scope.contentUpdated = true;
-    }
-}]);
+        // enable upload button when content gets updated
+        $scope.updated = function() {
+            $scope.contentUpdated = true;
+        }
+    }])
+;

@@ -112,7 +112,8 @@ class Processor {
 		$data = [
 			'email'     => $auth[0],
 			'timestamp' => $this->time,
-			'content'   => $this->processContent($this->getRequest())
+			'content'   => $this->processContent($this->getRequest()['content']),
+			'favorites' => $this->processFavorites($this->getRequest()['favorites'])
 		];
 
 		return file_put_contents($file, json_encode($data))
@@ -135,7 +136,7 @@ class Processor {
 		$response = $data = [];
 
 	    foreach ($content as $child) {
-			foreach(['label', 'color', 'image', 'audio'] as $prop) {
+			foreach(['uid', 'label', 'color', 'image', 'audio'] as $prop) {
 				if (isset($child[$prop])) {
 					$data[$prop] = $child[$prop];
 				}
@@ -146,6 +147,32 @@ class Processor {
 	    	} else {
 	    		unset($data['children']);
 	    	}
+
+			$response[] = $data;
+	    }
+
+	    return $response;
+	}
+
+	/**
+	 * Loop for processing valid favorites data
+	 *
+	 * @param array $favorites favorites
+	 * @return false|array
+	 */
+	private function processFavorites($favorites) {
+		if (!is_array($favorites)) {
+			return false;
+		}
+
+		$response = $data = [];
+
+	    foreach ($favorites as $child) {
+			foreach(['label', 'color', 'content'] as $prop) {
+				if (isset($child[$prop])) {
+					$data[$prop] = $child[$prop];
+				}
+			}
 
 	    	$response[] = $data;
 	    }
