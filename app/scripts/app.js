@@ -3,7 +3,7 @@
 var webApp = angular
     .module('webApp', [
         'ngRoute',
-        'angularBootstrapNavTree',
+        'ui.tree',
         'mediaPlayer'
     ])
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {

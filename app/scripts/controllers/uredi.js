@@ -3,10 +3,8 @@
 angular.module('webApp')
     .constant('UrediCtrl.config', {
         content: [],
-        contentCtl: [],
         contentSelected : null,
         favorites: [],
-        favoritesCtl: [],
         favoriteSelected : false,
         uploading: true,
         uploadError: false,
@@ -51,6 +49,11 @@ angular.module('webApp')
             }
         };
 
+        // tree scope
+        var treeScope = function() {
+            return angular.element(document.getElementById("content-structure")).scope();
+        };
+
         // config
         angular.extend($scope, ctrlCfg);
 
@@ -64,17 +67,28 @@ angular.module('webApp')
             $scope.favorites = data.favorites;
         });
 
+        // expand all levels
+        $scope.expandAll = function() {
+            var scope = treeScope();
+            scope.expandAll();
+        };
+
+        // collapse all levels
+        $scope.collapseAll = function() {
+            var scope = treeScope();
+            scope.collapseAll();
+        };
         $scope.contentHandler = function(branch) {
             processContent(branch);
             $scope.favoriteSelected = false;
-            $scope.favoritesCtl.select_branch(null);
+            //$scope.favoritesCtl.select_branch(null);
         };
 
         $scope.contentSelectRoot = function() {
             $scope.favoriteSelected = false;
-            $scope.favoritesCtl.select_branch(null);
+            //$scope.favoritesCtl.select_branch(null);
             $scope.contentSelected = null;
-            $scope.contentCtl.select_branch(null);
+            //$scope.contentCtl.select_branch(null);
         };
 
         $scope.favoritesHandler = function(branch) {
@@ -85,9 +99,9 @@ angular.module('webApp')
 
         $scope.favoritesSelectRoot = function() {
             $scope.contentSelected = false;
-            $scope.contentCtl.select_branch(null);
+            //$scope.contentCtl.select_branch(null);
             $scope.favoriteSelected = null;
-            $scope.favoritesCtl.select_branch(null);
+            //$scope.favoritesCtl.select_branch(null);
         };
 
         // file processing

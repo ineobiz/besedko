@@ -1,26 +1,43 @@
+<script id="tree_renderer.html" type="text/ng-template">
+<div class="tree-node tree-node-content" ui-tree-handle>
+	<a class="btn btn-primary btn-xs" data-nodrag ng-click="toggle(this)">
+		<span class="glyphicon" ng-class="{'glyphicon-file' : !item.children.length, 'glyphicon-plus': collapsed, 'glyphicon-minus': !collapsed}"></span>
+	</a>
+	{{item.label}}
+	<a class="pull-right btn btn-info btn-xs" data-nodrag ng-click="newSubItem(this)">
+		<span class="glyphicon glyphicon-plus"></span>
+	</a>
+</div>
+<ol ui-tree-nodes="options" ng-model="item.children" ng-class="{hidden: collapsed}">
+	<li ng-repeat="item in item.children" ui-tree-node ng-include="'tree_renderer.html'"></li>
+</ol>
+</script>
 <table id="uredi">
 	<tbody>
 		<tr>
 			<td>
 				<div class="structure">
-					<ul class="nav nav-list nav-pills nav-stacked abn-tree">
-						<li class="abn-tree-row" ng-class="{'active' : contentSelected === null}"><a ng-click="contentSelectRoot()"><span class="indented tree-label">besedko</span></a></li>
+					<ul class="nav nav-list nav-pills nav-stacked">
+						<li ng-class="{'active' : contentSelected === null}"><a ng-click="contentSelectRoot()"><span class="indented tree-label">besedko</span></a></li>
 					</ul>
-					<abn-tree tree-data="content" tree-control="contentCtl" on-select="contentHandler(branch)" expand-level="0"></abn-tree>
+					<div id="content-structure" class="tree-node tree-node-content" ui-tree="">
+						<ol ui-tree-nodes ng-model="content">
+							<li ng-repeat="item in content" ui-tree-node ng-include="'tree_renderer.html'"></li>
+						</ol>
+					</div>
 				</div>
   
 				<div class="favorites">
 					<ul class="nav nav-list nav-pills nav-stacked abn-tree">
 						<li class="abn-tree-row" ng-class="{'active' : favoriteSelected === null}"><a ng-click="favoritesSelectRoot()"><span class="indented tree-label">priljubljene</span></a></li>
 					</ul>
- 					<abn-tree tree-data="favorites" tree-control="favoritesCtl" on-select="favoritesHandler(branch)" expand-level="0"></abn-tree>
 				</div>
 			</td>
 			<td>
 				<div class="form-group urejevalnik">
 					<button type="button" class="btn btn-info" ng-click="addBranch()" ng-disabled="favoriteSelected || favoriteSelected === null">Dodaj</button>
-					<button type="button" class="btn btn-primary" ng-click="contentCtl.expand_all()">Prikaži vse</button>
-					<button type="button" class="btn btn-primary" ng-click="contentCtl.collapse_all()">Samo naslovka</button>
+					<button type="button" class="btn btn-primary" ng-click="expandAll()">Prikaži vse</button>
+					<button type="button" class="btn btn-primary" ng-click="collapseAll()">Samo naslovka</button>
 					<button type="button" class="btn" ng-click="save()" ng-class="{'btn-success' : !uploading, 'btn-warning' : uploading}" ng-show="credentials" ng-disabled="uploading || !contentUpdated"><span class="glyphicon" ng-class="{'glyphicon-cloud-upload' : !uploading, 'glyphicon-refresh' : uploading}"></span></button></button>
 					<p class="text-danger" ng-show="uploadError">Napaka pri shranjevanju na strežnik, poskusi znova.</p>
 				</div>
@@ -33,7 +50,7 @@
 					<ul>
 						<li>dodaj novo besedo s klikom na <button type="button" class="btn btn-info" ng-click="addBranch()">Dodaj</button></li>
 						<li><button type="button" class="btn btn-danger">Odstrani besedo</button> oz. le sliko / zvok <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></li>
-						<li><button type="button" class="btn btn-primary" ng-click="contentCtl.expand_all()">Prikaži vse</button> besede oz. <button type="button" class="btn btn-primary" ng-click="contentCtl.collapse_all()">Samo naslovko</button></li>
+						<li><button type="button" class="btn btn-primary" ng-click="expandAll()">Prikaži vse</button> besede oz. <button type="button" class="btn btn-primary" ng-click="collapseAll()">Samo naslovko</button></li>
 						<li><a ng-href="/login" class="btn btn-default">prijavi se</a> za shranjevanje</li>
 						<li>shrani na strežnik s klikom na <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
 						<li><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"></span></button> se prikaže med prenosom podatkov.</li>
