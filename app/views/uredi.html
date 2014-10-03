@@ -22,7 +22,6 @@
 					<button type="button" class="btn btn-primary" ng-click="contentCtl.expand_all()">Prikaži vse</button>
 					<button type="button" class="btn btn-primary" ng-click="contentCtl.collapse_all()">Samo naslovka</button>
 					<button type="button" class="btn" ng-click="save()" ng-class="{'btn-success' : !uploading, 'btn-warning' : uploading}" ng-show="credentials" ng-disabled="uploading || !contentUpdated"><span class="glyphicon" ng-class="{'glyphicon-cloud-upload' : !uploading, 'glyphicon-refresh' : uploading}"></span></button></button>
-					<button type="button" class="btn" ng-click="save()"></span></button></button>
 					<p class="text-danger" ng-show="uploadError">Napaka pri shranjevanju na strežnik, poskusi znova.</p>
 				</div>
 				<div class="panel panel-primary urejevalnik" ng-show="contentSelected === null">
