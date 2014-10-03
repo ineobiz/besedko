@@ -2,9 +2,6 @@
 
 var webApp = angular
     .module('webApp', [
-        'ngCookies',
-        'ngResource',
-        'ngSanitize',
         'ngRoute',
         'angularBootstrapNavTree',
         'mediaPlayer'
