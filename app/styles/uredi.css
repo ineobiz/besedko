@@ -88,3 +88,11 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+.tree-label {
+    cursor: pointer;
+}
+
+.node-control {
+    margin-left: 5px;
+}

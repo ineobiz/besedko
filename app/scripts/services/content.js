@@ -40,7 +40,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 	    for (i = 0, l = root.length; i < l; i++) {
 	        (function(node) {
 	            contentCleanup(node, function() {
-	                if (node.children.length) {
+	                if (angular.isArray(node.children) && node.children.length) {
 	                    processContent(node.children, processNode);
 	                }
 	                processContent(node, processNode);

@@ -142,17 +142,46 @@ angular.module('webApp')
 
         // content removing
         $scope.remove = function() {
+            // @todo fix
+/*
             var parent = $scope.contentCtl.remove_selected_branch();
             $scope.contentCtl.select_branch(parent);
             processContent(parent);
             $scope.contentUpdated = true;
+*/
+        };
+
+        $scope.removeBranch = function(scope) {
+            scope.remove();
+            $scope.contentUpdated = true;
+            // @todo select parent?
+            $scope.favoriteSelected = false;
+            $scope.contentSelected = null;
         };
 
         // add new branch
-        $scope.addBranch = function() {
+        $scope.addBranchx = function() {
+            // @todo fix
+/*
             var contentSelected = $scope.contentCtl.get_selected_branch();
             var created = $scope.contentCtl.add_branch(contentSelected, {
                 label: 'beseda',
+            });
+            $scope.contentUpdated = true;
+*/
+        };
+
+        $scope.addBranch = function(scope) {
+            var nodeData = scope.$modelValue;
+            if (!angular.isArray(nodeData.children)) {
+                nodeData.children = [];
+            }
+            scope.expand();
+            nodeData.children.push({
+                uid : "" + Math.random(),
+                label : nodeData.label + '.'
+                        + (nodeData.children.length + 1),
+                children : []
             });
             $scope.contentUpdated = true;
         };
