@@ -68,8 +68,6 @@ povej .carousel-control {
 }
 
 povej .pointer {
-	left: 7px !important;
-	top: 9px !important;
 	cursor: pointer;
 }
 

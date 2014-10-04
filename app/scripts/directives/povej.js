@@ -35,7 +35,7 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 });
 
                 scope.favorites.push({
-                    label : scope.playlist[0].label,
+                    label : 'fav.' + (scope.favorites.length + 1),
                     color : scope.playlist[0].color,
                     content : content
                 });
