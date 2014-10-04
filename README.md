@@ -1,3 +1,4 @@
 besedko
 =======
-@todo
+- bower install
+- mkdir app/data/user-generated/

@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('webApp').controller('LoginCtrl',
-    ['$scope', '$rootScope', '$location', 'Authentication', 'Content',
-    function($scope, $rootScope, $location, Authentication, Content) {
+    ['$scope', '$rootScope', '$location', 'Authentication', 'Content', function($scope, $rootScope, $location, Authentication, Content) {
         $scope.login = function() {
             $scope.dataLoading = true;
 
             Authentication
                 .Login($scope.email, $scope.password)
                 .success(function(data) {
-                    Authentication.SetCredentials($scope.email, $scope.password);
+                    Authentication
+                            .SetCredentials($scope.email, $scope.password);
                     $scope.dataLoading = $scope.error = false;
                     Content.resetPromise();
                     $location.path('/');
@@ -19,10 +19,10 @@ angular.module('webApp').controller('LoginCtrl',
                 })
             ;
         };
-        
+
         $scope.logout = function() {
             Authentication.ClearCredentials();
             Content.resetPromise();
         };
-     }]
+    }]
 );

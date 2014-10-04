@@ -1,7 +1,7 @@
 <script id="tree_renderer.html" type="text/ng-template">
-<div class="tree-node tree-node-content" ui-tree-handle>
+<div class="tree-node tree-node-content" ng-class="{'node-selected' : contentSelected === item}" ui-tree-handle>
 	<a class="btn btn-primary btn-xs" data-nodrag ng-click="toggle(this)">
-		<span class="glyphicon" ng-class="{'glyphicon-file' : !item.children.length, 'glyphicon-plus': collapsed, 'glyphicon-minus': !collapsed}"></span>
+		<span class="glyphicon" ng-class="{'glyphicon-music' : !item.children.length && !item.content.length, 'glyphicon-star' : item.content.length, 'glyphicon-plus': collapsed, 'glyphicon-minus': !collapsed}"></span>
 	</a>
 	<a class="pull-right btn btn-danger btn-xs node-control" data-nodrag ng-click="removeBranch(this)" ng-if="contentSelected === item">
 		<span class="glyphicon glyphicon-remove"></span>
@@ -20,28 +20,45 @@
 		<tr>
 			<td>
 				<div class="structure">
-					<ul class="nav nav-list nav-pills nav-stacked">
-						<li ng-class="{'active' : contentSelected === null}"><a ng-click="contentSelectRoot()"><strong class="tree-label">besedko</strong></a></li>
-					</ul>
-					<div id="content-structure" class="tree-node tree-node-content" ui-tree="">
+					<div class="angular-ui-tree-handle root-node" ng-class="{'node-selected' : contentSelected === null}">
+						<a class="pull-right btn btn-info btn-xs node-control" ng-click="addRootBranch()" ng-if="contentSelected === null">
+							<span class="glyphicon glyphicon-plus-sign"></span>
+						</a>
+						<a class="tree-label" ng-click="contentSelectRoot()">besedko</a>
+					</div>
+					<div id="content-structure" class="tree-node tree-node-content" ui-tree="contentOptions">
 						<ol ui-tree-nodes ng-model="content">
-							<li ng-repeat="item in content" ui-tree-node ng-include="'tree_renderer.html'"></li>
+							<li ng-repeat="item in content" ui-tree-node ng-include="'tree_renderer.html'" collapsed="true"></li>
 						</ol>
 					</div>
 				</div>
   
 				<div class="favorites">
-					<ul class="nav nav-list nav-pills nav-stacked">
-						<li ng-class="{'active' : favoriteSelected === null}"><a ng-click="favoritesSelectRoot()"><span class="tree-label">priljubljene</span></a></li>
-					</ul>
+					<div class="angular-ui-tree-handle root-node" ng-class="{'node-selected' : favoriteSelected === null}">
+						<a class="tree-label" ng-click="favoritesSelectRoot()">priljubljene</a>
+					</div>
+					<div id="favorites-structure" class="tree-node tree-node-content" ui-tree="favoritesOptions">
+						<ol ui-tree-nodes ng-model="favorites">
+							<li ng-repeat="item in favorites" ui-tree-node>
+								<div class="tree-node tree-node-content" ng-class="{'node-selected' : favoriteSelected === item}" ui-tree-handle>
+									<a class="btn btn-primary btn-xs">
+										<span class="glyphicon glyphicon-star"></span>
+									</a>
+									<a class="pull-right btn btn-danger btn-xs node-control" data-nodrag ng-click="removeFavorite(this)" ng-if="favoriteSelected === item">
+										<span class="glyphicon glyphicon-remove"></span>
+									</a>
+									<a class="tree-label" data-nodrag ng-click="favoritesHandler(item)">{{item.label}}</a>
+								</div>
+							</li>
+						</ol>
+					</div>
 				</div>
 			</td>
 			<td>
 				<div class="form-group urejevalnik">
-					<button type="button" class="btn btn-info" ng-click="addBranchx()" ng-disabled="favoriteSelected || favoriteSelected === null">Dodaj</button>
 					<button type="button" class="btn btn-primary" ng-click="expandAll()">Prikaži vse</button>
 					<button type="button" class="btn btn-primary" ng-click="collapseAll()">Samo naslovka</button>
-					<button type="button" class="btn" ng-click="save()" ng-class="{'btn-success' : !uploading, 'btn-warning' : uploading}" ng-show="credentials" ng-disabled="uploading || !contentUpdated"><span class="glyphicon" ng-class="{'glyphicon-cloud-upload' : !uploading, 'glyphicon-refresh' : uploading}"></span></button></button>
+					<button type="button" class="btn" ng-click="save()" ng-class="{'btn-success' : !uploading, 'btn-warning' : uploading}" ng-show="credentials" ng-disabled="uploading || !contentUpdated"><span class="glyphicon" ng-class="{'glyphicon-cloud-upload' : !uploading, 'glyphicon-refresh glyphicon-refresh-animate' : uploading}"></span></button></button>
 					<p class="text-danger" ng-show="uploadError">Napaka pri shranjevanju na strežnik, poskusi znova.</p>
 				</div>
 				<div class="panel panel-primary urejevalnik" ng-show="contentSelected === null">
@@ -50,25 +67,19 @@
 					</div>
 					<div class="panel-body">
 						<p>klikni ali potegni besedo v levem seznamu na pravo mesto.<br/> lahko pa tudi ..</p>
-					<ul>
-						<li>dodaš novo besedo s klikom na <button type="button" class="btn btn-info" ng-click="addBranch()">Dodaj</button></li>
-						<li><button type="button" class="btn btn-danger">Odstrani besedo</button> oz. le sliko / zvok <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></li>
-						<li><button type="button" class="btn btn-primary" ng-click="expandAll()">Prikaži vse</button> besede oz. <button type="button" class="btn btn-primary" ng-click="collapseAll()">Samo naslovko</button></li>
-						<li><a ng-href="/login" class="btn btn-default">prijavi se</a> za shranjevanje</li>
-						<li>shrani na strežnik s klikom na <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
-						<li><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"></span></button> se prikaže med prenosom podatkov.</li>
-					</ul>
-<!-- 
-						<p>
-							<span class="label label-warning"><span class="glyphicon glyphicon-warning-sign"></span></span> shranjevanje na strežnik (še) ne deluje,<br>
-							ponoven obisk strani (F5 / CTRL-R / <button class="btn"><span class="glyphicon glyphicon-repeat"></span></button>) prikaže privzete besede.
-						</p>
- -->
+						<ul>
+							<li>dodaš novo besedo s klikom na <button type="button" class="btn btn-info" ng-click="addBranch()"><span class="glyphicon glyphicon-plus-sign"></span></button></li>
+							<li>izbrano odstraniš s <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>, sliko / zvok pa s <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></li>
+							<li><button type="button" class="btn btn-primary" ng-click="expandAll()">Prikaži vse</button> besede oz. <button type="button" class="btn btn-primary" ng-click="collapseAll()">Samo naslovko</button></li>
+							<li><a ng-href="/login" class="btn btn-default">prijavi se</a> za shranjevanje</li>
+							<li>shrani na strežnik s klikom na <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
+							<li><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span></button> se prikaže med prenosom podatkov.</li>
+						</ul>
 					</div>
 				</div>
 				<form name="form" class="form-horizontal urejevalnik" ng-show="contentSelected">
 					<fieldset>
-						<legend>uredi predstavitev</legend>
+						<legend>uredi besedo</legend>
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="label">Beseda</label>
 							<div class="col-md-8">
@@ -126,10 +137,14 @@
 				</form>
 				<div class="panel panel-primary urejevalnik" ng-show="favoriteSelected === null">
 					<div class="panel-heading">
-						<h3 class="panel-title">priljubljene ...</h3>
+						<h3 class="panel-title">priljubljene besede</h3>
 					</div>
 					<div class="panel-body">
-						<p>navodila.</p>
+					<p>klikni ali potegni priljubljeno na pravo mesto.<br>lahko pa..</p>
+						<ul>
+							<li>izbrano tudi odstraniš s klikom na <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></li>
+							<li>sestaviš novo na <a ng-href="/povej" class="btn btn-primary"><span class="glyphicon glyphicon-comment"></span> besedko</a></li>
+						</ul>
 					</div>
 				</div>
 				<form name="form" class="form-horizontal urejevalnik" ng-show="favoriteSelected">

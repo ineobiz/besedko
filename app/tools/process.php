@@ -109,11 +109,13 @@ class Processor {
 	public function storeContent() {
 		$auth = $this->getAuthHeader();
 		$file = $this->getUserFile($auth[0], $auth[1]);
+		$request = $this->getRequest();
+
 		$data = [
 			'email'     => $auth[0],
 			'timestamp' => $this->time,
-			'content'   => $this->processContent($this->getRequest()['content']),
-			'favorites' => $this->processFavorites($this->getRequest()['favorites'])
+			'content'   => $this->processContent($request['content']),
+			'favorites' => $this->processFavorites($request['favorites'])
 		];
 
 		return file_put_contents($file, json_encode($data))
@@ -133,9 +135,11 @@ class Processor {
 			return false;
 		}
 
-		$response = $data = [];
+		$response = [];
 
 	    foreach ($content as $child) {
+			$data = [];
+
 			foreach(['uid', 'label', 'color', 'image', 'audio'] as $prop) {
 				if (isset($child[$prop])) {
 					$data[$prop] = $child[$prop];
@@ -165,9 +169,11 @@ class Processor {
 			return false;
 		}
 
-		$response = $data = [];
+		$response = [];
 
 	    foreach ($favorites as $child) {
+			$data = [];
+
 			foreach(['label', 'color', 'content'] as $prop) {
 				if (isset($child[$prop])) {
 					$data[$prop] = $child[$prop];

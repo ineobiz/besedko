@@ -66,6 +66,24 @@
 }
 
 /**
+ * Animate reload
+ */
+.glyphicon-refresh-animate {
+    -moz-animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+/**
  * Uredi tree
  */
 .angular-ui-tree-handle {
@@ -95,4 +113,21 @@
 
 .node-control {
     margin-left: 5px;
+}
+
+.node-selected, .node-selected:hover {
+    background-color: #428bca;
+}
+
+.node-selected .tree-label {
+	color: #ffffff;
+}
+
+.root-node {
+	cursor: default;
+}
+
+.angular-ui-tree-empty {
+    border: none;
+    min-height: 0;
 }

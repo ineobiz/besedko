@@ -49,9 +49,24 @@ angular.module('webApp')
             }
         };
 
-        // tree scope
+        // content tree scope
         var treeScope = function() {
             return angular.element(document.getElementById("content-structure")).scope();
+        };
+
+        // content tree options
+        $scope.contentOptions = {
+            accept : function(sourceNodeScope, destNodesScope, destIndex) {
+                return !angular.isArray(sourceNodeScope.$modelValue.content);
+            }
+        };
+
+        // favorites tree options
+        $scope.favoritesOptions = {
+            // only favorites
+            accept : function(sourceNodeScope, destNodesScope, destIndex) {
+                return angular.isArray(sourceNodeScope.$modelValue.content);
+            }
         };
 
         // config
@@ -78,30 +93,29 @@ angular.module('webApp')
             var scope = treeScope();
             scope.collapseAll();
         };
+
+        // select content root
+        $scope.contentSelectRoot = function() {
+            $scope.favoriteSelected = false;
+            $scope.contentSelected = null;
+        };
+
+        // select content
         $scope.contentHandler = function(branch) {
             processContent(branch);
             $scope.favoriteSelected = false;
-            //$scope.favoritesCtl.select_branch(null);
         };
 
-        $scope.contentSelectRoot = function() {
-            $scope.favoriteSelected = false;
-            //$scope.favoritesCtl.select_branch(null);
-            $scope.contentSelected = null;
-            //$scope.contentCtl.select_branch(null);
+        // select favorites root
+        $scope.favoritesSelectRoot = function() {
+            $scope.contentSelected = false;
+            $scope.favoriteSelected = null;
         };
 
+        // select favorite
         $scope.favoritesHandler = function(branch) {
             processFavorite(branch);
             $scope.contentSelected = false;
-            $scope.contentCtl.select_branch(null);
-        };
-
-        $scope.favoritesSelectRoot = function() {
-            $scope.contentSelected = false;
-            //$scope.contentCtl.select_branch(null);
-            $scope.favoriteSelected = null;
-            //$scope.favoritesCtl.select_branch(null);
         };
 
         // file processing
@@ -140,37 +154,17 @@ angular.module('webApp')
             });
         };
 
-        // content removing
-        $scope.remove = function() {
-            // @todo fix
-/*
-            var parent = $scope.contentCtl.remove_selected_branch();
-            $scope.contentCtl.select_branch(parent);
-            processContent(parent);
-            $scope.contentUpdated = true;
-*/
-        };
-
-        $scope.removeBranch = function(scope) {
-            scope.remove();
-            $scope.contentUpdated = true;
-            // @todo select parent?
-            $scope.favoriteSelected = false;
-            $scope.contentSelected = null;
-        };
-
-        // add new branch
-        $scope.addBranchx = function() {
-            // @todo fix
-/*
-            var contentSelected = $scope.contentCtl.get_selected_branch();
-            var created = $scope.contentCtl.add_branch(contentSelected, {
-                label: 'beseda',
+        // add new root branch
+        $scope.addRootBranch = function() {
+            $scope.content.push({
+                uid : "" + Math.random(),
+                label : "beseda" + '.' + ($scope.content.length + 1)
             });
+
             $scope.contentUpdated = true;
-*/
         };
 
+        // add branch to selected content
         $scope.addBranch = function(scope) {
             var nodeData = scope.$modelValue;
             if (!angular.isArray(nodeData.children)) {
@@ -184,6 +178,22 @@ angular.module('webApp')
                 children : []
             });
             $scope.contentUpdated = true;
+        };
+
+        // remove selected content branch
+        $scope.removeBranch = function(scope) {
+            scope.remove();
+            $scope.contentUpdated = true;
+            $scope.favoriteSelected = false;
+            $scope.contentSelected = null;
+        };
+
+        // remove selected favorite
+        $scope.removeFavorite = function(scope) {
+            scope.remove();
+            $scope.contentUpdated = true;
+            $scope.favoriteSelected = null;
+            $scope.contentSelected = false;
         };
 
         // enable upload button when content gets updated
