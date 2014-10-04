@@ -52,10 +52,9 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
         },
         toPlaylist : function(scope, selected) {
             if (angular.isObject(selected.content)) {
-
                 var found = [];
 
-                contentIterator(scope.content, function(b) {
+                Content.iterate(function(b) {
                     if (selected.content.indexOf(b.uid) !== -1) {
                         return found[b.uid] = b;
                     }
@@ -70,35 +69,6 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 scope.isFavorite = true;
             }
         }
-    };
-
-    // iterate content
-    var contentIterator = function(root, f) {
-        var root_branch, i, len, ref, results;
-
-        var callback = function(branch, level) {
-            var child, i, len, ref, results;
-            f(branch, level);
-            if (branch.children != null) {
-                ref = branch.children;
-                results = [];
-                for (i = 0, len = ref.length; i < len; i++) {
-                    child = ref[i];
-                    results.push(callback(child, level + 1));
-                }
-                return results;
-            }
-        };
-
-        ref = root;
-        results = [];
-
-        for (i = 0, len = ref.length; i < len; i++) {
-            root_branch = ref[i];
-            results.push(callback(root_branch, 1));
-        }
-
-        return results;
     };
 
     var imageBrowser = {
@@ -124,7 +94,8 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 uid   : selected.uid,
                 label : selected.label,
                 color : selected.color,
-                src   : selected.audio
+                src   : selected.audio,
+                image : selected.image
             };
         }
     };

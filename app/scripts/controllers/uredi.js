@@ -41,10 +41,19 @@ angular.module('webApp')
                 $scope.favoriteSelected.color = 'white';
             }
 
-            if (favorite.content) {
+            if (favorite.content.length) {
+                var found = [];
+
+                $scope.favoriteSelected.words = [];
+                
+                Content.iterate(function(b) {
+                    if (favorite.content.indexOf(b.uid) !== -1) {
+                        return found[b.uid] = b.label;
+                    }
+                });
+                
                 angular.forEach(favorite.content, function(val) {
-                    //@todo build content list
-                    //console.log([ "data", val]);
+                    $scope.favoriteSelected.words.push({label: found[val]});
                 });
             }
         };
@@ -119,13 +128,17 @@ angular.module('webApp')
         };
 
         // file processing
-        $scope.fileUpload = function(element) {
+        $scope.fileUpload = function(element, type) {
             var file = element.files[0],
-                reader = new FileReader();
+                reader = new FileReader(),
+                elType = type == 'favorite'
+                    ? 'favoriteSelected'
+                    : 'contentSelected'
+            ;
 
             reader.onload = function(e) {
                 $scope.$apply(function() {
-                    $scope.contentSelected[angular.element(element).attr('name')] = $sce.trustAsResourceUrl(e.target.result);
+                    $scope[elType][angular.element(element).attr('name')] = $sce.trustAsResourceUrl(e.target.result);
                     $scope.contentUpdated = true;
                 });
             };
@@ -133,8 +146,13 @@ angular.module('webApp')
             reader.readAsDataURL(file);
         };
 
-        $scope.fileRemove = function(type) {
-            $scope.contentSelected[type] = null;
+        $scope.fileRemove = function(file, type) {
+            var elType = type == 'favorite'
+                    ? 'favoriteSelected'
+                    : 'contentSelected'
+            ;
+
+            $scope[elType][file] = null;
             $scope.contentUpdated = true;
         };
 

@@ -66,20 +66,21 @@
 						<h3 class="panel-title">kako naprej?</h3>
 					</div>
 					<div class="panel-body">
-						<p>klikni ali potegni besedo v levem seznamu na pravo mesto.<br/> lahko pa tudi ..</p>
+						<p>klikni <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-hand-up"></span></button> ali potegni <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-move"></span></button> besedo v levem seznamu na pravo mesto.<br/> lahko pa tudi ..</p>
 						<ul>
-							<li>dodaš novo besedo s klikom na <button type="button" class="btn btn-info" ng-click="addBranch()"><span class="glyphicon glyphicon-plus-sign"></span></button></li>
-							<li>izbrano odstraniš s <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>, sliko / zvok pa s <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></li>
+							<li>dodaš novo besedo <button type="button" class="btn btn-info" ng-click="addBranch()"><span class="glyphicon glyphicon-plus-sign"></span></button></li>
+							<li>izbrano odstraniš <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></li>
+							<li>odstraniš le sliko oz. zvok <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></li>
 							<li><button type="button" class="btn btn-primary" ng-click="expandAll()">Prikaži vse</button> besede oz. <button type="button" class="btn btn-primary" ng-click="collapseAll()">Samo naslovko</button></li>
 							<li><a ng-href="/login" class="btn btn-default">prijavi se</a> za shranjevanje</li>
-							<li>shrani na strežnik s klikom na <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
-							<li><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span></button> se prikaže med prenosom podatkov.</li>
+							<li>shrani na strežnik <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
 						</ul>
+						<p><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span></button> se prikaže med prenosom podatkov.</p>
 					</div>
 				</div>
 				<form name="form" class="form-horizontal urejevalnik" ng-show="contentSelected">
 					<fieldset>
-						<legend>uredi besedo</legend>
+						<legend>uredi izbrano besedo</legend>
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="label">Beseda</label>
 							<div class="col-md-8">
@@ -128,11 +129,6 @@
 								<img class="img-thumbnail uploadedImage" alt="{{contentSelected.label}}" ng-src="{{contentSelected.image}}" />
 							</div>
 						</div>
-						<div class="form-group">
-							<div class="col-md-offset-4">
-								<button type="button" class="btn btn-danger" ng-click="remove()" ng-show="contentSelected">Odstrani besedo</button>
-							</div>
-						</div>
 					</fieldset>
 				</form>
 				<div class="panel panel-primary urejevalnik" ng-show="favoriteSelected === null">
@@ -140,9 +136,9 @@
 						<h3 class="panel-title">priljubljene besede</h3>
 					</div>
 					<div class="panel-body">
-					<p>klikni ali potegni priljubljeno na pravo mesto.<br>lahko pa..</p>
+					<p>klikni <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-hand-up"></span></button> ali potegni <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-move"></span></button> priljubljeno na pravo mesto.<br>lahko pa..</p>
 						<ul>
-							<li>izbrano tudi odstraniš s klikom na <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></li>
+							<li>izbrano tudi odstraniš <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></li>
 							<li>sestaviš novo na <a ng-href="/povej" class="btn btn-primary"><span class="glyphicon glyphicon-comment"></span> besedko</a></li>
 						</ul>
 					</div>
@@ -168,6 +164,26 @@
 									<option value="magenta" class="magenta">škrlatna</option>
 									<option value="cyan" class="cyan">trikizna</option>
 								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="image">Slika</label>
+							<div class="col-md-6">
+								<input name="image" class="input-file" type="file" accept="image/*" onChange="angular.element(this).scope().fileUpload(this, 'favorite')" />
+							</div>
+						</div>
+						<div class="form-group" ng-show="favoriteSelected.image">
+							<div class="col-md-4 text-right">
+								<button type="button" class="btn btn-danger" ng-click="fileRemove('image', 'favorite')" ><span class="glyphicon glyphicon-trash"></span></button>
+							</div>
+							<div class="col-md-6">
+								<img class="img-thumbnail uploadedImage" alt="{{favoriteSelected.label}}" ng-src="{{favoriteSelected.image}}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="label">besede</label>
+							<div class="col-md-8">
+								<p class="form-control-static" ng-repeat="word in favoriteSelected.words"><span>{{$index+1}}.</span> <strong>{{word.label}}</strong></p>
 							</div>
 						</div>
 					</fieldset>

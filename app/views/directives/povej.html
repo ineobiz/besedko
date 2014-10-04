@@ -3,7 +3,7 @@
 		<audio media-player="player" data-playlist="playlist"></audio>
 		<div class="btn-group">
 			<button type="button" class="btn btn-default navbar-btn" ng-repeat="p in playlist" ng-click="plsRemove($index)">
- 				<img class="playlistImg" alt="{{p.label}}" style="height: 60px; display: block;" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+ 				<img class="playlistImg" alt="{{p.label}}" style="height: 60px; display: block;" ng-src="{{p.image}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
  				<span class="caption" ng-class="p.color ? p.color : 'white'">{{p.label}}</span>
 			</button>
 		</div>
@@ -37,7 +37,7 @@
 		<div class="btn-group">
 			<!-- <button type="button" class="btn btn-default navbar-btn" ng-repeat="f in [1, 2, 3, 4, 5, 6]"> -->
 			<button type="button" class="btn btn-default navbar-btn" ng-repeat="f in favorites" ng-click="favoriteSelect(f)">
-				<img class="playlistImg" alt="{{f.label}}" style="height: 60px; display: block;" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+				<img class="playlistImg" alt="{{f.label}}" style="height: 60px; display: block;" ng-src="{{f.image}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
 				<span class="caption" ng-class="f.color ? f.color : 'white'">{{f.label}}</span>
 			</button>
 		</div>

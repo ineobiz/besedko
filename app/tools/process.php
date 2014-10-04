@@ -52,6 +52,7 @@ class Processor {
 				&& $this->getRequest() == false
 				&& ($file = $this->checkCredentials())
 		) {
+			header('Content-Type: application/json');
 			echo file_get_contents($file);
 			return ;
 		}
@@ -174,7 +175,7 @@ class Processor {
 	    foreach ($favorites as $child) {
 			$data = [];
 
-			foreach(['label', 'color', 'content'] as $prop) {
+			foreach(['label', 'color', 'image', 'content'] as $prop) {
 				if (isset($child[$prop])) {
 					$data[$prop] = $child[$prop];
 				}

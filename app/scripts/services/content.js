@@ -34,6 +34,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 	                delete node[key];
 	            }
 	        }
+
 	        callback(node);
 	    }
 
@@ -57,10 +58,17 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 
         function favoriteCleanup(node, callback) {
             for(var key in node) {
-                if (['label','color','content'].indexOf(key) == -1) {
+                if (['label','color','image', 'content'].indexOf(key) == -1) {
                     delete node[key];
                 }
             }
+
+            ['image'].forEach(function(key) {
+                if (angular.isObject(node[key])) {
+                    node[key] = node[key].toString();
+                }
+            });
+
             callback(node);
         }
 
@@ -74,6 +82,35 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 
         return root;
     }
+
+    // iterate content
+    function contentIterator(root, f) {
+        var root_branch, i, len, ref, results;
+
+        var callback = function(branch, level) {
+            var child, i, len, ref, results;
+            f(branch, level);
+            if (branch.children != null) {
+                ref = branch.children;
+                results = [];
+                for (i = 0, len = ref.length; i < len; i++) {
+                    child = ref[i];
+                    results.push(callback(child, level + 1));
+                }
+                return results;
+            }
+        };
+
+        ref = root;
+        results = [];
+
+        for (i = 0, len = ref.length; i < len; i++) {
+            root_branch = ref[i];
+            results.push(callback(root_branch, 1));
+        }
+
+        return results;
+    };
 
 	return {
 		get: function(credentials) {
@@ -120,8 +157,11 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 	            ;
 	        });
 		},
+		iterate : function(callback) {
+		    contentIterator(content, callback);
+		},
 		resetPromise: function(data) {
 		    promise = null;
-		}
+		},
 	};
 }]);
