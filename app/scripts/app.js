@@ -2,11 +2,8 @@
 
 var webApp = angular
     .module('webApp', [
-        'ngCookies',
-        'ngResource',
-        'ngSanitize',
         'ngRoute',
-        'angularBootstrapNavTree',
+        'ui.tree',
         'mediaPlayer'
     ])
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
