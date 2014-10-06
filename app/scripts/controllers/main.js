@@ -1,7 +1,12 @@
 'use strict';
 
-angular.module('webApp').controller('MainCtrl',
-    ['$scope', '$route', function ($scope, $route) {
-        // @todo
-    }]
-);
+/**
+ * @ngdoc function
+ * @name webApp.controller:MainCtrl
+ * @description
+ * # MainCtrl
+ * Controller of the webApp
+ */
+angular.module('webApp').controller('MainCtrl', function () {
+    // @todo
+});

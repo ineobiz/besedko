@@ -1,7 +1,12 @@
 'use strict';
 
-angular.module('webApp').controller('MobileCtrl',
-    ['$scope', function ($scope) {
-        // @todo
-    }]
-);
+/**
+ * @ngdoc function
+ * @name webApp.controller:MobileCtrl
+ * @description
+ * # MobileCtrl
+ * Controller of the webApp
+ */
+angular.module('webApp').controller('MobileCtrl', function () {
+    // @todo
+});

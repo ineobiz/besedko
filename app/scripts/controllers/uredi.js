@@ -1,5 +1,12 @@
 'use strict';
 
+/**
+ * @ngdoc function
+ * @name webApp.controller:UrediCtrl
+ * @description
+ * # UrediCtrl
+ * Controller of the webApp
+ */
 angular.module('webApp')
     .constant('UrediCtrl.config', {
         content: [],
