@@ -1,0 +1,54 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app="webApp"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" ng-app="webApp"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="webApp"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="webApp"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title ng-bind="'besedko | ' + title">besedko</title>
+    <meta name="description" content="besedko">
+<!--
+    <base href="./">
+-->
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=0.777, initial-scale=0.777, maximum-scale=0.777">
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/uredi.css">
+    <link rel="stylesheet" href="styles/directives/povej.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+
+    <!--[if lt IE 10]>
+	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+	<povej>
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-media-player/dist/angular-media-player.min.js"></script>
+    <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/config.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+	<script src="scripts/controllers/login.js"></script>
+	<script src="scripts/directives/povej.js"></script>
+	<script src="scripts/services/content.js"></script>
+	<script src="scripts/services/authentication.js"></script>
+	<script src="scripts/filters/startfrom.js"></script>
+	<!-- endbuild -->
+</body>
+</html>
