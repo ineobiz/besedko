@@ -4,7 +4,7 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
     var favorites = {
         check : function(scope) {
             var found = this.find(scope);
-            return scope.isFavorite = found === +found && found === (found|0)
+            return scope.isFavorite = found === +found && found === (found||0)
                 ? true
                 : false
             ;
@@ -21,7 +21,7 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 angular.forEach(scope.favorites, function(val, key) {
                     if (angular.equals(val.content, favContent)) {
                         foundIndex = key;
-                    };
+                    }
                 });
             }
             return foundIndex;
@@ -74,16 +74,16 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
     var imageBrowser = {
         select : function(scope, selected, parent) {
             if (
-                angular.isObject(selected.children)
-                && selected.children.length
+                angular.isObject(selected.children) &&
+                selected.children.length
             ) {
                 scope.content = selected.children;
                 scope.parent.push(parent);
             }
 
             if (
-                selected.audio
-                && scope.playlist.length < 5
+                selected.audio &&
+                scope.playlist.length < 5
             ) {
                 scope.playlist.push(this.getContent(selected));
                 favorites.check(scope);

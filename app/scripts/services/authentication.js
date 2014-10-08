@@ -1,5 +1,7 @@
 'use strict';
 
+/* global Storage */
+
 /**
  * @ngdoc service
  * @name webApp.Authentication
@@ -10,7 +12,7 @@ angular.module('webApp').factory('Authentication', ['$http', '$rootScope', funct
 
     service.Login = function(email, password) {
         return $http.post('/process', null, {
-            headers: { "Auth-Credentials" : email + ":" + password }
+            headers: { 'Auth-Credentials' : email + ':' + password }
         });
     };
 
@@ -18,9 +20,9 @@ angular.module('webApp').factory('Authentication', ['$http', '$rootScope', funct
         var email, password;
 
         if (
-            Storage !== void(0)
-            && (email = localStorage.getItem("email"))
-            && (password = localStorage.getItem("password"))
+            Storage !== void(0) &&
+            (email = localStorage.getItem('email')) &&
+            (password = localStorage.getItem('password'))
         ) {
             service.SetCredentials(email, password);
         }
@@ -33,8 +35,8 @@ angular.module('webApp').factory('Authentication', ['$http', '$rootScope', funct
         };
 
         if (Storage !== void(0)) {
-            localStorage.setItem("email", email);
-            localStorage.setItem("password", password);
+            localStorage.setItem('email', email);
+            localStorage.setItem('password', password);
         }
     };
 
@@ -42,8 +44,8 @@ angular.module('webApp').factory('Authentication', ['$http', '$rootScope', funct
         $rootScope.credentials = false;
 
         if (Storage !== void(0)) {
-            localStorage.removeItem("email");
-            localStorage.removeItem("password");
+            localStorage.removeItem('email');
+            localStorage.removeItem('password');
         }
     };
 

@@ -85,7 +85,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 
     // iterate content
     function contentIterator(root, f) {
-        var root_branch, i, len, ref, results;
+        var rootBranch, i, len, ref, results;
 
         var callback = function(branch, level) {
             var child, i, len, ref, results;
@@ -105,12 +105,12 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
         results = [];
 
         for (i = 0, len = ref.length; i < len; i++) {
-            root_branch = ref[i];
-            results.push(callback(root_branch, 1));
+            rootBranch = ref[i];
+            results.push(callback(rootBranch, 1));
         }
 
         return results;
-    };
+    }
 
 	return {
 		get: function(credentials) {
@@ -118,7 +118,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 			    if (angular.isObject(credentials)) {
 			        promise = $http.get('/process', {
                             headers: {
-                                'Auth-Credentials': credentials.email + ":" + credentials.password
+                                'Auth-Credentials': credentials.email + ':' + credentials.password
                             }
                         }).then(function(response) {
                             content = response.data.content || [];
@@ -149,7 +149,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 	                .put('/process', {content: processed, favorites: favorites}, {
 	                    headers: {
 	                        'Content-Type': 'application/json',
-	                        'Auth-Credentials': credentials.email + ":" + credentials.password
+	                        'Auth-Credentials': credentials.email + ':' + credentials.password
 	                    }
 	                })
 	                .success(function (data) { return response(true); })
