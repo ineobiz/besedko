@@ -1,10 +1,12 @@
 # vendor
-/app/bower_components/
-/node_modules/
+/app/bower_components
+/node_modules
 /dist
 
 # build
 /.tmp
+/cordova/.tmp
+/cordova/besedko*.zip
 
 # eclipse
 /.project
