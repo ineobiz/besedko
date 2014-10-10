@@ -14,7 +14,7 @@
 			<button ng-click="plsClear()" type="button" class="btn btn-default btn-hg navbar-btn" ng-disabled="!playlist.length">
 				<span class="glyphicon glyph-mid glyphicon-trash"></span>
 			</button>
-			<button ng-click="favorite()" type="button" class="btn btn-default btn-hg navbar-btn" ng-disabled="!playlist.length || (favorites.length > 5 && !isFavorite)">
+			<button ng-if="buttons.favorite" ng-click="favorite()" type="button" class="btn btn-default btn-hg navbar-btn" ng-disabled="!playlist.length || (favorites.length > 5 && !isFavorite)">
 				<span ng-class="{'glyphicon-star-empty' : !isFavorite, 'glyphicon-star' : isFavorite}" class="glyphicon glyph-mid"></span>
 			</button>
 		</div>
@@ -42,10 +42,13 @@
 			</button>
 		</div>
 		<div class="btn-group pull-right">
-			<button ng-click="mute()" type="button" class="btn btn-default btn-hg navbar-btn">
+			<button ng-if="buttons.volume" ng-click="mute()" type="button" class="btn btn-default btn-hg navbar-btn">
 				<span ng-class="{'glyphicon-volume-up' : !player.muted, 'glyphicon-volume-off' : player.muted}" class="glyphicon glyph-mid"></span>
 			</button>
-			<button ng-if="canToggleFS" type="button" class="btn btn-default btn-hg navbar-btn" ng-click="toggleFS()">
+			<button ng-if="buttons.keyboard" type="button" class="btn btn-default btn-hg navbar-btn">
+				<span class="glyphicon glyphicon-calendar"></span>
+			</button>
+			<button ng-if="buttons.fullscreen" type="button" class="btn btn-default btn-hg navbar-btn" ng-click="toggleFS()">
 				<span ng-class="{'glyphicon-resize-small' : fullScreen, 'glyphicon-resize-full' : !fullScreen}" class="glyphicon glyph-mid"></span>
 			</button>
 		</div>

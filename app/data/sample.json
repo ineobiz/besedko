@@ -1,4 +1,4 @@
-[ {
+{"content":[ {
 "uid" : "1",
 "label" : "družina",
 "children" : [ {
@@ -74,15 +74,15 @@
 "label" : "učitelji",
 "children" : [ {
     "uid" : "19",
-"label" : "Prvi Učitelj slovenščine",
+"label" : "Učitelj",
 "color" : "magenta"
 }, {
     "uid" : "20",
-"label" : "Drugi Učitelj matematike",
+"label" : "Učitelj",
 "color" : "yellow"
 }, {
     "uid" : "21",
-"label" : "Tretji Učitelj telovadbe",
+"label" : "Učitelj",
 "color" : "green"
 }, {
     "uid" : "22",
@@ -178,4 +178,23 @@
     "uid" : "43",
 "label" : "rastline",
 "color" : "red"
-} ]
+} ],
+"favorites": [
+{
+"label": "fav I",
+"color": "blue",
+"content": [ "40", "41", "40", "41" ]
+}, {
+"label": "fav II",
+"color": "yellow",
+"content": [ "41", "40", "41", "40" ]
+}, {
+"label": "fav III",
+"color": "green",
+"content": [ "40", "40", "41", "41" ]
+}, {
+"label": "fav IV",
+"color": "cyan",
+"content": [ "41", "41", "40", "40" ]
+}]
+}

@@ -110,6 +110,7 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 scope.favorites = data.favorites;
             });
 
+            scope.buttons = config.povej.buttons;
             scope.favorites = [], scope.playlist = [], scope.parent = [],
             scope.isFavorite = false,
             scope.currentPage = 0, scope.pageSize = 8;
@@ -173,8 +174,6 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
             scope.toggleFS = function() {
                 scope.$emit('event::toggleFullscreen');
             };
-
-            scope.canToggleFS = config.canToggleFS;
         }
     };
 }]);

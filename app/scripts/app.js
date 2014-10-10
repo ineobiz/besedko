@@ -61,10 +61,7 @@ var webApp = angular
         });
 
         // @todo persist via localstorage?
-        $rootScope.fullScreen = config.startFS
-            ? true
-            : false
-        ;
+        $rootScope.fullScreen = false;
 
         $rootScope.$on('event::toggleFullscreen', function(event) {
             $rootScope.fullScreen = !$rootScope.fullScreen;

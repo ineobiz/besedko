@@ -131,11 +131,12 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
                         });
 			    } else {
 	                promise = $http.get(url).then(function(response) {
-	                    content = response.data;
+                        content = response.data.content || [];
+                        favorites = response.data.favorites || [];
 
                         return {
                             content : content,
-                            favorites : []
+                            favorites : favorites
                         };
 
 	                });
