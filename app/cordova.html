@@ -14,7 +14,6 @@
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/uredi.css">
     <link rel="stylesheet" href="styles/directives/povej.css">
     <!-- endbuild -->
   </head>
@@ -27,20 +26,22 @@
     <!-- bower:js -->
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
     <script src="bower_components/angular-media-player/dist/angular-media-player.min.js"></script>
-    <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
+    <script src="scripts/cordova.js"></script>
     <script src="scripts/config.js"></script>
     <script src="scripts/controllers/main.js"></script>
-	<script src="scripts/controllers/login.js"></script>
-	<script src="scripts/directives/povej.js"></script>
-	<script src="scripts/services/content.js"></script>
-	<script src="scripts/services/authentication.js"></script>
-	<script src="scripts/filters/startfrom.js"></script>
-	<!-- endbuild -->
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/directives/povej.js"></script>
+    <script src="scripts/filters/startfrom.js"></script>
+    <script src="scripts/modules/ng-cordova.js"></script>
+    <script src="scripts/services/content.js"></script>
+    <script src="scripts/services/authentication.js"></script>
+    <!-- endbuild -->
 </body>
 </html>
