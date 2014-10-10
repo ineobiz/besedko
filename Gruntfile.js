@@ -141,13 +141,7 @@ module.exports = function (grunt) {
             '!<%= yeoman.dist %>/.git*'
           ]
         }]
-      },
-      cordova : {
-          files : [{
-              dot : true,
-              src : [ 'cordova/.tmp' ]
-          }]
-      },
+      }
       server: '.tmp'
     },
 
@@ -329,52 +323,6 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
-      },
-      cordova : {
-        files : [{
-            expand : true,
-            cwd : 'dist/fonts',
-            src : '*',
-            dest : 'cordova/.tmp/www/fonts/'
-        }, {
-            expand : true,
-            cwd : 'dist/styles',
-            src : '*',
-            dest : 'cordova/.tmp/www/styles/'
-        }, {
-            expand : true,
-            cwd : 'dist/scripts',
-            src : '{scripts,vendor}.*.js',
-            dest : 'cordova/.tmp/www/scripts/'
-        }, {
-            expand : true,
-            cwd : 'dist/views/directives',
-            src : 'povej.html',
-            dest : 'cordova/.tmp/www/views/directives/'
-        }, {
-            expand : true,
-            cwd : 'dist',
-            src : 'cordova.html',
-            dest : 'cordova/.tmp/www/',
-            rename: function(dest, src) {
-                return dest + src.replace('cordova.html', 'index.html');
-            }
-        }, {
-            expand : true,
-            cwd : '<%= yeoman.app %>/data',
-            src : 'sample.json',
-            dest : 'cordova/.tmp/www/data/'
-        }, {
-            expand : true,
-            cwd : 'cordova',
-            src : 'config.xml',
-            dest : 'cordova/.tmp/'
-        }, {
-            expand : true,
-            cwd : 'cordova',
-            src : 'res/**',
-            dest : 'cordova/.tmp/www/'
-        }]
       }
     },
 
@@ -391,20 +339,6 @@ module.exports = function (grunt) {
         'imagemin',
         'svgmin'
       ]
-    },
-
-    compress: {
-        cordova: {
-            options: {
-                archive: 'cordova/besedko-' + grunt.template.today('yyyymmdd-HHMMss') + '.zip'
-            },
-            files: [{
-                expand: true,
-                cwd: 'cordova/.tmp/',
-                src: ['**'],
-                dest: '.'
-            }]
-        }
     },
 
     // Test settings
@@ -447,7 +381,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'clean:cordova',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
@@ -461,8 +394,6 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'copy:cordova',
-    'compress:cordova'
   ]);
 
   grunt.registerTask('default', [
