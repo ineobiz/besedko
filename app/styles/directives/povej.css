@@ -28,17 +28,17 @@ povej ul li, povej ol li {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-box-justify-content: flex-start;
-    -moz-box-justify-content: flex-start;
-    -webkit-justify-content: flex-start;
-    -ms-justify-content: flex-start;
-    justify-content: flex-start;
+    -webkit-box-justify-content: space-between;
+    -moz-box-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    -ms-justify-content: space-between;
+    justify-content: space-between;
 }
 
-.ui-head       { height: 13%; }
-.ui-body       { height: 74%; }
-.ui-foot       { height: 13%; }
-.ui-body-child { width : 20%; }
+.ui-head       { height: 10vh; }
+.ui-body       { height: 45vw; }
+.ui-foot       { height: 10vh; }
+.ui-body-child { width : 25%; }
 
 .ui-body {
     display: -webkit-box;
@@ -76,7 +76,10 @@ povej ul li, povej ol li {
 }
 .ui-body-nav:hover { color: #fff; }
 
-.ui-body-main { width: 90%; }
+.ui-body-main { 
+    width: 90%; 
+    overflow: auto;
+}
 
 .ui-body-main > .ui-body-child .ui-card {
     margin: 10px;
@@ -113,7 +116,7 @@ povej ul li, povej ol li {
 }
 
 .ui-head-list .ui-head-list-child { padding-left: 10px; }
-.ui-head-list .ui-head-list-child .ui-card .ui-card-image { max-height: 85%; }
+.ui-head-list .ui-head-list-child .ui-card .ui-card-image { max-height: 8vh; }
 
 .ui-head-actions {
     flex: 1;
@@ -139,7 +142,6 @@ povej ul li, povej ol li {
 }
 
 .ui-foot {
-    flex: 1;
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -171,7 +173,7 @@ povej ul li, povej ol li {
 }
 
 .ui-foot-list .ui-foot-list-child { padding-left: 10px; }
-.ui-foot-list .ui-foot-list-child .ui-card .ui-card-image { max-height: 85%; }
+.ui-foot-list .ui-foot-list-child .ui-card .ui-card-image { max-height: 8vh; }
 
 .ui-foot-actions {
     flex: 1;
