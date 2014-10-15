@@ -98,7 +98,7 @@ povej ul li, povej ol li {
 }
 
 .ui-head-list {
-    flex: 1;
+    flex: 2;
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -156,7 +156,7 @@ povej ul li, povej ol li {
 }
 
 .ui-foot-list {
-    flex: 1;
+    flex: 2;
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -267,6 +267,9 @@ povej ul li, povej ol li {
     border-top: 1px solid #bdc3c7;
     color: #111;
     background: #ecf0f1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .ui-card-list-mini {
@@ -280,4 +283,50 @@ povej ul li, povej ol li {
 .ui-card-list-mini .ui-card .ui-card-caption {
     font-size: 9px;
     line-height: 9px;
+    padding: 2px;
+}
+
+@media screen and (max-width: 800px) {
+
+    .ui-head-actions > .ui-btn,
+    .ui-foot-actions > .ui-btn {
+        font-size: 25px;
+        padding: 0 30px;
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+
+    .ui-head       { height: 12%; }
+    .ui-foot       { height: 12%; }
+    .ui-body       { height: 76%; }
+    .ui-body-child { width : 50%; }
+
+    .ui-head-actions > .ui-btn, 
+    .ui-foot-actions > .ui-btn {
+        font-size: 16px;
+        padding: 0 12px;
+    }
+
+    .ui-body-nav {
+        right: auto;
+        left: auto;
+        margin: 0;
+        margin-top: -20px;
+        font-size: 18px;
+        line-height: 40px;
+        height: 40px;
+        width: 30px;
+    }
+    .ui-body-nav-next { 
+        right: 0; 
+        border-radius: 3px 0 0 3px;
+    }
+    .ui-body-nav-prev,
+    .ui-body-nav-up { 
+        left: 0; 
+        border-radius: 0 3px 3px 0;
+    }
+
 }
