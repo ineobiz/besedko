@@ -113,7 +113,7 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
             scope.buttons = config.povej.buttons;
             scope.favorites = [], scope.playlist = [], scope.parent = [],
             scope.isFavorite = false,
-            scope.currentPage = 0, scope.pageSize = 4;
+            scope.currentPage = 0, scope.pageSize = 10;
 
             scope.numberOfPages = function(){
                 return Math.ceil(scope.content.length/scope.pageSize);

@@ -35,10 +35,10 @@ povej ul li, povej ol li {
     justify-content: flex-start;
 }
 
-.ui-head       { height: 15%; }
-.ui-body       { height: 70%; }
-.ui-foot       { height: 15%; }
-.ui-body-child { width : 25%; }
+.ui-head       { height: 13%; }
+.ui-body       { height: 74%; }
+.ui-foot       { height: 13%; }
+.ui-body-child { width : 20%; }
 
 .ui-body {
     display: -webkit-box;
