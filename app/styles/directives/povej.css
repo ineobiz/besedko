@@ -6,6 +6,15 @@ povej {
 
 povej { display: block; }
 
+povej ul,ol {
+    margin: 0;
+    padding: 0;
+}
+
+povej ul li, povej ol li {
+    margin: 0;
+    padding: 0;
+}
 
 .ui-main {
     height: 100%;
@@ -26,27 +35,10 @@ povej { display: block; }
     justify-content: flex-start;
 }
 
-.ui-head { 
-    -webkit-box-flex-grow: 1;
-    -moz-box-flex-grow: 1;
-    -webkit-flex-grow: 1;
-    -ms-flex-grow: 1;
-    flex-grow: 1;
-}
-.ui-body { 
-    -webkit-box-flex-grow: 2;
-    -moz-box-flex-grow: 2;
-    -webkit-flex-grow: 2;
-    -ms-flex-grow: 2;
-    flex-grow: 2;
-}
-.ui-foot { 
-    -webkit-box-flex-grow: 1;
-    -moz-box-flex-grow: 1;
-    -webkit-flex-grow: 1;
-    -ms-flex-grow: 1;
-    flex-grow: 1; 
-}
+.ui-head       { height: 15%; }
+.ui-body       { height: 70%; }
+.ui-foot       { height: 15%; }
+.ui-body-child { width : 25%; }
 
 .ui-body {
     display: -webkit-box;
@@ -82,11 +74,140 @@ povej { display: block; }
     text-align: center;
     border-radius: 200px;
 }
+.ui-body-nav:hover { color: #fff; }
 
-.ui-body-nav-prev { text-indent: -1px; }
+.ui-body-main { width: 90%; }
 
-.ui-body-main {
-    width: 90%;
+.ui-body-main > .ui-body-child .ui-card {
+    margin: 10px;
+}
+
+.ui-head {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-flex-direction: row;
+    -moz-box-flex-direction: row;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    align-items: stretch;
+    background: #34495e;
+}
+
+.ui-head-list {
+    flex: 1;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-flex-direction: row;
+    -moz-box-flex-direction: row;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.ui-head-list .ui-head-list-child { padding-left: 10px; }
+.ui-head-list .ui-head-list-child .ui-card .ui-card-image { max-height: 85%; }
+
+.ui-head-actions {
+    flex: 1;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-flex-direction: row;
+    -moz-box-flex-direction: row;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-end;
+}
+
+.ui-head-actions > .ui-btn {
+    font-size: 30px;
+    padding: 0 40px;
+    color: #fff;
+    border-left: 1px solid #2c3e50;
+}
+
+.ui-foot {
+    flex: 1;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-flex-direction: row;
+    -moz-box-flex-direction: row;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    align-items: stretch;
+    background: #ecf0f1;
+    border-top: 1px solid #bdc3c7;
+}
+
+.ui-foot-list {
+    flex: 1;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-flex-direction: row;
+    -moz-box-flex-direction: row;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.ui-foot-list .ui-foot-list-child { padding-left: 10px; }
+.ui-foot-list .ui-foot-list-child .ui-card .ui-card-image { max-height: 85%; }
+
+.ui-foot-actions {
+    flex: 1;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-flex-direction: row;
+    -moz-box-flex-direction: row;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-end;
+}
+
+.ui-foot-actions > .ui-btn {
+    font-size: 30px;
+    padding: 0 40px;
+    border-left: 1px solid #bdc3c7;
+}
+
+.ui-btn {
+    background: none;
+    border: 0;
+    display: inline-block;
+    outline: none;
+}
+
+.ui-btn:active { background: rgba(0,0,0,0.1); }
+
+.ui-btn[disabled] { color: rgba(0,0,0,0.2); }
+.ui-btn[disabled]:hover { cursor: no-drop; }
+
+.ui-card-list {
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -105,7 +226,7 @@ povej { display: block; }
     align-items: stretch;
 }
 
-.ui-body-main > .ui-body-child {
+.ui-card-list > .ui-card-list-item {
     position: relative;
     display: -webkit-box;
     display: -moz-box;
@@ -115,80 +236,24 @@ povej { display: block; }
     align-items: center;
 }
 
-.ui-body-main > .ui-body-child .ui-card {
-    margin: 5px;
-}
-
-.ui-body-child {
-    width: 20%;
-}
-
-.ui-head {
-    background: #34495e;
-}
-
-.ui-foot {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex-direction: row;
-    -moz-box-flex-direction: row;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: stretch;
-    background: #ecf0f1;
-    border-top: 1px solid #bdc3c7;
-}
-
-.ui-foot-list {
-    
-}
-
-.ui-foot-actions {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-}
-
-.ui-foot-actions > .ui-btn {
-    -webkit-box-flex-direction: row;
-    -moz-box-flex-direction: row;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    align-items: stretch;
-    font-size: 20px;
-    padding: 0 20px;
-    border-left: 1px solid #bdc3c7;
-}
-
-.ui-btn {
-    background: none;
-    border: 0;
-    display: inline-block;
-}
-
 .ui-card {
     display: block;
     position: relative;
     background: #fff;
     overflow: hidden;
-    border: 1px solid #ecf0f1;
+    border: 1px solid #bdc3c7;
     border-radius: 3px;
+    text-align: center;
 }
 
 .ui-card .ui-card-image {
     max-width: 100%;
+    max-height: 100%;
 }
 
 .ui-card .ui-card-caption {
     position: absolute;
+    display: block;
     bottom: 0;
     left: 0;
     right: 0;
@@ -199,5 +264,20 @@ povej { display: block; }
     text-transform: uppercase;
     font-weight: bold;
     border-radius: 0 0 3px 3px;
+    border-top: 1px solid #bdc3c7;
+    color: #111;
     background: #ecf0f1;
+}
+
+.ui-card-list-mini {
+    -webkit-box-flex-wrap: nowrap;
+    -moz-box-flex-wrap: nowrap;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+
+.ui-card-list-mini .ui-card .ui-card-caption {
+    font-size: 9px;
+    line-height: 9px;
 }
