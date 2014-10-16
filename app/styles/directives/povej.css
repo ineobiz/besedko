@@ -70,6 +70,7 @@ povej .cyan {
 .ui-body       { height: 45vw; }
 .ui-foot       { height: 15vh; }
 .ui-body-child { width : 25%; }
+.ui-card       { width: 70%; }
 
 .ui-body {
     display: -webkit-box;
@@ -268,6 +269,7 @@ povej .cyan {
     display: -webkit-flex;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .ui-card {
