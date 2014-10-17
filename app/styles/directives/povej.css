@@ -2,9 +2,22 @@ html,
 body,
 povej {
     height: 100%;
+    overflow: hidden;
 }
 
-povej { display: block; }
+body { 
+    position: relative; 
+}
+
+povej {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+}
 
 povej ul,ol {
     margin: 0;
@@ -47,186 +60,142 @@ povej .cyan {
 	background: rgba(0, 255, 255, 0.5) !important;
 }
 
-.ui-main {
-    height: 100%;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex-direction: column;
-    -moz-box-flex-direction: column;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-justify-content: space-between;
-    -moz-box-justify-content: space-between;
-    -webkit-justify-content: space-between;
-    -ms-justify-content: space-between;
-    justify-content: space-between;
+.layout {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
 }
 
-.ui-head       { height: 15vh; }
-.ui-body       { height: 45vw; }
-.ui-foot       { height: 15vh; }
-.ui-body-child { width : 25%; }
-.ui-card       { width: 70%; }
-
-.ui-body {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex-direction: row;
-    -moz-box-flex-direction: row;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
+.main-view {
+    position: relative;
 }
+
+.ui-main {}
+
+.ui-head { height: 10%; bottom: auto; }
+.ui-body { height: 80%; top: 10%; bottom: 10%; }
+.ui-foot { height: 10%; top: auto; }
 
 .ui-body-side {
     width: 5%;
-    position: relative;
 }
+
+.ui-body .ui-body-side-L { right: auto; }
+.ui-body .ui-body-side-R { left: auto; }
 
 .ui-body-nav {
     position: absolute;
     display: block;
-    font-size: 1.8vw;
+    font-size: 18px;
+    line-height: 39px;
     color: #fff;
     background: #428bca;
-    height: 3.2vw;
-    width: 3.2vw;
-    line-height: 3.4vw;
+    height: 38px;
     top: 50%;
-    margin-top: -1.6vw;
-    left: 50%;
-    margin-left: -1.6vw;
+    margin-top: -19px;
     text-align: center;
     border-radius: 200px;
 }
 .ui-body-nav:hover { color: #fff; }
+.ui-body-nav-prev { right: 0; left: 10px; }
+.ui-body-nav-next { right: 10px; left: 0; }
+.ui-body-nav-up { right: 0; left: 10px; }
 
 .ui-body-main { 
-    width: 90%; 
-    overflow: auto;
+    left: 7%;
+    right: 7%;
+    width: 86%; 
+    font-size: 0;
 }
 
-.ui-body-main > .ui-body-child .ui-card {
-    margin: 10px;
+.ui-body-main > .ui-body-child {
+    display: inline-block;
+    text-align: center;
+    padding: 10px;
+    width: 25%;
+    height: 100%;
+}
+
+.ui-body-main > .ui-body-child:first-child:nth-last-child(n+5),
+.ui-body-main > .ui-body-child:first-child:nth-last-child(n+5) ~ .ui-body-child {
+    height: 50%;
+}
+
+.ui-body-main > .ui-body-child > .ui-card {
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
 .ui-head {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex-direction: row;
-    -moz-box-flex-direction: row;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    align-items: stretch;
+    font-size: 0;
     background: #428bca;
-    border-bottom: 1px solid #86A9C7;
+    border-bottom: 1px solid #bdc3c7;
 }
 
-.ui-head-list {
-    flex: 2;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex-direction: row;
-    -moz-box-flex-direction: row;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    align-items: stretch;
+.ui-head > * { 
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
 }
 
-.ui-head-list .ui-head-list-child { padding-left: 10px; }
-.ui-head-list .ui-head-list-child .ui-card .ui-card-image { max-height: 12vh; }
+.ui-head-list { 
+    font-size: 0;
+    width: 55%; 
+}
 
 .ui-head-actions {
-    flex: 1;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex-direction: row;
-    -moz-box-flex-direction: row;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: flex-end;
+    font-size: 0; 
+    width: 45%; 
+    text-align: right;
 }
 
 .ui-head-actions > .ui-btn {
+    display: inline-block;
     font-size: 30px;
+    height: 100%;
     padding: 0 40px;
     color: #fff;
     border-left: 1px solid #86A9C7;
 }
 
 .ui-foot {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex-direction: row;
-    -moz-box-flex-direction: row;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    align-items: stretch;
     background: #ecf0f1;
     border-top: 1px solid #bdc3c7;
+    font-size: 0;
+}
+
+.ui-foot > * {
+    display: inline-block;
+    vertical-align: bottom;
+    height: 100%;
 }
 
 .ui-foot-list {
-    flex: 2;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex-direction: row;
-    -moz-box-flex-direction: row;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    align-items: stretch;
+    width: 55%;
 }
 
 .ui-foot-list .ui-foot-list-child { padding-left: 10px; }
 .ui-foot-list .ui-foot-list-child .ui-card .ui-card-image { max-height: 12vh; }
 
 .ui-foot-actions {
-    flex: 1;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex-direction: row;
-    -moz-box-flex-direction: row;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: flex-end;
+    width: 45%;
+    text-align: right;
+    font-size: 0;
 }
 
 .ui-foot-actions > .ui-btn {
+    display: inline-block;
     font-size: 30px;
     padding: 0 40px;
+    height: 100%;
     border-left: 1px solid #bdc3c7;
 }
 
@@ -242,40 +211,10 @@ povej .cyan {
 .ui-btn[disabled] { color: rgba(0,0,0,0.2); }
 .ui-btn[disabled]:hover { cursor: no-drop; }
 
-.ui-card-list {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex-direction: row;
-    -moz-box-flex-direction: row;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-box-flex-wrap: wrap;
-    -moz-box-flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    align-items: stretch;
-}
-
-.ui-card-list > .ui-card-list-item {
-    position: relative;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .ui-card {
     display: block;
-    position: relative;
     background: #fff;
+    position: relative;
     overflow: hidden;
     border: 1px solid #bdc3c7;
     border-radius: 3px;
@@ -308,61 +247,91 @@ povej .cyan {
     overflow: hidden;
 }
 
-.ui-card-list-mini {
-    -webkit-box-flex-wrap: nowrap;
-    -moz-box-flex-wrap: nowrap;
-    -webkit-flex-wrap: nowrap;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
+.ui-card-list {
+    font-size: 0;
+    height: 100%;
 }
 
-.ui-card-list-mini .ui-card .ui-card-caption {
-    font-size: 9px;
-    line-height: 9px;
-    padding: 2px;
+.ui-card-list > .ui-card-list-item {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    position: relative;
+    width: auto;
+    text-align: center;
+    padding: 3px 10px;
 }
 
-@media screen and (max-width: 800px) {
+.ui-card-list .ui-card {
+    display: inline-block;
+}
 
-    .ui-head-actions > .ui-btn,
-    .ui-foot-actions > .ui-btn {
-        font-size: 25px;
-        padding: 0 30px;
+.ui-card-list .ui-card .ui-card-caption {
+    font-size: 10px;
+    font-weight: normal;
+    line-height: 10px;
+    padding: 3px;
+}
+
+@media screen and (max-width: 700px) {
+
+    .ui-body-main {
+        left: 0;
+        right: 0;
+        bottom: 10%;
+        width: 100%;
     }
 
-}
-
-@media screen and (max-width: 600px) {
-
-    .ui-head       { height: 12%; }
-    .ui-foot       { height: 12%; }
-    .ui-body       { height: 76%; }
-    .ui-body-child { width : 50%; }
-
-    .ui-head-actions > .ui-btn, 
-    .ui-foot-actions > .ui-btn {
-        font-size: 16px;
-        padding: 0 12px;
+    .ui-body > .ui-body-side {
+        bottom: 0;
+        top: auto;
+        height: 10%;
     }
 
-    .ui-body-nav {
-        right: auto;
-        left: auto;
-        margin: 0;
-        margin-top: -20px;
+    .ui-body > .ui-body-side {
+        width: 50%;
+    }
+
+    .ui-body > .ui-body-side:first-child:last-child {
+        width: 100%;
+    }
+
+    .ui-body-nav {}
+
+    .ui-card-list {
+        white-space: nowrap;
+        overflow-y: hidden;
+        overflow-x: auto;
+    }
+
+    .ui-card-list > .ui-card-list-item {
+        padding: 3px;
+    }
+
+    .ui-head-list {
+        width: 65%;
+    }
+
+    .ui-head-actions {
+        width: 35%;
+    }
+
+    .ui-head-actions > .ui-btn {
         font-size: 18px;
-        line-height: 40px;
-        height: 40px;
-        width: 30px;
+        padding: 0 20px;
     }
-    .ui-body-nav-next { 
-        right: 0; 
-        border-radius: 3px 0 0 3px;
+
+    .ui-foot-list {
+        width: 65%;
     }
-    .ui-body-nav-prev,
-    .ui-body-nav-up { 
-        left: 0; 
-        border-radius: 0 3px 3px 0;
+
+    .ui-foot-actions {
+        width: 35%;
+    }
+
+    .ui-foot-actions > .ui-btn {
+        font-size: 18px;
+        padding: 0 20px;
     }
 
 }
