@@ -76,9 +76,9 @@ povej .cyan {
 
 .ui-main {}
 
-.ui-head { height: 10%; bottom: auto; }
-.ui-body { height: 80%; top: 10%; bottom: 10%; }
-.ui-foot { height: 10%; top: auto; }
+.ui-head { height: 17%; bottom: auto; }
+.ui-body { height: 66%; top: 17%; bottom: 17%; }
+.ui-foot { height: 17%; top: auto; }
 
 .ui-body-side {
     width: 5%;
@@ -106,9 +106,9 @@ povej .cyan {
 .ui-body-nav-up { right: 0; left: 10px; }
 
 .ui-body-main { 
-    left: 7%;
-    right: 7%;
-    width: 86%; 
+    left: 15%;
+    right: 15%;
+    width: 70%; 
     font-size: 0;
 }
 
