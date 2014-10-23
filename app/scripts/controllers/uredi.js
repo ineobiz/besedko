@@ -145,7 +145,15 @@ angular.module('webApp')
 
             reader.onload = function(e) {
                 $scope.$apply(function() {
-                    $scope[elType][angular.element(element).attr('name')] = $sce.trustAsResourceUrl(e.target.result);
+                    if (angular.element(element).attr('name') == 'image') {
+                        // @todo use better crop/resize resolution
+                        $scope[elType].cropImage = '';
+                        $scope[elType].image = null;
+                        $scope[elType].crop = e.target.result;
+                    } else {
+                        $scope[elType][angular.element(element).attr('name')] = $sce.trustAsResourceUrl(e.target.result);
+                    }
+
                     $scope.contentUpdated = true;
                 });
             };
@@ -155,11 +163,27 @@ angular.module('webApp')
 
         $scope.fileRemove = function(file, type) {
             var elType = type == 'favorite'
-                    ? 'favoriteSelected'
-                    : 'contentSelected'
+                ? 'favoriteSelected'
+                : 'contentSelected'
             ;
 
             $scope[elType][file] = null;
+            // @todo fix cropImage on audio remove
+            //$scope[elType].cropImage = null;
+
+            $scope.contentUpdated = true;
+        };
+
+        $scope.saveCrop = function(file, type) {
+            var elType = type == 'favorite'
+                ? 'favoriteSelected'
+                : 'contentSelected'
+            ;
+            var image = $scope[elType].cropImage;
+
+            $scope[elType].crop = null;
+            $scope[elType][file] = image;
+
             $scope.contentUpdated = true;
         };
 

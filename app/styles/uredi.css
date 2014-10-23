@@ -27,6 +27,13 @@
 	width: 300px;
 }
 
+#uredi .cropImage {
+    background: #E4E4E4;
+    overflow: hidden;
+    width:265px;
+    height:265px;
+}
+
 /**
  * Remove input text
  */

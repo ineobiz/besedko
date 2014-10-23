@@ -12,7 +12,8 @@ var webApp = angular
     .module('webApp', [
         'ngRoute',
         'ui.tree',
-        'mediaPlayer'
+        'mediaPlayer',
+        'ngImgCrop'
     ])
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
         $routeProvider

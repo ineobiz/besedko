@@ -4,3 +4,4 @@
 'use strict';
 
 angular.module('ui.tree', []);
+angular.module('ngImgCrop', []);
