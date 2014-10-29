@@ -16,6 +16,37 @@ povej ul li, povej ol li {
     padding: 0;
 }
 
+/**
+ * colors
+ */
+povej .white {
+	background: rgba(255, 255, 255, 0.5) !important;
+}
+
+povej .red {
+	background: rgba(255, 0, 0, 0.5) !important;
+}
+
+povej .green {
+	background: rgba(0, 255, 0, 0.5) !important;
+}
+
+povej .blue {
+	background: rgba(0, 0, 255, 0.5) !important;
+}
+
+povej .yellow {
+	background: rgba(255, 255, 0, 0.5) !important;
+}
+
+povej .magenta {
+	background: rgba(255, 0, 255, 0.5) !important;
+}
+
+povej .cyan {
+	background: rgba(0, 255, 255, 0.5) !important;
+}
+
 .ui-main {
     height: 100%;
     display: -webkit-box;
@@ -35,9 +66,9 @@ povej ul li, povej ol li {
     justify-content: space-between;
 }
 
-.ui-head       { height: 10vh; }
+.ui-head       { height: 15vh; }
 .ui-body       { height: 45vw; }
-.ui-foot       { height: 10vh; }
+.ui-foot       { height: 15vh; }
 .ui-body-child { width : 25%; }
 
 .ui-body {
@@ -63,7 +94,7 @@ povej ul li, povej ol li {
     display: block;
     font-size: 1.8vw;
     color: #fff;
-    background: #34495e;
+    background: #428bca;
     height: 3.2vw;
     width: 3.2vw;
     line-height: 3.4vw;
@@ -97,7 +128,8 @@ povej ul li, povej ol li {
     -ms-flex-direction: row;
     flex-direction: row;
     align-items: stretch;
-    background: #34495e;
+    background: #428bca;
+    border-bottom: 1px solid #86A9C7;
 }
 
 .ui-head-list {
@@ -116,7 +148,7 @@ povej ul li, povej ol li {
 }
 
 .ui-head-list .ui-head-list-child { padding-left: 10px; }
-.ui-head-list .ui-head-list-child .ui-card .ui-card-image { max-height: 8vh; }
+.ui-head-list .ui-head-list-child .ui-card .ui-card-image { max-height: 12vh; }
 
 .ui-head-actions {
     flex: 1;
@@ -138,7 +170,7 @@ povej ul li, povej ol li {
     font-size: 30px;
     padding: 0 40px;
     color: #fff;
-    border-left: 1px solid #2c3e50;
+    border-left: 1px solid #86A9C7;
 }
 
 .ui-foot {
@@ -173,7 +205,7 @@ povej ul li, povej ol li {
 }
 
 .ui-foot-list .ui-foot-list-child { padding-left: 10px; }
-.ui-foot-list .ui-foot-list-child .ui-card .ui-card-image { max-height: 8vh; }
+.ui-foot-list .ui-foot-list-child .ui-card .ui-card-image { max-height: 12vh; }
 
 .ui-foot-actions {
     flex: 1;
