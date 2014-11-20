@@ -541,3 +541,9 @@ FileETag None
 # <IfModule mod_headers.c>
 #    Header set Connection Keep-Alive
 # </IfModule>
+
+# Besedko
+<IfModule mod_rewrite.c>
+    RewriteRule ^(povej|uredi|mobile|login)$ /index.html        [NC,L]
+    RewriteRule ^process$                    /tools/process.php [NC,L]
+</IfModule>
