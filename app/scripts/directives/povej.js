@@ -102,7 +102,9 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
 
     return {
         restrict: 'E',
-        templateUrl: 'views/directives/povej.html',
+        templateUrl: function(elem,attrs) {
+            return 'views/directives/' + (attrs.templateUrl || 'povej') + '.html';
+        },
         link: function(scope, element, attrs) {
             // @todo move $rootScope.credentials to service
             Content.get($rootScope.credentials).then(function(data) {

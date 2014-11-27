@@ -1,0 +1,86 @@
+<main class="ui-main layout">
+
+    <header class="ui-head layout">
+        
+        <section class="ui-head-list">
+            <audio media-player="player" data-playlist="playlist"></audio>
+            <ul class="ui-card-list">
+                <li class="ui-card-list-item ui-head-list-child" ng-repeat="card in playlist">
+                    <a href class="ui-card" ng-click="plsRemove($index)">
+                        <img class="ui-card-image" alt="{{card.label}}" ng-src="{{card.image}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+                        <span class="ui-card-caption" ng-class="card.color ? card.color : 'white'">{{card.label}}</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <section class="ui-head-actions">
+            <button ng-click="play()" type="button" class="ui-btn" ng-disabled="!playlist.length">
+                <span ng-class="{'glyphicon-play' : !player.playing, 'glyphicon-pause' : player.playing && !player.ended}" class="glyphicon"></span>
+            </button>
+            <button ng-click="plsClear()" type="button" class="ui-btn" ng-disabled="!playlist.length">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+            <button ng-if="buttons.favorite" ng-click="favorite()" type="button" class="ui-btn" ng-disabled="!playlist.length || (favorites.length > 5 && !isFavorite)">
+                <span ng-class="{'glyphicon-star-empty' : !isFavorite, 'glyphicon-star' : isFavorite}" class="glyphicon"></span>
+            </button>
+        </section>
+
+    </header>
+
+    <div class="ui-body layout">
+        
+        <div href class="ui-body-side ui-body-side-L layout">
+            <a href class="ui-body-nav ui-body-nav-up" ng-show="currentPage == 0 && parent.length" ng-click="selectParent(parent)">
+                <span class="glyphicon glyphicon-arrow-up"></span>
+            </a>
+            <a href class="ui-body-nav ui-body-nav-prev" ng-hide="currentPage == 0" ng-click="currentPage=currentPage-1">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+            </a>
+        </div>
+
+        <div class="ui-body-main layout" ng-if="content.length">
+            <div ng-repeat="card in content | startFrom:currentPage*pageSize | limitTo:pageSize" class="ui-body-child">
+                <a href class="ui-card" ng-click="select(card, content)">
+                    <img class="ui-card-image" ng-src="{{card.image}}" alt="{{card.label}}" src="data:image/gif;base64,R0lGODdhLAEsAcIAAP///wAAAN/f339/fx8fH5+fn7+/v19fXywAAAAALAEsAQAD/gi63P4wykmrvTjrzbv/YCiOZGmeaKqubOu+cCzPdG3feK7vfO//wKBwSCwaj8ikcslsOp/QqHRKrVqv2Kx2y+16v+CweEwum8/otHrNbrvf8Lh8Tq/b7/i8fs/v+/+AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq+wsbKztLW2t7i5uru8vb6/wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2Nna29zd3t/g4eLj5OXm5+jp6uvs7e7v8PHy8/T19vf4+fr7/P3+/wADChxIsKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzI5LGjx48gQ4ocSbKkyZMoU6pcybKlS5QCBhAIEIDAAAErC9DcudNASp08g/o0KSCo0QA4Sw44GnSAyZlMdxIwGTUo1ao7n2KtafLA1gNEtyYtCZRpgZ9mV8aEanPsy7dw48qdS7eu3bt48+rdy7ev37+AAwseTLiw4cOIEytezLix48eQI0ueTLmy5cuYM2vezLmz58+gQ4seTbq06dOoU6tezbq169ewY8ueTbu27du4c+vezbu379/AgwsfTry48ePIkytfzry58+fQo0ufTr269evYs2vfzr279+/gw4sfT75vAgA7">
+                    <span class="ui-card-caption" ng-class="card.color ? card.color : 'white'">{{card.label}}</span>
+                </a>
+            </div>
+        </div>
+
+        <div href class="ui-body-side ui-body-side-R layout">
+            <a href class="ui-body-nav ui-body-nav-next" ng-hide="currentPage >= content.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+                <span class="glyphicon glyphicon-arrow-right"></span>
+            </a>
+        </div>
+
+    </div>
+
+    <footer class="ui-foot layout">
+
+        <section class="ui-foot-list">
+            <ul class="ui-card-list">
+                <li class="ui-card-list-item" ng-repeat="card in favorites">
+                    <a href class="ui-card" ng-click="favoriteSelect(card)">
+                        <img class="ui-card-image" alt="{{card.label}}" src="data:image/gif;base64,R0lGODdhXgFeAeMAAP///wAAAF9fX9/f339/fx8fH5+fnz8/P7+/vwAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAXgFeAQAE/hDISau9OOvNu/9gKI5kaZ5oqq5s675wLM90bd94ru987//AoHBILBqPyKRyyWw6n9CodEqtWq/YrHbL7Xq/4LB4TC6bz+i0es1uu9/wuHxOr9vv+Lx+z+/7/4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAMKHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8eP/iBDihxJsqTJkyhTqlzJsqXLlzBjypxJs6bNmzhz6tzJs6fPn0CDCh1KtKjRo0iTKl3KtKnTp1CjSvUpYMDUFAECELh6ImuAAga4kvCaFazYEGS9HkBw1kNaslXbbnibloBVuRfopi2wFW8FvW/N+pUAmO7awYX1xpWbGPBisY0L9+UaubDgqQIqFz48dQCBApr1Hrg71QDo0G8fSzVwAPXbyVMRZHbt9XLn2bQDcL7q+TRtuaZ/40XQOvRgALI1H5fgOfJyCp8LP68QnO70CcQBX2ed+Hn17n57K5c7APd4scmFX+Weu8B637RhOxWfO4DqpuXrZx0dNX393U5l4aefbU7Bl5t8T+lnH2lS/cfgVLQBSFloBEKmGYJnVXYfY4nx95xlbF2nV4XL0YXhh3A9eB0AaoW44l8FuPgidTPWaOONOOao44489ujjj0AGKeSQRBZp5JFIJqnkkkw26eSTUEYp5ZRUVmnllVhmqeWWXHbp5ZdghinmmGSWaeaZaKap5ppstunmm3DGKeecdNZp55145qnnnnz26eefgAYq6KCEFmrooYgmquiijDbq6KOQRirppJRWaumlmGaq6aacdurpp6CGKuqopJZq6qmopqrqqqy26uqrsMYq66sRAAA7">
+                        <span class="ui-card-caption" ng-class="card.color ? card.color : 'white'">{{card.label}}</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        
+        <section class="ui-foot-actions">
+            <button ng-if="buttons.volume" ng-click="mute()" type="button" class="ui-btn">
+                <span ng-class="{'glyphicon-volume-up' : !player.muted, 'glyphicon-volume-off' : player.muted}" class="glyphicon"></span>
+            </button>
+            <button ng-if="buttons.keyboard" type="button" class="ui-btn">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </button>
+            <button ng-if="buttons.fullscreen" type="button" class="ui-btn" ng-click="toggleFS()">
+                <span ng-class="{'glyphicon-resize-small' : fullScreen, 'glyphicon-resize-full' : !fullScreen}" class="glyphicon"></span>
+            </button>
+        </section>
+
+    </footer>
+
+</main>

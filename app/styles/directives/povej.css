@@ -1,32 +1,79 @@
-html,
-body,
-povej {
-    height: 100%;
-    overflow: hidden;
+/**
+ * povej
+ */
+povej div.panel-body {
+    padding-top: 10px;
+    padding-bottom: 0px;
 }
 
-body { 
-    position: relative; 
+povej div.panel-primary {
+	margin: 2px;	
 }
 
-povej {
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: hidden;
+
+/**
+ * thumbnails
+ */
+
+povej a.thumbnail {
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 10px;
+	padding: 2px;
 }
 
-povej ul,ol {
-    margin: 0;
-    padding: 0;
+povej .thumbnail > img,
+povej .thumbnail a > img {
+    //max-height: 138px;
+    //max-width: 138px;
 }
 
-povej ul li, povej ol li {
-    margin: 0;
-    padding: 0;
+povej .playlistImg {
+	line-height: 1;
+    position: relative;
+}
+
+povej span.caption {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: auto;
+    width: 100%;
+	border-top: 1px solid #dddddd;
+	background: rgba(60, 60, 60, 0.5);
+	color: #333 !important;
+	text-align: center;
+	text-shadow: 2px 2px 1px rgba(160, 160, 160, 1);
+	font-weight: bold;
+}
+
+povej .center-content {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+/**
+ * navigation buttons
+ */
+
+povej .carousel-control {
+    margin-top: -10px;
+    height: 50px;
+	width: 50px;
+    background: none repeat scroll 0 0 #222222;
+    border: 4px solid #FFFFFF;
+    border-radius: 30px;
+	font-size: 27px;
+}
+
+povej .pointer {
+	cursor: pointer;
+}
+
+povej .level {
+	top: 7px !important;
+	cursor: pointer;
 }
 
 /**
@@ -60,272 +107,29 @@ povej .cyan {
 	background: rgba(0, 255, 255, 0.5) !important;
 }
 
-.layout {
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: hidden;
+/**
+ * back button
+ */
+povej .glyph-back {
+	vertical-align: middle;
 }
 
-.main-view {
-    position: relative;
+povej .btn-back {
+    font-size: 6em;
+	border-color: #fff;
+	margin-left: 20px;
+	color: #428bca;
 }
 
-.ui-main {}
-
-.ui-head { height: 17%; bottom: auto; }
-.ui-body { height: 66%; top: 17%; bottom: 17%; }
-.ui-foot { height: 17%; top: auto; }
-
-.ui-body-side {
-    width: 5%;
+povej .btn-back-fs {
+    font-size: 13em;
+	margin-left: 65px;
 }
 
-.ui-body .ui-body-side-L { right: auto; }
-.ui-body .ui-body-side-R { left: auto; }
-
-.ui-body-nav {
-    position: absolute;
-    display: block;
-    font-size: 18px;
-    line-height: 39px;
-    color: #fff;
-    background: #428bca;
-    height: 38px;
-    top: 50%;
-    margin-top: -19px;
-    text-align: center;
-    border-radius: 200px;
-}
-.ui-body-nav:hover { color: #fff; }
-.ui-body-nav-prev { right: 0; left: 10px; }
-.ui-body-nav-next { right: 10px; left: 0; }
-.ui-body-nav-up { right: 0; left: 10px; }
-
-.ui-body-main { 
-    left: 15%;
-    right: 15%;
-    width: 70%; 
-    font-size: 0;
-}
-
-.ui-body-main > .ui-body-child {
-    display: inline-block;
-    text-align: center;
-    padding: 10px;
-    width: 25%;
-    height: 100%;
-}
-
-.ui-body-main > .ui-body-child:first-child:nth-last-child(n+5),
-.ui-body-main > .ui-body-child:first-child:nth-last-child(n+5) ~ .ui-body-child {
-    height: 50%;
-}
-
-.ui-body-main > .ui-body-child > .ui-card {
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-}
-
-.ui-head {
-    font-size: 0;
-    background: #428bca;
-    border-bottom: 1px solid #bdc3c7;
-}
-
-.ui-head > * { 
-    display: inline-block;
-    height: 100%;
-    vertical-align: top;
-}
-
-.ui-head-list { 
-    font-size: 0;
-    width: 55%; 
-}
-
-.ui-head-actions {
-    font-size: 0; 
-    width: 45%; 
-    text-align: right;
-}
-
-.ui-head-actions > .ui-btn {
-    display: inline-block;
-    font-size: 30px;
-    height: 100%;
-    padding: 0 40px;
-    color: #fff;
-    border-left: 1px solid #86A9C7;
-}
-
-.ui-foot {
-    background: #ecf0f1;
-    border-top: 1px solid #bdc3c7;
-    font-size: 0;
-}
-
-.ui-foot > * {
-    display: inline-block;
-    vertical-align: bottom;
-    height: 100%;
-}
-
-.ui-foot-list {
-    width: 55%;
-    font-size: 0;
-}
-
-.ui-foot-actions {
-    width: 45%;
-    text-align: right;
-    font-size: 0;
-}
-
-.ui-foot-actions > .ui-btn {
-    display: inline-block;
-    font-size: 30px;
-    padding: 0 40px;
-    height: 100%;
-    border-left: 1px solid #bdc3c7;
-}
-
-.ui-btn {
-    background: none;
-    border: 0;
-    display: inline-block;
-    outline: none;
-}
-
-.ui-btn:active { background: rgba(0,0,0,0.1); }
-
-.ui-btn[disabled] { color: rgba(0,0,0,0.2); }
-.ui-btn[disabled]:hover { cursor: no-drop; }
-
-.ui-card {
-    display: block;
-    background: #fff;
-    position: relative;
-    overflow: hidden;
-    border: 1px solid #bdc3c7;
-    border-radius: 3px;
-    text-align: center;
-}
-
-.ui-card .ui-card-image {
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.ui-card .ui-card-caption {
-    position: absolute;
-    display: block;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    font-size: 13px;
-    line-height: 20px;
-    text-align: center;
-    padding: 5px;
-    text-transform: uppercase;
-    font-weight: bold;
-    border-radius: 0 0 3px 3px;
-    border-top: 1px solid #bdc3c7;
-    color: #111;
-    background: #ecf0f1;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.ui-card-list {
-    font-size: 0;
-    height: 100%;
-}
-
-.ui-card-list > .ui-card-list-item {
-    display: inline-block;
-    height: 100%;
-    vertical-align: top;
-    position: relative;
-    max-width: 20%;
-    text-align: center;
-    padding: 3px 10px;
-}
-
-.ui-card-list .ui-card .ui-card-caption {
-    font-size: 10px;
-    font-weight: normal;
-    line-height: 10px;
-    padding: 3px;
-}
-
-@media screen and (max-width: 590px) {
-
-    .ui-body-main {
-        left: 0;
-        right: 0;
-        bottom: 10%;
-        width: 100%;
-    }
-
-    .ui-body > .ui-body-side {
-        bottom: 0;
-        top: auto;
-        height: 10%;
-    }
-
-    .ui-body > .ui-body-side {
-        width: 50%;
-    }
-
-    .ui-body > .ui-body-side:first-child:last-child {
-        width: 100%;
-    }
-
-    .ui-body-nav {}
-
-    .ui-card-list {
-        white-space: nowrap;
-        overflow-y: hidden;
-        overflow-x: auto;
-    }
-
-    .ui-card-list > .ui-card-list-item {
-        padding: 3px;
-    }
-
-    .ui-head-list {
-        width: 65%;
-    }
-
-    .ui-head-actions {
-        width: 35%;
-    }
-
-    .ui-head-actions > .ui-btn {
-        font-size: 18px;
-        padding: 0 20px;
-    }
-
-    .ui-foot-list {
-        width: 65%;
-    }
-
-    .ui-foot-actions {
-        width: 35%;
-    }
-
-    .ui-foot-actions > .ui-btn {
-        font-size: 18px;
-        padding: 0 20px;
-    }
-
+povej .btn-back:hover,
+povej .btn-back:focus,
+povej .btn-back:active {
+	background-color: #fff;
+	border-color: #fff;
+	color: #428bca;
 }
