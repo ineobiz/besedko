@@ -1,6 +1,6 @@
 <div class="jumbotron">
-  <h1>-- Login --</h1>
-  <p class="lead">login text</p>
+  <h1>Si že uporabnik?</h1>
+  <p class="lead">Za nadaljevanje se prijavi. </p>
 </div>
 
 <div ng-show="error" class="alert alert-danger">{{error}}</div>
@@ -10,13 +10,13 @@
 		<div class="col-lg-6">
 			<div class="input-group input-group-lg">
 				<span class="input-group-addon">@</span>
-				<input type="email" class="form-control" placeholder="your.email@address.here" ng-model="email" required />
+				<input type="email" class="form-control" placeholder="tvoj.email@naslov" ng-model="email" required />
 				<span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">Vnesi e-mail naslov</span>
 			</div>
 		</div>
 		<div class="col-lg-6">
 			<div class="input-group input-group-lg">
-				<input type="password" class="form-control" placeholder="password" ng-model="password" required />
+				<input type="password" class="form-control" placeholder="tvojeGeslo" ng-model="password" required />
 				<span class="input-group-btn">
 					<button type="submit" class="btn" ng-disabled="form.$invalid || dataLoading" ng-class="form.$invalid || dataLoading ? 'btn-danger' : 'btn-success'">Go!</button>
 				</span>
