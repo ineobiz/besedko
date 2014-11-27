@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget id="net.totalka.pn.cordova" version="0.2"
+<widget id="biz.ineo.cordova.besedko" version="0.3"
 	xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
 	<name>Besedko</name>
 	<description>Besedko!</description>
-	<author email="info@totalka.net" href="http://pn.totalka.net">totalka</author>
+	<author email="info@ineo.biz" href="http://ineo.biz">ineo.biz</author>
 	<icon src="res/icons/icon.png" />
 	<content src="index.html" />
 	<preference name="phonegap-version" value="3.6.3" />
 	<preference name="permissions" value="none" />
 	<preference name="orientation" value="landscape" />
 	<preference name="fullscreen" value="true" />
-	<access origin="http://pn.totalka.net" />
+	<access origin="http://besedko.os-jela-janezica.si" />
 </widget>
