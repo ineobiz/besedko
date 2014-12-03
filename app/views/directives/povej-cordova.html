@@ -73,7 +73,7 @@
             <button ng-if="buttons.volume" ng-click="mute()" type="button" class="ui-btn">
                 <span ng-class="{'glyphicon-volume-up' : !player.muted, 'glyphicon-volume-off' : player.muted}" class="glyphicon"></span>
             </button>
-            <button ng-if="buttons.keyboard" type="button" class="ui-btn">
+            <button ng-if="buttons.keyboard" type="button" class="ui-btn ui-btn-kbd">
                 <span class="glyphicon glyphicon-calendar"></span>
             </button>
             <button ng-if="buttons.fullscreen" type="button" class="ui-btn" ng-click="toggleFS()">
@@ -84,3 +84,6 @@
     </footer>
 
 </main>
+<overlay ng-class="{'active' : isOverlayVisible}">
+	<menu></menu>
+</overlay>

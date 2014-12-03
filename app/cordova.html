@@ -1,8 +1,8 @@
 <!doctype html>
-<html class="no-js" ng-app="webApp">
+<html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title ng-bind="'besedko' + title">besedko</title>
+    <title>besedko</title>
     <meta name="description" content="besedko">
 
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0">
@@ -13,11 +13,12 @@
     <link rel="stylesheet" href="styles/directives/povej-cordova.css">
     <!-- endbuild -->
   </head>
-  <body>
+  <body data-ng-app="webApp">
 
-	<povej template-url="povej-cordova">
+	<povej template-url="povej-cordova"></povej>
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+
     <!-- build:js scripts/vendor.js -->
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-route/angular-route.min.js"></script>
@@ -31,6 +32,7 @@
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/directives/povej.js"></script>
+    <script src="scripts/directives/menu.js"></script>
     <script src="scripts/filters/startfrom.js"></script>
     <script src="scripts/modules/ng-cordova.js"></script>
     <script src="scripts/services/md5.js"></script>

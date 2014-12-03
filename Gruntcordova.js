@@ -349,7 +349,7 @@ module.exports = function (grunt) {
         }, {
             expand : true,
             cwd : '<%= yeoman.dist %>/views/directives',
-            src : 'povej-cordova.html',
+            src : ['povej-cordova.html', 'menu.html'],
             dest : 'cordova/.tmp/www/views/directives/'
         }, {
             expand : true,

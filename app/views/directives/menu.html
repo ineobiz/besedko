@@ -1,0 +1,36 @@
+<div class="menu-center">
+	<div class="middle">
+	
+		<!-- settings -->
+		<div class="settings" ng-show="section == 'settings'">
+			<h4 class="title">Nastavitve</h4>
+			<div class="form-group">
+				<a ng-show="credentials" ng-click="buttonSync()" class="btn btn-default btn-info"><span class="glyphicon glyphicon-cloud-download"></span> osveži podatke</a>
+			</div>
+			<div class="form-group">
+				<a ng-show="!credentials" ng-click="actSection('login')" class="btn btn-default btn-info"><span class="glyphicon glyphicon-log-in"></span> prijavi se</a>
+				<a ng-show="credentials" ng-click="buttonLogout()" class="btn btn-default btn-info"><span class="glyphicon glyphicon-log-out"></span> odjavi se</a>
+			</div>
+			<div class="form-group">
+				<a ng-click="closeBtn()" class="btn btn-default"><span class="glyphicon glyphicon-remove-sign"></span> zapri</a>
+			</div>
+		</div>
+
+		<!-- login form -->
+		<div class="login-form" ng-show="section == 'login'">
+			<h4 class="title">Vnesi dostopne podatke</h4>
+			<form class="form-inline" role="form" ng-submit="login()">
+				<div class="form-group">
+					<input type="email" class="form-control" placeholder="tvoj.email@naslov" ng-model="email" tabindex="1" required />
+					<input type="password" class="form-control" placeholder="tvojeGeslo" ng-model="password" tabindex="2" required />
+				</div>
+				<div class="form-group">
+					<button ng-disabled="loginCheck" type="submit" class="btn btn-default btn-info" tabindex="3"><span class="glyphicon glyphicon-log-in"></span> prijavi se</button>
+					<a ng-click="actSection('settings')" class="btn btn-default" tabindex="4"><span class="glyphicon glyphicon-remove-sign"></span> nazaj</a>
+				</div>
+			</form>
+		</div>
+
+	</div>
+</div>
+<p></p>

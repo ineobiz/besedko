@@ -9,6 +9,47 @@ body {
     position: relative; 
 }
 
+/**
+ * overlay
+ */
+
+overlay {
+    position: relative;
+    display: none;
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(0,0,0,0.9);
+    z-index: 100;
+}
+
+overlay.active {
+    display: block;
+}
+
+overlay h4 {
+    color: #fff;
+}
+
+overlay .middle {
+    text-align: center;
+    width: 80%;
+    height: 60%;
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+
+overlay .login-form .form-inline .form-group {
+    margin-bottom: 15px;
+    display: block;
+}
+
+/**
+ * player
+ */
 povej {
     display: block;
     position: absolute;
@@ -17,6 +58,7 @@ povej {
     left: 0;
     right: 0;
     overflow: hidden;
+    z-index: 1;
 }
 
 povej ul,ol {
@@ -208,6 +250,10 @@ povej .cyan {
 
 .ui-btn[disabled] { color: rgba(0,0,0,0.2); }
 .ui-btn[disabled]:hover { cursor: no-drop; }
+
+.ui-btn.active {
+    background: rgba(255,0,255,1);
+}
 
 .ui-card {
     display: block;
