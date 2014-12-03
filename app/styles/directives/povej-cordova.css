@@ -42,9 +42,38 @@ overlay .middle {
     top: 0; left: 0; bottom: 0; right: 0;
 }
 
+overlay .keyboard,
+overlay .login-form {
+    height: 95%;
+    width: 100%;
+}
+
+overlay .keyboard input {
+    height: 25%;
+    width: 99%;
+    font-size: 6em;
+    font-weight: bold;
+    text-align: center;
+}
+
 overlay .login-form .form-inline .form-group {
     margin-bottom: 15px;
     display: block;
+}
+
+overlay .login-form .form-inline input {
+    width: 25%;
+}
+
+overlay .form-inline .form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+}
+overlay .form-inline .form-group {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
 }
 
 /**

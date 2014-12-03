@@ -200,6 +200,10 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
             scope.toggleFS = function() {
                 scope.$emit('event::toggleFullscreen');
             };
+
+            scope.keyboard = function() {
+                scope.$emit('event::openKeyboard');
+            };
         }
     };
 }]);

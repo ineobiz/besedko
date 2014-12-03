@@ -1,23 +1,26 @@
 'use strict';
 
-angular.module('webApp').directive('menu', ['CONFIG', '$rootScope', 'Authentication', 'Content', function (config, $rootScope, Authentication, Content) {
+angular.module('webApp').directive('overlay', ['CONFIG', '$rootScope', 'Authentication', 'Content', function (config, $rootScope, Authentication, Content) {
     return {
         restrict: 'E',
         templateUrl: function(elem,attrs) {
-            return 'views/directives/menu.html';
+            return 'views/directives/overlay.html';
         },
         link: function(scope, element, attrs) {
             // defaults
-            scope.section = 'settings';
+            var defaultSection = 'settings';
+            scope.section = defaultSection;
+            scope.kbdText = null;
 
             // switch section
             scope.actSection = function(section) {
                 scope.section = section;
             };
 
-            // switch off overlay
+            // reset, switch off overlay
             scope.closeBtn = function() {
                 $rootScope.isOverlayVisible = null;
+                scope.section = defaultSection;
             };
 
             // login
