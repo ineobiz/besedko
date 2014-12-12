@@ -14,6 +14,7 @@ angular.module('webApp')
         favorites: [],
         favoriteSelected : false,
         uploading: true,
+        uploadIds: {image: [], audio: []},
         uploadError: false,
         contentUpdated: false
     })
@@ -25,14 +26,38 @@ angular.module('webApp')
 
             $scope.contentSelected = content;
 
+            if (!content.uid) {
+                content.uid = "" + Math.random();
+            }
+
             if (!content.color) {
                 $scope.contentSelected.color = 'white';
             }
 
             if (content.audio) {
-                $scope.contentSelected.audio = angular.isObject(content.audio)
-                    ? content.audio
-                    : $sce.trustAsResourceUrl(content.audio)
+                // @todo move to service?
+                if (content.audio === true) {
+                    Content
+                        .getFile(content.uid + '.audio', $scope.credentials)
+                        .then(function(response) {
+                            $scope.contentSelected.audio = $sce.trustAsResourceUrl(response.data);
+                        })
+                    ;
+                } else {
+                    $scope.contentSelected.audio = angular.isObject(content.audio)
+                        ? content.audio
+                        : $sce.trustAsResourceUrl(content.audio)
+                    ;
+                }
+            }
+
+            // @todo move to service?
+            if (content.image && content.image === true) {
+                Content
+                    .getFile(content.uid + '.image', $scope.credentials)
+                    .then(function(response) {
+                        $scope.contentSelected.image = $sce.trustAsResourceUrl(response.data);
+                    })
                 ;
             }
         };
@@ -46,6 +71,10 @@ angular.module('webApp')
 
             if (!favorite.color) {
                 $scope.favoriteSelected.color = 'white';
+            }
+
+            if (!favorite.uid) {
+                favorite.uid = "" + Math.random();
             }
 
             if (favorite.content.length) {
@@ -62,6 +91,16 @@ angular.module('webApp')
                 angular.forEach(favorite.content, function(val) {
                     $scope.favoriteSelected.words.push({label: found[val]});
                 });
+            }
+
+            // @todo move to service?
+            if (favorite.image && favorite.image === true) {
+                Content
+                    .getFile(favorite.uid + '.image', $scope.credentials)
+                    .then(function(response) {
+                        $scope.favoriteSelected.image = $sce.trustAsResourceUrl(response.data);
+                    })
+                ;
             }
         };
 
@@ -152,15 +191,16 @@ angular.module('webApp')
                         $scope[elType].crop = e.target.result;
                     } else {
                         $scope[elType][angular.element(element).attr('name')] = $sce.trustAsResourceUrl(e.target.result);
+                        $scope.uploadIds.audio.push($scope[elType].uid);
+                        $scope.contentUpdated = true;
                     }
-
-                    $scope.contentUpdated = true;
                 });
             };
 
             reader.readAsDataURL(file);
         };
 
+        // remove file
         $scope.fileRemove = function(file, type) {
             var elType = type == 'favorite'
                 ? 'favoriteSelected'
@@ -168,12 +208,16 @@ angular.module('webApp')
             ;
 
             $scope[elType][file] = null;
-            // @todo fix cropImage on audio remove
-            //$scope[elType].cropImage = null;
 
+            if (file == 'image') {
+                $scope[elType].cropImage = null;
+            }
+
+            $scope.uploadIds[file].push($scope[elType].uid);
             $scope.contentUpdated = true;
         };
 
+        // image crop
         $scope.saveCrop = function(file, type) {
             var elType = type == 'favorite'
                 ? 'favoriteSelected'
@@ -184,6 +228,7 @@ angular.module('webApp')
             $scope[elType].crop = null;
             $scope[elType][file] = image;
 
+            $scope.uploadIds.image.push($scope[elType].uid);
             $scope.contentUpdated = true;
         };
 
@@ -192,13 +237,16 @@ angular.module('webApp')
             $scope.uploading = true;
             $scope.uploadError = false;
 
-            Content.set($rootScope.credentials, function (response){
+            Content.set($rootScope.credentials, $scope.uploadIds, function (response){
                 $scope.uploadError = $scope.uploading = $scope.contentUpdated = false;
 
                 if (!response) {
                     $scope.uploading = false;
                     $scope.uploadError = true;
                     $scope.contentUpdated = true;
+                } else {
+                    $scope.uploadIds.audio = [];
+                    $scope.uploadIds.image = [];
                 }
             });
         };

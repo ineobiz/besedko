@@ -110,6 +110,7 @@ class Processor {
 	public function storeContent() {
 		$auth = $this->getAuthHeader();
 		$file = $this->getUserFile($auth[0], $auth[1]);
+		$folder  = $this->getUserFolder($auth[0], $auth[1]);
 		$request = $this->getRequest();
 
 		$data = [
@@ -119,7 +120,7 @@ class Processor {
 			'favorites' => $this->processFavorites($request['favorites'])
 		];
 
-		return file_put_contents($file, json_encode($data))
+		return file_put_contents($file, json_encode($data)) && $this->processFiles($request['files'], $folder)
 			? true
 			: false
 		;
@@ -175,7 +176,7 @@ class Processor {
 	    foreach ($favorites as $child) {
 			$data = [];
 
-			foreach(['label', 'color', 'image', 'content'] as $prop) {
+			foreach(['uid', 'label', 'color', 'image', 'content'] as $prop) {
 				if (isset($child[$prop])) {
 					$data[$prop] = $child[$prop];
 				}
@@ -186,6 +187,35 @@ class Processor {
 
 	    return $response;
 	}
+
+    /**
+     * Loop for processing base64 encoded files
+     *
+     * @param array $files
+     *            files
+     * @param string $folder
+     *            folder
+     * @return bool
+     */
+    private function processFiles($files, $folder) {
+        if (! is_array ( $files )) {
+            return false;
+        }
+
+        foreach ( $files as $type => $data ) {
+            foreach ( $data as $id => $base64 ) {
+                $filename = sprintf ( "%s/%s.%s", $folder, $id, $type );
+
+                if (! empty ( $base64 )) {
+                    file_put_contents ( $filename, $base64 );
+                } else {
+                    @unlink ( $filename );
+                }
+            }
+        }
+
+        return true;
+    }
 
 	// @todo
 	public function register() {
@@ -232,6 +262,22 @@ class Processor {
 		}
 
 		return $fileName;
+	}
+
+	/**
+	 * Get private folder based on email,password
+	 *
+	 * @param string $email email
+	 * @param string $pass  password
+	 * @return string
+	 */
+	private function getUserFolder($email, $pass) {
+		return sprintf(
+			"%s/data/user-generated/%s_%s",
+			dirname(__DIR__),
+			md5($email),
+			md5($pass)
+		);
 	}
 }
 

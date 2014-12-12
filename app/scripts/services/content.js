@@ -5,10 +5,11 @@
  * @name webApp.Content
  * @description Content factory
  */
-angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config, $http) {
+angular.module('webApp').factory('Content', ['CONFIG', '$http', 'md5', function (config, $http, md5) {
 	var url = 'data/sample.json',
 	    content = [],
 	    favorites = [],
+	    files = [],
 		promise
 	;
 
@@ -22,8 +23,10 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 	        }
 
 	        ['image', 'audio'].forEach(function(key) {
-	            if (angular.isObject(node[key])) {
-	                node[key] = node[key].toString();
+	            if (angular.isObject(node[key]) || angular.isString(node[key])) {
+	                node[key] = true;
+	            } else {
+	                delete node[key];
 	            }
 	        });
 	    }
@@ -49,7 +52,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 	        }(root[i]));
 	    }
 
-	    callback(root, processFavorites(angular.copy(favorites)));
+	    callback(root);
 	}
 
 	// process favorites
@@ -58,14 +61,16 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 
         function favoriteCleanup(node, callback) {
             for(var key in node) {
-                if (['label','color','image', 'content'].indexOf(key) == -1) {
+                if (['uid','label','color','image', 'content'].indexOf(key) == -1) {
                     delete node[key];
                 }
             }
 
             ['image'].forEach(function(key) {
-                if (angular.isObject(node[key])) {
-                    node[key] = node[key].toString();
+                if (angular.isObject(node[key]) || angular.isString(node[key])) {
+                    node[key] = true;
+                } else {
+                    delete node[key];
                 }
             });
 
@@ -144,19 +149,64 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 			}
 			return promise;
 		},
-		set: function(credentials, response) {
-	        processContent(angular.copy(content), function(processed, favorites){
-	            $http
-	                .put('/process', {content: processed, favorites: favorites}, {
-	                    headers: {
-	                        'Content-Type': 'application/json',
-	                        'Auth-Credentials': credentials.email + ':' + credentials.password
-	                    }
-	                })
-	                .success(function (data) { return response(true); })
-	                .error(function (data) { return response(false); })
-	            ;
+		set: function(credentials, uploadIds, response) {
+		    var
+		        cnt = [],
+		        fav = [],
+		        fls = { image: {}, audio: {} }
+	        ;
+
+	        processContent(angular.copy(content), function(processed) {
+	            cnt = processed;
 	        });
+
+	        fav = processFavorites(angular.copy(favorites));
+
+	        contentIterator(content, function(c) {
+	            var
+	                img = null,
+	                aud = null
+                ;
+
+                if (uploadIds.image.indexOf(c.uid) !== -1) {
+                    img = angular.isObject(c.image)
+                        ? c.image.toString()
+                        : c.image
+                    ;
+                    fls.image[c.uid] = img;
+                }
+
+                if (uploadIds.audio.indexOf(c.uid) !== -1) {
+                    aud = angular.isObject(c.audio)
+                        ? c.audio.toString()
+                        : c.audio
+                    ;
+                    fls.audio[c.uid] = aud;
+                }
+            });
+
+            angular.forEach(favorites, function(f) {
+                var img = null;
+
+                if (uploadIds.image.indexOf(f.uid) !== -1) {
+                    img = angular.isObject(f.image)
+                        ? f.image.toString()
+                        : f.image
+                    ;
+                    fls.image[f.uid] = img;
+                }
+            });
+
+	        $http
+	            .put('/process', {content: cnt, favorites: fav, files : fls}, {
+	                headers: {
+	                    'Content-Type': 'application/json',
+	                    'Auth-Credentials': credentials.email + ':' + credentials.password
+                    }
+                })
+                .success(function (data) { return response(true); })
+                .error(function (data) { return response(false); })
+	        ;
 		},
 		iterate : function(callback) {
 		    contentIterator(content, callback);
@@ -164,5 +214,10 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', function (config
 		resetPromise: function(data) {
 		    promise = null;
 		},
+		getFile: function(file, credentials) {
+		    return $http.get(
+	            '/data/' + md5.createHash(credentials.email + credentials.password) + '/' + file
+	        );
+		}
 	};
 }]);

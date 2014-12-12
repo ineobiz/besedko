@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', function (config, $rootScope, Content) {
+angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Content', function (config, $rootScope, $sce, Content) {
     var favorites = {
         check : function(scope) {
             var found = this.find(scope);
@@ -77,7 +77,7 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
                 angular.isObject(selected.children) &&
                 selected.children.length
             ) {
-                scope.content = selected.children;
+                scope.content = fetchRemotes(selected.children);
                 scope.parent.push(parent);
             }
 
@@ -100,6 +100,30 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
         }
     };
 
+    // @todo move to Content service (use same data as editor)
+    var fetchRemotes = function (content) {
+        angular.forEach(content, function(c) {
+            if (c.image && c.image === true) {
+                Content
+                    .getFile(c.uid + '.image', $rootScope.credentials)
+                    .then(function(response) {
+                        c.image = $sce.trustAsResourceUrl(response.data);
+                    })
+                ;
+            }
+            if (c.audio && c.audio === true) {
+                Content
+                    .getFile(c.uid + '.audio', $rootScope.credentials)
+                    .then(function(response) {
+                        c.audio = $sce.trustAsResourceUrl(response.data);
+                    })
+                ;
+            }
+        });
+
+        return content;
+    };
+
     return {
         restrict: 'E',
         templateUrl: function(elem,attrs) {
@@ -108,8 +132,8 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', 'Content', 
         link: function(scope, element, attrs) {
             // @todo move $rootScope.credentials to service
             Content.get($rootScope.credentials).then(function(data) {
-                scope.content = data.content;
-                scope.favorites = data.favorites;
+                scope.content = fetchRemotes(data.content);
+                scope.favorites = fetchRemotes(data.favorites);
             });
 
             scope.buttons = config.povej.buttons;
