@@ -6,7 +6,7 @@
             <audio media-player="player" data-playlist="playlist"></audio>
             <ul class="ui-card-list">
                 <li class="ui-card-list-item ui-head-list-child" ng-repeat="card in playlist">
-                    <a href class="ui-card" ng-click="plsRemove($index)">
+                    <a href class="ui-card" on-long-press="bigImage($index)" ng-click="plsRemove($index)">
                         <img class="ui-card-image" alt="{{card.label}}" ng-src="{{card.image}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
                         <span class="ui-card-caption" ng-class="card.color ? card.color : 'white'">{{card.label}}</span>
                     </a>
@@ -16,7 +16,7 @@
 
         <section class="ui-head-actions">
             <button ng-click="play()" type="button" class="ui-btn" ng-disabled="!playlist.length">
-                <span ng-class="{'glyphicon-play' : !player.playing, 'glyphicon-pause' : player.playing && !player.ended}" class="glyphicon"></span>
+                <span ng-class="{'glyphicon-play' : !player.playing, 'glyphicon-stop' : player.playing && !player.ended}" class="glyphicon"></span>
             </button>
             <button ng-click="plsClear()" type="button" class="ui-btn" ng-disabled="!playlist.length">
                 <span class="glyphicon glyphicon-trash"></span>
@@ -73,7 +73,7 @@
             <button ng-if="buttons.volume" ng-click="mute()" type="button" class="ui-btn">
                 <span ng-class="{'glyphicon-volume-up' : !player.muted, 'glyphicon-volume-off' : player.muted}" class="glyphicon"></span>
             </button>
-            <button ng-if="buttons.keyboard" type="button" class="ui-btn">
+            <button ng-if="buttons.keyboard" ng-click="keyboard()" type="button" class="ui-btn ui-btn-kbd">
                 <span class="glyphicon glyphicon-calendar"></span>
             </button>
             <button ng-if="buttons.fullscreen" type="button" class="ui-btn" ng-click="toggleFS()">

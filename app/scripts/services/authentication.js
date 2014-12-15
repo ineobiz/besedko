@@ -7,11 +7,12 @@
  * @name webApp.Authentication
  * @description Authentication factory
  */
-angular.module('webApp').factory('Authentication', ['$http', '$rootScope', function ($http, $rootScope) {
+angular.module('webApp').factory('Authentication', ['CONFIG', '$http', '$rootScope', function (config, $http, $rootScope) {
     var service = {};
+    var remote = config.remote || '';
 
     service.Login = function(email, password) {
-        return $http.post('/process', null, {
+        return $http.post(remote + '/process', null, {
             headers: { 'Auth-Credentials' : email + ':' + password }
         });
     };

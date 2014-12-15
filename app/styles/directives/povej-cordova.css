@@ -9,6 +9,85 @@ body {
     position: relative; 
 }
 
+/**
+ * overlay
+ */
+
+overlay {
+    position: relative;
+    display: none;
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(0,0,0,0.9);
+    z-index: 100;
+}
+
+overlay.active {
+    display: block;
+}
+
+overlay h4 {
+    color: #fff;
+}
+
+overlay .middle {
+    text-align: center;
+    width: 80%;
+    height: 60%;
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+
+overlay .big-image {
+    overflow: visible;
+}
+
+overlay .keyboard,
+overlay .login-form {
+    height: 95%;
+    width: 100%;
+}
+
+overlay .btn {
+    font-size: 2em;
+}
+
+overlay .keyboard input {
+    height: 25%;
+    width: 99%;
+    font-size: 6em;
+    font-weight: bold;
+    text-align: center;
+}
+
+overlay .login-form .form-inline .form-group {
+    margin-bottom: 15px;
+    display: block;
+}
+
+overlay .login-form .form-inline input {
+    width: 25%;
+}
+
+overlay .form-inline .form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+}
+
+overlay .form-inline .form-group {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+/**
+ * player
+ */
 povej {
     display: block;
     position: absolute;
@@ -17,6 +96,7 @@ povej {
     left: 0;
     right: 0;
     overflow: hidden;
+    z-index: 1;
 }
 
 povej ul,ol {
@@ -81,7 +161,7 @@ povej .cyan {
 .ui-foot { height: 15%; top: auto; }
 
 .ui-body-side {
-    width: 5%;
+    width: 10%;
 }
 
 .ui-body .ui-body-side-L { right: auto; }
@@ -90,11 +170,10 @@ povej .cyan {
 .ui-body-nav {
     position: absolute;
     display: block;
-    font-size: 18px;
-    line-height: 39px;
+    font-size: 25px;
+    line-height: 80px;
     color: #fff;
     background: #428bca;
-    height: 38px;
     top: 50%;
     margin-top: -19px;
     text-align: center;
@@ -209,6 +288,10 @@ povej .cyan {
 .ui-btn[disabled] { color: rgba(0,0,0,0.2); }
 .ui-btn[disabled]:hover { cursor: no-drop; }
 
+.ui-btn.active {
+    background: rgba(255,0,255,1);
+}
+
 .ui-card {
     display: block;
     background: #fff;
@@ -290,7 +373,11 @@ povej .cyan {
         width: 100%;
     }
 
-    .ui-body-nav {}
+    .ui-body-nav {
+        line-height: 39px;
+        height: 38px;
+        margin-top: -19px;
+    }
 
     .ui-card-list {
         white-space: nowrap;
