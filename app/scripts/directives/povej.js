@@ -150,7 +150,13 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
             };
 
             scope.play = function() {
-                scope.player.playPause();
+                if (scope.player.playing == true) {
+                    scope.player.playPause();
+                } else {
+                    // @todo update to 0.5.9 when available
+                    scope.player.$selective = false;
+                    scope.player.play(0, false);
+                }
             };
 
             scope.mute = function() {
@@ -173,17 +179,6 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
                 scope.content = parent.pop();
             };
 
-            scope.player.on('ended', function() {
-                if (scope.player.currentTrack == scope.player.tracks) {
-                    // @todo find proper way to restart playlist?
-                    var label = scope.playlist[0].label;
-                    scope.playlist[0].label = scope.playlist[0].label.slice(0, -1);
-                    scope.$apply();
-                    scope.playlist[0].label = label;
-                    scope.player.stop();
-                }
-            });
-
             scope.favorite = function() {
                 favorites.check(scope)
                     ? favorites.remove(scope)
@@ -203,6 +198,10 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
 
             scope.keyboard = function() {
                 scope.$emit('event::openKeyboard');
+            };
+
+            scope.bigImage = function(index) {
+                scope.$emit('event::showBigImage', index);
             };
         }
     };

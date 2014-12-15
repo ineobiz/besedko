@@ -9,7 +9,7 @@
 		</div>
 		<div class="btn-group pull-right">
 			<button ng-click="play()" type="button" class="btn btn-default btn-hg navbar-btn" ng-disabled="!playlist.length">
-				<span ng-class="{'glyphicon-play' : !player.playing, 'glyphicon-pause' : player.playing && !player.ended}" class="glyphicon glyph-mid"></span>
+				<span ng-class="{'glyphicon-play' : !player.playing, 'glyphicon-stop' : player.playing && !player.ended}" class="glyphicon glyph-mid"></span>
 			</button>
 			<button ng-click="plsClear()" type="button" class="btn btn-default btn-hg navbar-btn" ng-disabled="!playlist.length">
 				<span class="glyphicon glyph-mid glyphicon-trash"></span>

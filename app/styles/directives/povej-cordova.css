@@ -42,10 +42,18 @@ overlay .middle {
     top: 0; left: 0; bottom: 0; right: 0;
 }
 
+overlay .big-image {
+    overflow: visible;
+}
+
 overlay .keyboard,
 overlay .login-form {
     height: 95%;
     width: 100%;
+}
+
+overlay .btn {
+    font-size: 2em;
 }
 
 overlay .keyboard input {
@@ -70,6 +78,7 @@ overlay .form-inline .form-control {
     width: auto;
     vertical-align: middle;
 }
+
 overlay .form-inline .form-group {
     display: inline-block;
     margin-bottom: 0;
@@ -152,7 +161,7 @@ povej .cyan {
 .ui-foot { height: 15%; top: auto; }
 
 .ui-body-side {
-    width: 5%;
+    width: 10%;
 }
 
 .ui-body .ui-body-side-L { right: auto; }
@@ -161,11 +170,10 @@ povej .cyan {
 .ui-body-nav {
     position: absolute;
     display: block;
-    font-size: 18px;
-    line-height: 39px;
+    font-size: 25px;
+    line-height: 80px;
     color: #fff;
     background: #428bca;
-    height: 38px;
     top: 50%;
     margin-top: -19px;
     text-align: center;
@@ -365,7 +373,11 @@ povej .cyan {
         width: 100%;
     }
 
-    .ui-body-nav {}
+    .ui-body-nav {
+        line-height: 39px;
+        height: 38px;
+        margin-top: -19px;
+    }
 
     .ui-card-list {
         white-space: nowrap;

@@ -6,16 +6,6 @@
 angular.module('ui.tree', []);
 angular.module('ngImgCrop', []);
 
-//cordova build app run
-webApp.run(['CONFIG', '$rootScope', function(config, $rootScope) {
-    $rootScope.isOverlayVisible = false;
-
-    $rootScope.$on('event::openKeyboard', function(event) {
-        $rootScope.isOverlayVisible = true;
-        $rootScope.section = 'keyboard';
-    });
-}]);
-
 /**
  * Cordova events
  *
@@ -43,6 +33,6 @@ document.addEventListener("opensection", function(ev) {
 
     $rootScope.$apply(function () {
         $rootScope.isOverlayVisible = true;
-        $rootScope.section = 'bigimage';
+        $rootScope.section = 'settings';
     });
 }, false);

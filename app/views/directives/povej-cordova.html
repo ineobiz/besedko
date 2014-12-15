@@ -6,7 +6,7 @@
             <audio media-player="player" data-playlist="playlist"></audio>
             <ul class="ui-card-list">
                 <li class="ui-card-list-item ui-head-list-child" ng-repeat="card in playlist">
-                    <a href class="ui-card" ng-click="plsRemove($index)">
+                    <a href class="ui-card" on-long-press="bigImage($index)" on-press-end="plsRemove($index)">
                         <img class="ui-card-image" alt="{{card.label}}" ng-src="{{card.image}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
                         <span class="ui-card-caption" ng-class="card.color ? card.color : 'white'">{{card.label}}</span>
                     </a>
@@ -16,7 +16,7 @@
 
         <section class="ui-head-actions">
             <button ng-click="play()" type="button" class="ui-btn" ng-disabled="!playlist.length">
-                <span ng-class="{'glyphicon-play' : !player.playing, 'glyphicon-pause' : player.playing && !player.ended}" class="glyphicon"></span>
+                <span ng-class="{'glyphicon-play' : !player.playing, 'glyphicon-stop' : player.playing && !player.ended}" class="glyphicon"></span>
             </button>
             <button ng-click="plsClear()" type="button" class="ui-btn" ng-disabled="!playlist.length">
                 <span class="glyphicon glyphicon-trash"></span>

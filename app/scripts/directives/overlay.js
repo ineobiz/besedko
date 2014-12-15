@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webApp').directive('overlay', ['CONFIG', '$rootScope', 'Authentication', 'Content', function (config, $rootScope, Authentication, Content) {
+angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentication', 'Content', function (config, $timeout, Authentication, Content) {
     return {
         restrict: 'E',
         templateUrl: function(elem,attrs) {
@@ -9,17 +9,20 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$rootScope', 'Authenti
         link: function(scope, element, attrs) {
             // defaults
             var defaultSection = 'settings';
+            scope.isOverlayVisible = false;
             scope.section = defaultSection;
             scope.kbdText = null;
+            scope.imgData = null;
 
             // switch section
             scope.actSection = function(section) {
+                scope.isOverlayVisible = true;
                 scope.section = section;
             };
 
             // reset, switch off overlay
             scope.closeBtn = function() {
-                $rootScope.isOverlayVisible = null;
+                scope.isOverlayVisible = null;
                 scope.section = defaultSection;
             };
 
@@ -45,6 +48,29 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$rootScope', 'Authenti
             scope.buttonLogout = function() {
                 Authentication.ClearCredentials();
             };
+
+            // open keyboard
+            scope.$on('event::openKeyboard', function(event) {
+                scope.actSection('keyboard');
+            });
+
+            // show big image on long press
+            scope.$on('event::showBigImage', function(event, index) {
+                scope.imgData = scope.playlist[index];
+                scope.player.playPause();
+                scope.player.play(index, true);
+                scope.actSection('bigimage');
+            });
+
+            // close big image when player stops
+            scope.$watch('player.ended', function (val) {
+                if (val === true && scope.imgData) {
+                    scope.imgData = null;
+                    $timeout(function() {
+                        scope.closeBtn();
+                    }, 1000);
+                }
+            });
         }
     };
 }]);
