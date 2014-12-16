@@ -6,12 +6,12 @@
  * @description Content factory
  */
 angular.module('webApp').factory('Content', ['CONFIG', '$http', 'md5', function (config, $http, md5) {
-	var url = 'data/sample.json',
-	    content = [],
-	    favorites = [],
-	    files = [],
-		promise
-	;
+    var url = 'data/sample.json',
+        remote = config.remote || '',
+        content = [],
+        favorites = [],
+        promise
+    ;
 
 	// process content
 	function processContent(root, callback) {
@@ -121,7 +121,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', 'md5', function 
 		get: function(credentials) {
 			if (!promise) {
 			    if (angular.isObject(credentials)) {
-			        promise = $http.get('/process', {
+			        promise = $http.get(remote + '/process', {
                             headers: {
                                 'Auth-Credentials': credentials.email + ':' + credentials.password
                             }
@@ -198,7 +198,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', 'md5', function 
             });
 
 	        $http
-	            .put('/process', {content: cnt, favorites: fav, files : fls}, {
+	            .put(remote + '/process', {content: cnt, favorites: fav, files : fls}, {
 	                headers: {
 	                    'Content-Type': 'application/json',
 	                    'Auth-Credentials': credentials.email + ':' + credentials.password
@@ -216,7 +216,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', 'md5', function 
 		},
 		getFile: function(file, credentials) {
 		    return $http.get(
-	            '/data/' + md5.createHash(credentials.email + credentials.password) + '/' + file
+	            remote + '/data/' + md5.createHash(credentials.email + credentials.password) + '/' + file
 	        );
 		}
 	};

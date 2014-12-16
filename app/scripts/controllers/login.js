@@ -26,10 +26,5 @@ angular.module('webApp').controller('LoginCtrl',
                 })
             ;
         };
-
-        $scope.logout = function() {
-            Authentication.ClearCredentials();
-            Content.resetPromise();
-        };
     }]
 );

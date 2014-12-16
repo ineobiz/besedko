@@ -1,6 +1,39 @@
 'use strict';
 
-angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentication', 'Content', function (config, $timeout, Authentication, Content) {
+angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', '$sce', 'Authentication', 'Content', function (config, $timeout, $sce, Authentication, Content) {
+    var fetchRemotes = function (scope, content) {
+        angular.forEach(content, function(c) {
+            if (c.hasOwnProperty('image') && c.image === true) {
+                Content
+                    .getFile(c.uid + '.image', scope.credentials)
+                    .then(function(response) {
+                        c.image = $sce.trustAsResourceUrl(response.data);
+                    })
+                ;
+            }
+            if (c.hasOwnProperty('audio') && c.audio === true) {
+                Content
+                    .getFile(c.uid + '.audio', scope.credentials)
+                    .then(function(response) {
+                        c.audio = $sce.trustAsResourceUrl(response.data);
+                    })
+                ;
+            }
+        });
+
+        return content;
+    };
+
+    // @todo move to povej directive, call via event
+    var reloadContent = function(scope) {
+        scope.playlist = [];
+        Content.resetPromise();
+        Content.get(scope.credentials).then(function(data) {
+            scope.content = fetchRemotes(scope, data.content);
+            scope.favorites = fetchRemotes(scope, data.favorites);
+        });
+    };
+
     return {
         restrict: 'E',
         templateUrl: function(elem,attrs) {
@@ -37,6 +70,7 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
                         scope.loginCheck = scope.error = false;
                         scope.email = scope.password = '';
                         scope.section = 'settings';
+                        reloadContent(scope);
                     }).error(function() {
                         //scope.error = 'Napačni dostopni podatki.';
                         scope.loginCheck = false;
@@ -44,9 +78,15 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
                 ;
             };
 
+            // sync data
+            scope.buttonSync = function() {
+                reloadContent(scope);
+            };
+
             // logout
             scope.buttonLogout = function() {
                 Authentication.ClearCredentials();
+                reloadContent(scope);
             };
 
             // open keyboard

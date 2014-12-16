@@ -103,7 +103,7 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
     // @todo move to Content service (use same data as editor)
     var fetchRemotes = function (content) {
         angular.forEach(content, function(c) {
-            if (c.image && c.image === true) {
+            if (c.hasOwnProperty('image') && c.image === true) {
                 Content
                     .getFile(c.uid + '.image', $rootScope.credentials)
                     .then(function(response) {
@@ -111,7 +111,7 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
                     })
                 ;
             }
-            if (c.audio && c.audio === true) {
+            if (c.hasOwnProperty('audio') && c.audio === true) {
                 Content
                     .getFile(c.uid + '.audio', $rootScope.credentials)
                     .then(function(response) {

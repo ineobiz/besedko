@@ -52,7 +52,7 @@ var webApp = angular
         // @todo check cordova routing, apps
         $locationProvider.html5Mode(true);
     }])
-    .run(['CONFIG', '$rootScope', '$location', 'Authentication', function(config, $rootScope, $location, Authentication) {
+    .run(['CONFIG', '$rootScope', '$location', 'Authentication', 'Content', function(config, $rootScope, $location, Authentication, Content) {
         var path = function() {
             return $location.path();
         };
@@ -76,6 +76,8 @@ var webApp = angular
 
         $rootScope.logout = function() {
             Authentication.ClearCredentials();
+            Content.resetPromise();
+            $location.path('/');
         };
     }])
 ;

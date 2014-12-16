@@ -4,7 +4,7 @@ angular.module('webApp').constant('CONFIG', {
     povej : {
         buttons : {
             favorite   : true,
-            volume     : true,
+            volume     : false,
             keyboard   : false,
             fullscreen : true
         }
