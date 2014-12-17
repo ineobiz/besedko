@@ -92,6 +92,7 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', '$sce', 'Au
             // open keyboard
             scope.$on('event::openKeyboard', function(event) {
                 scope.actSection('keyboard');
+                // @todo focus() on input element
             });
 
             // show big image on long press

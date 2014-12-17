@@ -79,6 +79,9 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
             ) {
                 scope.content = fetchRemotes(selected.children);
                 scope.parent.push(parent);
+                scope.navLevel += 1;
+                scope.currentPage = 0;
+                scope.navPos[scope.navLevel] = scope.currentPage;
             }
 
             if (
@@ -137,9 +140,11 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
             });
 
             scope.buttons = config.povej.buttons;
-            scope.favorites = [], scope.playlist = [], scope.parent = [],
+            scope.favorites = [], scope.playlist = [], scope.parent = [], scope.navPos = {},
             scope.isFavorite = false,
-            scope.currentPage = 0, scope.pageSize = 8;
+            scope.currentPage = 0, scope.pageSize = 8, scope.navLevel = 0;
+
+            scope.navPos[scope.navLevel] = scope.currentPage;
 
             scope.numberOfPages = function(){
                 return Math.ceil(scope.content.length/scope.pageSize);
@@ -176,6 +181,9 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
             };
 
             scope.selectParent = function(parent) {
+                delete scope.navPos[scope.navLevel];
+                scope.navLevel -= 1;
+                scope.currentPage = scope.navPos[scope.navLevel];
                 scope.content = parent.pop();
             };
 
@@ -191,6 +199,10 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
                     favorites.toPlaylist(scope, selected);
                 }
             };
+
+            scope.$watch('currentPage', function (val) {
+                scope.navPos[scope.navLevel] = val;
+            });
 
             scope.toggleFS = function() {
                 scope.$emit('event::toggleFullscreen');

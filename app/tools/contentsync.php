@@ -1,8 +1,15 @@
 #!/usr/bin/php
 <?php
 
-class ContentSync {
-	private $contentId, $file, $folder;
+/**
+ * Content manipulation
+ */
+class Content {
+	private
+	    $contentId,
+	    $file,
+	    $folder
+	;
 
 	/**
 	 * Constructor
@@ -21,8 +28,8 @@ class ContentSync {
 	public function sync() {
 	    $structure = $this->getContentStructure();
 	    
-	    $structure['content']   = $this->processContent($structure['content']);
-	    $structure['favorites'] = $this->processFavorites($structure['favorites']);
+	    $structure['content']   = $this->syncContent($structure['content']);
+	    $structure['favorites'] = $this->syncFavorites($structure['favorites']);
 	    $structure['timestamp'] = time();
 	    
 	    // backup current
@@ -35,12 +42,23 @@ class ContentSync {
 	}
 
 	/**
-	 * Recursion for iterating content and updating image/audio relations
+	 * Boost volume on all available audio files
+	 */
+	public function volume() {
+	    $structure = $this->getContentStructure();
+
+	    $this->volumeBoost($structure['content']);
+
+	    return $this->responseMsg("Audio volume boosing done.");
+	}
+
+	/**
+	 * Iterate content and sync image/audio relations
 	 *
 	 * @param array $content content branch
 	 * @return false|array
 	 */
-	private function processContent($content) {
+	private function syncContent($content) {
 		if (!is_array($content)) {
 			return false;
 		}
@@ -59,7 +77,7 @@ class ContentSync {
 			}
 
 	    	if (!empty($child['children'])) {
-	    		$data['children'] = $this->processContent($child['children']);
+	    		$data['children'] = $this->syncContent($child['children']);
 	    	} else {
 	    		unset($data['children']);
 	    	}
@@ -71,12 +89,12 @@ class ContentSync {
 	}
 
 	/**
-	 * Loop for processing valid favorites data
+	 * Sync valid favorites data
 	 *
 	 * @param array $favorites favorites
 	 * @return false|array
 	 */
-	private function processFavorites($favorites) {
+	private function syncFavorites($favorites) {
 		if (!is_array($favorites)) {
 			return false;
 		}
@@ -97,6 +115,64 @@ class ContentSync {
 	    }
 
 	    return $response;
+	}
+
+	/**
+	 * Iterate content, boost audio volume on each file
+	 *
+	 * @param array $content content branch
+	 * @return false|array
+	 */
+	private function volumeBoost($content) {
+	    if (!is_array($content)) {
+	        return;
+	    }
+
+	    $decFile = sprintf("%s/encoded.audio", $this->folder);
+	    $mp3File = sprintf("%s/processed.mp3", $this->folder);
+
+	    foreach ($content as $child) {
+	        $audio = sprintf("%s/%s.audio", $this->folder, $child['uid']);
+
+            if (is_file($audio)) {
+                $rsp = [];
+
+                // write decoded file
+                file_put_contents($decFile, base64_decode(explode(',', file_get_contents($audio))[1]));
+
+                // boost volume, transcode to mp3 format
+                exec(sprintf(
+                    "ffmpeg -v 0 -y -i %s -af 'volume=5' %s",
+                    //"ffmpeg -y -i %s -af 'volume=5' %s",
+                    $decFile,
+                    $mp3File
+                ), $rsp, $rspCode);
+
+                if ($rspCode == true) {
+                    $this->responseMsg(sprintf(
+                        "Audio for '%s', cannot be processed.",
+                        $child['label']
+                    ));
+
+                    continue;
+                }
+
+                // encode processed audio
+                file_put_contents(
+                    $audio,
+                    'data:audio/mpeg;base64,'
+                    . base64_encode(file_get_contents($mp3File))
+                );
+            }
+
+            if (!empty($child['children'])) {
+                $this->volumeBoost($child['children']);
+            }
+        }
+
+        // remove temp files
+        @unlink($decFile);
+        @unlink($mp3File);
 	}
 
 	/**
@@ -166,17 +242,43 @@ class ContentSync {
 	}
 }
 
+// CLI only
 if (PHP_SAPI !== 'cli' || !empty($_SERVER['REMOTE_ADDR'])) {
     echo "CLI only." . PHP_EOL;
     exit(1);
 }
 
-$arg = getopt('c:');
+// setup arguments
+$arg = getopt('a:c:');
+$act = ['vol', 'sync'];
 
+// check action
+if (
+    !isset($arg['a'])
+    || $arg['a'] == false
+    || !in_array($arg['a'], $act)
+) {
+    echo sprintf(
+        "Action not specified/supported. Call with -a [%s]",
+        implode('|', $act)
+    ) . PHP_EOL;
+    exit(1);
+}
+
+// check content id
 if (!isset($arg['c']) || $arg['c'] == false) {
     echo "Content id missing. Call with -c some_content_id." . PHP_EOL;
     exit(1);
 }
 
-$cSync = new ContentSync($arg['c']);
-$cSync->sync();
+$cnt = new Content($arg['c']);
+
+switch ($arg['a']) {
+    case 'sync' :
+        $cnt->sync();
+    break;
+
+    case 'vol' :
+        $cnt->volume();
+    break;
+}
