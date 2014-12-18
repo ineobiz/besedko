@@ -6,12 +6,25 @@
 angular.module('ui.tree', []);
 angular.module('ngImgCrop', []);
 
+//cordova build app config, run
+/*
+webApp.config(['$compileProvider', function($compileProvider) {
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|file|blob|cdvfile):|data:(image|audio)\//);
+}]);
+webApp.run(['CONFIG', '$q', '$cordovaFile', function(config, $q, $cordovaFile) {
+}]);
+*/
+
 /**
  * Cordova events
  *
  * Test events with:
  * document.dispatchEvent(new CustomEvent("menubutton", { "msg": "some message" }));
  */
+document.addEventListener("deviceready", function() {
+    angular.bootstrap(angular.element(document.body)[0], ['webApp']);
+}, false);
+
 document.addEventListener("backbutton", function(ev) {
     // disable back button
     // @todo previous/last/close overlay (section) with event

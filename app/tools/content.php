@@ -53,6 +53,18 @@ class Content {
 	}
 
 	/**
+	 * Extract base64 encoded media
+	 */
+	public function decode() {
+	    $structure = $this->getContentStructure();
+
+	    $this->decodeMediaFiles($structure['content']);
+	    $this->decodeMediaFiles($structure['favorites']);
+
+	    return $this->responseMsg("Media files decoded and extracted.");
+	}
+
+	/**
 	 * Iterate content and sync image/audio relations
 	 *
 	 * @param array $content content branch
@@ -121,7 +133,6 @@ class Content {
 	 * Iterate content, boost audio volume on each file
 	 *
 	 * @param array $content content branch
-	 * @return false|array
 	 */
 	private function volumeBoost($content) {
 	    if (!is_array($content)) {
@@ -173,6 +184,30 @@ class Content {
         // remove temp files
         @unlink($decFile);
         @unlink($mp3File);
+	}
+
+	/**
+	 * Iterate content, extract base64 encoded media
+	 *
+	 * @param array $content content branch
+	 */
+	private function decodeMediaFiles($content) {
+	    if (!is_array($content)) {
+	        return;
+	    }
+
+	    foreach ($content as $child) {
+	        $encFile   = sprintf("%s/%s.image", $this->folder, $child['uid']);
+	        $decFile = sprintf("%s/%s.png", $this->folder, $child['uid']);
+
+	        if (is_file($encFile)) {
+	            file_put_contents($decFile, base64_decode(explode(',', file_get_contents($encFile))[1]));
+	        }
+
+	        if (!empty($child['children'])) {
+	            $this->decodeMediaFiles($child['children']);
+	        }
+	    }
 	}
 
 	/**
@@ -250,7 +285,7 @@ if (PHP_SAPI !== 'cli' || !empty($_SERVER['REMOTE_ADDR'])) {
 
 // setup arguments
 $arg = getopt('a:c:');
-$act = ['vol', 'sync'];
+$act = ['vol', 'sync', 'decode'];
 
 // check action
 if (
@@ -280,5 +315,9 @@ switch ($arg['a']) {
 
     case 'vol' :
         $cnt->volume();
+    break;
+
+    case 'decode' :
+        $cnt->decode();
     break;
 }

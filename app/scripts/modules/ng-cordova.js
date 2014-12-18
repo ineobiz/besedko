@@ -3,9 +3,11 @@
 /* jshint ignore:start */
 
 /**
- * custom NgCordova build, 0.1.4-alpha
+ * custom NgCordova build, 0.1.8-alpha
  */
-//#### Begin Individual Plugin Code####// install   :     cordova plugin add org.apache.cordova.file
+//#### Begin Individual Plugin Code####
+
+// install   :     cordova plugin add org.apache.cordova.file
 // link      :     https://github.com/apache/cordova-plugin-file/blob/master/doc/index.md
 
 // TODO: add functionality to define storage size in the getFilesystem() -> requestFileSystem() method
@@ -17,7 +19,7 @@
 angular.module('webApp')
 
 //Filesystem (checkDir, createDir, checkFile, creatFile, removeFile, writeFile, readFile)
-  .factory('$cordovaFile', ['$q', '$window', '$log', function ($q, $window, $log) {
+  .factory('$cordovaFile', ['$q', '$window', '$log', '$timeout', function ($q, $window, $log, $timeout) {
 
     return {
       checkDir: function (dir) {
@@ -31,8 +33,7 @@ angular.module('webApp')
       listDir: function (filePath) {
         var q = $q.defer();
 
-        getDirectory(filePath, {create: false})
-        .then(function (parent) {
+        getDirectory(filePath, {create: false}).then(function (parent) {
           var reader = parent.createReader();
           reader.readEntries(
             function (entries) {
@@ -75,8 +76,7 @@ angular.module('webApp')
           filePath = '/' + filePath + '/' + arguments[1];
         }
 
-        getFileEntry(filePath, {create: false})
-        .then(function (fileEntry) {
+        getFileEntry(filePath, {create: false}).then(function (fileEntry) {
           fileEntry.remove(q.resolve, q.reject);
         }, q.reject);
 
@@ -88,14 +88,13 @@ angular.module('webApp')
       writeFile: function (filePath, data, options) {
         var q = $q.defer();
 
-        getFileWriter(filePath, {create: true})
-        .then(function (fileWriter) {
-          if (options['append'] === true) {
+        getFileWriter(filePath, {create: true}).then(function (fileWriter) {
+          if (options && options['append'] === true) {
             // Start write position at EOF.
             fileWriter.seek(fileWriter.length);
           }
           fileWriter.onwriteend = function (evt) {
-            if (this.error) 
+            if (this.error)
               q.reject(this.error);
             else
               q.resolve(evt);
@@ -119,8 +118,7 @@ angular.module('webApp')
           filePath = '/' + filePath + '/' + arguments[1];
         }
 
-        getFile(filePath, {create: false})
-        .then(function(file) {
+        getFile(filePath, {create: false}).then(function (file) {
           getPromisedFileReader(q).readAsText(file);
         }, q.reject);
 
@@ -136,8 +134,7 @@ angular.module('webApp')
           filePath = '/' + filePath + '/' + arguments[1];
         }
 
-        getFile(filePath, {create: false})
-        .then(function(file) {
+        getFile(filePath, {create: false}).then(function (file) {
           getPromisedFileReader(q).readAsDataURL(file);
         }, q.reject);
 
@@ -152,8 +149,7 @@ angular.module('webApp')
           filePath = '/' + filePath + '/' + arguments[1];
         }
 
-        getFile(filePath, {create: false})
-        .then(function(file) {
+        getFile(filePath, {create: false}).then(function (file) {
           getPromisedFileReader(q).readAsBinaryString(file);
         }, q.reject);
 
@@ -168,8 +164,7 @@ angular.module('webApp')
           filePath = '/' + filePath + '/' + arguments[1];
         }
 
-        getFile(filePath, {create: false})
-        .then(function(file) {
+        getFile(filePath, {create: false}).then(function (file) {
           getPromisedFileReader(q).readAsArrayBuffer(file);
         }, q.reject);
 
@@ -182,8 +177,7 @@ angular.module('webApp')
 
       readFileAbsolute: function (filePath) {
         var q = $q.defer();
-        getAbsoluteFile(filePath)
-        .then(function(file) {
+        getAbsoluteFile(filePath).then(function (file) {
           getPromisedFileReader(q).readAsText(file);
         }, q.reject);
         return q.promise;
@@ -207,6 +201,13 @@ angular.module('webApp')
         var q = $q.defer();
         var fileTransfer = new FileTransfer();
         var uri = encodeURI(server);
+
+        if (options.timeout !== undefined && options.timeout !== null) {
+          $timeout(function () {
+            fileTransfer.abort();
+          }, options.timeout);
+          options.timeout = null;
+        }
 
         fileTransfer.onprogress = q.notify;
         fileTransfer.upload(filePath, uri, q.resolve, q.reject, options);
@@ -237,22 +238,20 @@ angular.module('webApp')
      */
     function getFile(path, options) {
       var q = $q.defer();
-      getFileEntry(path, options)
-      .then(function(fileEntry) {
+      getFileEntry(path, options).then(function (fileEntry) {
         fileEntry.file(q.resolve, q.reject);
       }, q.reject);
       return q.promise;
     }
 
-    /* 
+    /*
      * Returns a promise that will either be resolved with a FileWriter bound to the file identified
      * in the provided path or rejected if an error occurs while attempting to initialize
      * the writer.
      */
     function getFileWriter(path, options) {
       var q = $q.defer();
-      getFileEntry(path, options)
-      .then(function(fileEntry) {
+      getFileEntry(path, options).then(function (fileEntry) {
         fileEntry.createWriter(q.resolve, q.reject);
       }, q.reject);
       return q.promise;
@@ -265,36 +264,33 @@ angular.module('webApp')
      */
     function getFileEntry(path, options) {
       var q = $q.defer();
-      getFilesystem().then(
-        function (filesystem) {
-          filesystem.root.getFile(path, options, q.resolve, q.reject);
-        }, q.reject);
+      getFilesystem().then(function (filesystem) {
+        filesystem.root.getFile(path, options, q.resolve, q.reject);
+      }, q.reject);
       return q.promise;
     }
 
     /*
-     * Returns a promise that will either be resolved with the File object associated with the requested 
+     * Returns a promise that will either be resolved with the File object associated with the requested
      * absolute path, or rejected if an error occurs while trying to initialize that File object.
      */
     function getAbsoluteFile(path) {
       var q = $q.defer();
-      $window.resolveLocalFileSystemURL(path,
-        function (fileEntry) {
-          fileEntry.file(q.resolve, q.reject);
-        }, q.reject);
+      $window.resolveLocalFileSystemURL(path, function (fileEntry) {
+        fileEntry.file(q.resolve, q.reject);
+      }, q.reject);
       return q.promise;
     }
 
     /*
-     * Returns a promise that will either be resolved with the Directory object associated with 
+     * Returns a promise that will either be resolved with the Directory object associated with
      * the requested directory or rejected if an error occurs while atempting to access that directory.
      */
     function getDirectory(dir, options) {
       var q = $q.defer();
-      getFilesystem().then(
-        function(filesystem) {
-          filesystem.root.getDirectory(dir, options, q.resolve, q.resolve);
-        }, q.reject);
+      getFilesystem().then(function (filesystem) {
+        filesystem.root.getDirectory(dir, options, q.resolve, q.reject);
+      }, q.reject);
       return q.promise;
     }
 
@@ -305,7 +301,11 @@ angular.module('webApp')
      */
     function getFilesystem() {
       var q = $q.defer();
-      $window.requestFileSystem(LocalFileSystem.PERSISTENT, 1024 * 1024, q.resolve, q.reject); 
+      try {
+        $window.requestFileSystem($window.PERSISTENT, 1024 * 1024, q.resolve, q.reject);
+      } catch (err) {
+        q.reject(err);
+      }
       return q.promise;
     }
   }]);

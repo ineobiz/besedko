@@ -5,7 +5,7 @@
  * @name webApp.Content
  * @description Content factory
  */
-angular.module('webApp').factory('Content', ['CONFIG', '$http', 'md5', function (config, $http, md5) {
+angular.module('webApp').factory('Content', ['CONFIG', '$http', '$cordovaFile', '$q', 'md5', function (config, $http, $cordovaFile, $q, md5) {
     var url = 'data/sample.json',
         remote = config.remote || '',
         content = [],
@@ -218,6 +218,31 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', 'md5', function 
 		    return $http.get(
 	            remote + '/data/' + md5.createHash(credentials.email + credentials.password) + '/' + file
 	        );
+		},
+		getMobileFile: function(file, credentials, asText) {
+		    var
+		        folderHash = md5.createHash(credentials.email + credentials.password),
+		        remoteFile = remote + '/data/' + folderHash + '/' + file,
+		        localFile  = cordova.file.externalDataDirectory + folderHash + '/' + file,
+		        localPath  = localFile.substring(7, localFile.length),
+		        q = $q.defer()
+            ;
+
+            $cordovaFile.checkFile(localPath).then(
+                function(fileEntry) {
+                    q.resolve(asText ? $cordovaFile.readAsText(localPath) : fileEntry.toURL());
+                },
+                function() {
+                    $cordovaFile
+                        .downloadFile(remoteFile, localFile, true, {})
+                        .then(function(fileEntry) {
+                            q.resolve(asText ? $cordovaFile.readAsText(localPath) : fileEntry.toURL());
+                        })
+                    ;
+                }
+            );
+
+            return q.promise;
 		}
 	};
 }]);

@@ -107,18 +107,34 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
     var fetchRemotes = function (content) {
         angular.forEach(content, function(c) {
             if (c.hasOwnProperty('image') && c.image === true) {
+/*
                 Content
                     .getFile(c.uid + '.image', $rootScope.credentials)
                     .then(function(response) {
                         c.image = $sce.trustAsResourceUrl(response.data);
                     })
                 ;
+*/
+                Content
+                    .getMobileFile(c.uid + '.png', $rootScope.credentials)
+                    .then(function(url) {
+                        c.image = url;
+                    })
+                ;
             }
             if (c.hasOwnProperty('audio') && c.audio === true) {
+/*
                 Content
                     .getFile(c.uid + '.audio', $rootScope.credentials)
                     .then(function(response) {
                         c.audio = $sce.trustAsResourceUrl(response.data);
+                    })
+                ;
+*/
+                Content
+                    .getMobileFile(c.uid + '.audio', $rootScope.credentials, true)
+                    .then(function(url) {
+                        c.audio = $sce.trustAsResourceUrl(url);
                     })
                 ;
             }
