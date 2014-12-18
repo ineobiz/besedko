@@ -41,6 +41,10 @@ angular.module('webApp').factory('Authentication', ['CONFIG', '$http', '$rootSco
         }
     };
 
+    service.GetCredentials = function() {
+        return $rootScope.credentials;
+    };
+
     service.ClearCredentials = function() {
         $rootScope.credentials = false;
 

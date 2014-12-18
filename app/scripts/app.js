@@ -67,7 +67,15 @@ var webApp = angular
         $rootScope.$on('event::toggleFullscreen', function(event) {
             $rootScope.fullScreen = !$rootScope.fullScreen;
         });
-        
+
+        $rootScope.$on('event::loadContent', function(event, scope) {
+            var cred = Authentication.GetCredentials();
+            Content.get(cred).then(function(data) {
+                scope.content = Content.fetchRemotes(data.content, cred);
+                scope.favorites = Content.fetchRemotes(data.favorites, cred);
+            });
+        });
+
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
             $rootScope.title = current.$$route.title;
         });

@@ -5,13 +5,51 @@
  * @name webApp.Content
  * @description Content factory
  */
-angular.module('webApp').factory('Content', ['CONFIG', '$http', '$cordovaFile', '$q', 'md5', function (config, $http, $cordovaFile, $q, md5) {
+angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$cordovaFile', 'md5', function (config, $http, $sce, $q, $cordovaFile, md5) {
     var url = 'data/sample.json',
         remote = config.remote || '',
         content = [],
         favorites = [],
         promise
     ;
+
+    // fetch remote file
+    function getRemoteFile(file, credentials, asText) {
+        var
+            q = $q.defer(),
+            folderHash = md5.createHash(credentials.email + credentials.password),
+            remoteFile = remote + '/data/' + folderHash + '/' + file
+        ;
+
+        if (typeof cordova == 'object') {
+            var
+                localFile  = cordova.file.externalDataDirectory + folderHash + '/' + file,
+                localPath  = localFile.substring(7, localFile.length)
+            ;
+
+            $cordovaFile.checkFile(localPath).then(
+                function(fileEntry) {
+                    q.resolve(asText ? $cordovaFile.readAsText(localPath) : fileEntry.toURL());
+                },
+                function() {
+                    $cordovaFile
+                        .downloadFile(remoteFile, localFile, true, {})
+                        .then(function(fileEntry) {
+                            q.resolve(asText ? $cordovaFile.readAsText(localPath) : fileEntry.toURL());
+                        })
+                    ;
+                }
+            );
+        } else {
+            if (asText) {
+                return $http.get(remoteFile);
+            } else {
+                q.resolve(remoteFile);
+            }
+        }
+
+        return q.promise;
+    }
 
 	// process content
 	function processContent(root, callback) {
@@ -214,35 +252,28 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$cordovaFile', 
 		resetPromise: function(data) {
 		    promise = null;
 		},
-		getFile: function(file, credentials) {
-		    return $http.get(
-	            remote + '/data/' + md5.createHash(credentials.email + credentials.password) + '/' + file
-	        );
+		getFile: function(file, credentials, asText) {
+		    return getRemoteFile(file, credentials, asText);
 		},
-		getMobileFile: function(file, credentials, asText) {
-		    var
-		        folderHash = md5.createHash(credentials.email + credentials.password),
-		        remoteFile = remote + '/data/' + folderHash + '/' + file,
-		        localFile  = cordova.file.externalDataDirectory + folderHash + '/' + file,
-		        localPath  = localFile.substring(7, localFile.length),
-		        q = $q.defer()
-            ;
+		fetchRemotes: function(content, credentials) {
+	        angular.forEach(content, function(c) {
+	            if (c.hasOwnProperty('image') && c.image === true) {
+	                getRemoteFile(c.uid + '.png', credentials)
+	                    .then(function(url) {
+	                        c.image = url;
+	                    })
+	                ;
+	            }
+	            if (c.hasOwnProperty('audio') && c.audio === true) {
+	                getRemoteFile(c.uid + '.audio', credentials, true)
+	                    .then(function(response) {
+	                        c.audio = $sce.trustAsResourceUrl(response.data);
+	                    })
+	                ;
+	            }
+	        });
 
-            $cordovaFile.checkFile(localPath).then(
-                function(fileEntry) {
-                    q.resolve(asText ? $cordovaFile.readAsText(localPath) : fileEntry.toURL());
-                },
-                function() {
-                    $cordovaFile
-                        .downloadFile(remoteFile, localFile, true, {})
-                        .then(function(fileEntry) {
-                            q.resolve(asText ? $cordovaFile.readAsText(localPath) : fileEntry.toURL());
-                        })
-                    ;
-                }
-            );
-
-            return q.promise;
+	        return content;
 		}
 	};
 }]);

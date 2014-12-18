@@ -67,6 +67,11 @@ povej .carousel-control {
 	font-size: 27px;
 }
 
+povej .carousel-control.left,
+povej .carousel-control.right  {
+	top: 45%;
+}
+
 povej .pointer {
 	cursor: pointer;
 }

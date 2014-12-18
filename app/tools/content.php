@@ -81,7 +81,9 @@ class Content {
 			$data = $child;
 
 			foreach(['image', 'audio'] as $prop) {
-			    if (is_file(sprintf("%s/%s.%s", $this->folder, $child['uid'], $prop))) {
+			    $isImage  = $prop == 'image' ? true : false;
+
+			    if (is_file(sprintf("%s/%s.%s", $this->folder, $child['uid'], $isImage ? 'png' : $prop))) {
 			        $data[$prop] = true;
 			    } else {
 			        unset($data[$prop]);
@@ -117,7 +119,7 @@ class Content {
 	    foreach ($favorites as $child) {
 	        $data = $child;
         
-	        if (is_file(sprintf("%s/%s.%s", $this->folder, $child['uid'], $prop))) {
+	        if (is_file(sprintf("%s/%s.%s", $this->folder, $child['uid'], 'png'))) {
 	            $data[$prop] = true;
 	        } else {
 	            unset($data[$prop]);

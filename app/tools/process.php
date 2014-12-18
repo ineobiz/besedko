@@ -198,18 +198,23 @@ class Processor {
      * @return bool
      */
     private function processFiles($files, $folder) {
-        if (! is_array ( $files )) {
+        if (!is_array($files)) {
             return false;
         }
 
-        foreach ( $files as $type => $data ) {
-            foreach ( $data as $id => $base64 ) {
-                $filename = sprintf ( "%s/%s.%s", $folder, $id, $type );
+        foreach ($files as $type => $data) {
+            foreach ($data as $id => $base64) {
+                $isImage  = $type == 'image' ? true : false;
+                $filename = sprintf("%s/%s.%s", $folder, $id, $isImage ? 'png' : $type);
 
-                if (! empty ( $base64 )) {
-                    file_put_contents ( $filename, $base64 );
+                if (!empty($base64)) {
+                    $cnt = $isImage
+                        ? base64_decode(explode(',', $base64)[1])
+                        : $base64
+                    ;
+                    file_put_contents($filename, $cnt);
                 } else {
-                    @unlink ( $filename );
+                    @unlink($filename);
                 }
             }
         }

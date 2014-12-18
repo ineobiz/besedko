@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Content', function (config, $rootScope, $sce, Content) {
+angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (config, Content) {
     var favorites = {
         check : function(scope) {
             var found = this.find(scope);
@@ -77,7 +77,7 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
                 angular.isObject(selected.children) &&
                 selected.children.length
             ) {
-                scope.content = fetchRemotes(selected.children);
+                scope.content = Content.fetchRemotes(selected.children);
                 scope.parent.push(parent);
                 scope.navLevel += 1;
                 scope.currentPage = 0;
@@ -103,57 +103,13 @@ angular.module('webApp').directive('povej', ['CONFIG', '$rootScope', '$sce', 'Co
         }
     };
 
-    // @todo move to Content service (use same data as editor)
-    var fetchRemotes = function (content) {
-        angular.forEach(content, function(c) {
-            if (c.hasOwnProperty('image') && c.image === true) {
-/*
-                Content
-                    .getFile(c.uid + '.image', $rootScope.credentials)
-                    .then(function(response) {
-                        c.image = $sce.trustAsResourceUrl(response.data);
-                    })
-                ;
-*/
-                Content
-                    .getMobileFile(c.uid + '.png', $rootScope.credentials)
-                    .then(function(url) {
-                        c.image = url;
-                    })
-                ;
-            }
-            if (c.hasOwnProperty('audio') && c.audio === true) {
-/*
-                Content
-                    .getFile(c.uid + '.audio', $rootScope.credentials)
-                    .then(function(response) {
-                        c.audio = $sce.trustAsResourceUrl(response.data);
-                    })
-                ;
-*/
-                Content
-                    .getMobileFile(c.uid + '.audio', $rootScope.credentials, true)
-                    .then(function(url) {
-                        c.audio = $sce.trustAsResourceUrl(url);
-                    })
-                ;
-            }
-        });
-
-        return content;
-    };
-
     return {
         restrict: 'E',
         templateUrl: function(elem,attrs) {
             return 'views/directives/' + (attrs.templateUrl || 'povej') + '.html';
         },
         link: function(scope, element, attrs) {
-            // @todo move $rootScope.credentials to service
-            Content.get($rootScope.credentials).then(function(data) {
-                scope.content = fetchRemotes(data.content);
-                scope.favorites = fetchRemotes(data.favorites);
-            });
+            scope.$emit('event::loadContent', scope);
 
             scope.buttons = config.povej.buttons;
             scope.favorites = [], scope.playlist = [], scope.parent = [], scope.navPos = {},

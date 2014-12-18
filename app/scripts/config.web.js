@@ -10,3 +10,6 @@ angular.module('webApp').constant('CONFIG', {
         }
     }
 });
+
+// disable cordova file plugin
+angular.module('webApp').factory('$cordovaFile', [function(){}]);

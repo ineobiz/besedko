@@ -54,9 +54,9 @@ angular.module('webApp')
             // @todo move to service?
             if (content.image && content.image === true) {
                 Content
-                    .getFile(content.uid + '.image', $scope.credentials)
-                    .then(function(response) {
-                        $scope.contentSelected.image = $sce.trustAsResourceUrl(response.data);
+                    .getFile(content.uid + '.png', $scope.credentials)
+                    .then(function(url) {
+                        $scope.contentSelected.image = url;
                     })
                 ;
             }
@@ -96,9 +96,9 @@ angular.module('webApp')
             // @todo move to service?
             if (favorite.image && favorite.image === true) {
                 Content
-                    .getFile(favorite.uid + '.image', $scope.credentials)
-                    .then(function(response) {
-                        $scope.favoriteSelected.image = $sce.trustAsResourceUrl(response.data);
+                    .getFile(favorite.uid + '.png', $scope.credentials)
+                    .then(function(url) {
+                        $scope.favoriteSelected.image = url;
                     })
                 ;
             }
