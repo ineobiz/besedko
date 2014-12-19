@@ -93,7 +93,11 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
 	        }
 
 	        ['image', 'audio'].forEach(function(key) {
-	            if (angular.isObject(node[key]) || angular.isString(node[key])) {
+	            if (
+                    angular.isObject(node[key])
+                    || angular.isString(node[key])
+                    || node[key] === true
+                ) {
 	                node[key] = true;
 	            } else {
 	                delete node[key];
@@ -137,7 +141,11 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
             }
 
             ['image'].forEach(function(key) {
-                if (angular.isObject(node[key]) || angular.isString(node[key])) {
+                if (
+                    angular.isObject(node[key])
+                    || angular.isString(node[key])
+                    || node[key] === true
+                ) {
                     node[key] = true;
                 } else {
                     delete node[key];
@@ -194,16 +202,22 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
                     promise = $http
                         .get(remote + '/process', {
                             headers: {
-                            'Auth-Credentials': credentials.email + ':' + credentials.password
+                                'Auth-Credentials': credentials.email + ':' + credentials.password
                             }
                         })
                         .then(function(response) {
+                            content   = response.data.content;
+                            favorites = response.data.favorites;
+
                             return response.data;
                         })
                     ;
 			    } else {
                     promise = $http
                         .get(url).then(function(response) {
+                            content   = response.data.content;
+                            favorites = response.data.favorites;
+
                             return response.data;
                         })
                     ;
@@ -211,7 +225,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
 			}
 			return promise;
 		},
-		set: function(credentials, uploadIds, response) {
+		set: function(credentials, content, favorites, uploadIds, response) {
 		    var
 		        cnt = [], fav = [],
 		        fls = { image: {}, audio: {} }
@@ -275,7 +289,6 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
 		resetPromise: function(data) {
 		    promise = null;
 		},
-		// @todo update editor, remove when done
 		getFile: function(file, credentials, asText) {
 		    return getRemoteFile(file, credentials, asText);
 		},

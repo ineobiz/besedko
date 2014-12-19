@@ -34,11 +34,10 @@ angular.module('webApp')
                 $scope.contentSelected.color = 'white';
             }
 
-            if (content.audio) {
-                // @todo move to service?
+            if (content.audio && content.audio === true) {
                 if (content.audio === true) {
                     Content
-                        .getFile(content.uid + '.audio', $scope.credentials)
+                        .getFile(content.uid + '.audio', $scope.credentials, true)
                         .then(function(response) {
                             $scope.contentSelected.audio = $sce.trustAsResourceUrl(response.data);
                         })
@@ -237,7 +236,7 @@ angular.module('webApp')
             $scope.uploading = true;
             $scope.uploadError = false;
 
-            Content.set($rootScope.credentials, $scope.uploadIds, function (response){
+            Content.set($rootScope.credentials, $scope.content, $scope.favorites, $scope.uploadIds, function (response){
                 $scope.uploadError = $scope.uploading = $scope.contentUpdated = false;
 
                 if (!response) {
@@ -296,6 +295,6 @@ angular.module('webApp')
         // enable upload button when content gets updated
         $scope.updated = function() {
             $scope.contentUpdated = true;
-        }
+        };
     }])
 ;
