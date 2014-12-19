@@ -13,6 +13,16 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
         promise
     ;
 
+    function localStructurePath(credentials, fullPath) {
+        var loc =
+            cordova.file.externalDataDirectory
+            + md5.createHash(credentials.email + credentials.password)
+        ;
+
+        // strip everything before Android in 'file:///storage/sdcard0/Android/...'
+        return fullPath ? loc : loc.substring(loc.indexOf('Android'), loc.length);
+    }
+
     // fetch remote file
     function getRemoteFile(file, credentials, asText) {
         var
@@ -24,7 +34,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
         if (typeof cordova == 'object') {
             var
                 localFile  = cordova.file.externalDataDirectory + folderHash + '/' + file,
-                localPath  = localFile.substring(7, localFile.length)
+                localPath  = localFile.substring(localFile.indexOf('Android'), localFile.length)
             ;
 
             $cordovaFile.checkFile(localPath).then(
@@ -49,6 +59,28 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
         }
 
         return q.promise;
+    }
+
+    // fetch all remote files
+    function getAllRemoteFiles(content) {
+        var
+            files = [],
+            children = []
+        ;
+
+        angular.forEach(content, function(c) {
+            if (c.hasOwnProperty('image') && c.image === true) {
+                files.push(c.uid + '.png');
+            }
+            if (c.hasOwnProperty('audio') && c.audio === true) {
+                files.push(c.uid + '.audio');
+            }
+            if (c.hasOwnProperty('children') && c.children.length) {
+                children = children.concat(getAllRemoteFiles(c.children));
+            }
+        });
+
+        return files.concat(children);
     }
 
 	// process content
@@ -159,38 +191,29 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
 		get: function(credentials) {
 			if (!promise) {
 			    if (angular.isObject(credentials)) {
-			        promise = $http.get(remote + '/process', {
+                    promise = $http
+                        .get(remote + '/process', {
                             headers: {
-                                'Auth-Credentials': credentials.email + ':' + credentials.password
+                            'Auth-Credentials': credentials.email + ':' + credentials.password
                             }
-                        }).then(function(response) {
-                            content = response.data.content || [];
-                            favorites = response.data.favorites || [];
-
-                            return {
-                                content : content,
-                                favorites : favorites
-                            };
-                        });
+                        })
+                        .then(function(response) {
+                            return response.data;
+                        })
+                    ;
 			    } else {
-	                promise = $http.get(url).then(function(response) {
-                        content = response.data.content || [];
-                        favorites = response.data.favorites || [];
-
-                        return {
-                            content : content,
-                            favorites : favorites
-                        };
-
-	                });
+                    promise = $http
+                        .get(url).then(function(response) {
+                            return response.data;
+                        })
+                    ;
 			    }
 			}
 			return promise;
 		},
 		set: function(credentials, uploadIds, response) {
 		    var
-		        cnt = [],
-		        fav = [],
+		        cnt = [], fav = [],
 		        fls = { image: {}, audio: {} }
 	        ;
 
@@ -252,6 +275,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
 		resetPromise: function(data) {
 		    promise = null;
 		},
+		// @todo update editor, remove when done
 		getFile: function(file, credentials, asText) {
 		    return getRemoteFile(file, credentials, asText);
 		},
@@ -264,16 +288,106 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
 	                    })
 	                ;
 	            }
+
 	            if (c.hasOwnProperty('audio') && c.audio === true) {
 	                getRemoteFile(c.uid + '.audio', credentials, true)
 	                    .then(function(response) {
-	                        c.audio = $sce.trustAsResourceUrl(response.data);
+	                        c.audio = $sce.trustAsResourceUrl(
+                                typeof response == 'object'
+                                    ? response.data
+                                    : response
+                            );
 	                    })
 	                ;
 	            }
 	        });
 
 	        return content;
+		},
+		fetchAllRemotes: function(structure, credentials) {
+		    var
+		        q = $q.defer(),
+		        cnt = [], fav = [], all = []
+		    ;
+
+		    if (structure.content.length) {
+		        cnt = getAllRemoteFiles(structure.content);
+		    }
+
+		    if (structure.favorites.length) {
+		        fav = getAllRemoteFiles(structure.favorites);
+		    }
+
+		    angular.forEach(cnt.concat(fav), function(file) {
+		        if (file.indexOf("audio", file.length - "audio".length) !== -1) {
+		            all.push(getRemoteFile(file, credentials, true));
+		        } else {
+		            all.push(getRemoteFile(file, credentials));
+		        }
+		    });
+
+		    return $q.all(all);
+		},
+		isLocalStructure: function(credentials) {
+            if (
+                typeof cordova !== 'object'
+                || !angular.isObject(credentials)
+            ) {
+                var q = $q.defer();
+                q.reject();
+                return q.promise;
+            }
+
+            var localFile = localStructurePath(credentials) + '.json';
+
+            return $cordovaFile.checkFile(localFile);
+		},
+		saveLocalStructure: function(data, credentials) {
+		    if (
+	            typeof cordova !== 'object'
+		        || !angular.isObject(credentials)
+		        || data.email != credentials.email
+	        ) {
+		        return;
+		    }
+
+		    var localFile = localStructurePath(credentials) + '.json';
+
+		    $cordovaFile.writeFile(localFile, data, {});
+/*
+		    // @todo check if local file exists, and timestamp differs
+		    if (this.isLocalStructure(credentials)) {
+		        console.log([ "saveLocalStructure :: found local structure, reading", localFile]);
+
+		        $cordovaFile.readAsText(localFile).then(function(localStruct) {
+		            console.log([ "saveLocalStructure :: found local structure check timestamp", localStruct]);
+		            localStruct = JSON.parse(localStruct);
+		            console.log([ "saveLocalStructure :: check if ", structData.timestamp, " = ", data.timestamp]);
+
+		            if (structData.timestamp != data.timestamp) {
+		                console.log([ "overwriting", ]);
+		                $cordovaFile.writeFile(localFile, data, {});
+		            };
+		        },function(error) { console.log([ " saveLocalStructure :: local structure could not be read to check timestamp", ]);});
+		    } else {
+                console.log([ "saveLocalStructure :: local structure not found, writing", localFile]);
+                $cordovaFile.writeFile(localFile, data, {});
+		    }
+*/
+		},
+		getLocalStructure: function(credentials) {
+		    if (
+	            typeof cordova !== 'object'
+                || !angular.isObject(credentials)
+            ) {
+                var q = $q.defer();
+                q.reject();
+                return q.promise;
+		    }
+
+		    var localFile = localStructurePath(credentials) + '.json';
+
+		    return $cordovaFile.readAsText(localFile);
 		}
 	};
 }]);

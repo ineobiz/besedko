@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (config, Content) {
+angular.module('webApp').directive('povej', ['CONFIG', 'Authentication', 'Content', function (config, Authentication, Content) {
     var favorites = {
         check : function(scope) {
             var found = this.find(scope);
@@ -77,13 +77,15 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (conf
                 angular.isObject(selected.children) &&
                 selected.children.length
             ) {
-                scope.content = Content.fetchRemotes(selected.children);
+                scope.content = Content.fetchRemotes(
+                    selected.children,
+                    Authentication.GetCredentials()
+                );
                 scope.parent.push(parent);
                 scope.navLevel += 1;
                 scope.currentPage = 0;
                 scope.navPos[scope.navLevel] = scope.currentPage;
             }
-
             if (
                 selected.audio &&
                 scope.playlist.length < 5
@@ -109,7 +111,7 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (conf
             return 'views/directives/' + (attrs.templateUrl || 'povej') + '.html';
         },
         link: function(scope, element, attrs) {
-            scope.$emit('event::loadContent', scope);
+            scope.$emit('content::load', scope);
 
             scope.buttons = config.povej.buttons;
             scope.favorites = [], scope.playlist = [], scope.parent = [], scope.navPos = {},
@@ -177,15 +179,15 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Content', function (conf
             });
 
             scope.toggleFS = function() {
-                scope.$emit('event::toggleFullscreen');
+                scope.$emit('ui::toggleFullscreen');
             };
 
             scope.keyboard = function() {
-                scope.$emit('event::openKeyboard');
+                scope.$emit('ui::openKeyboard');
             };
 
             scope.bigImage = function(index) {
-                scope.$emit('event::showBigImage', index);
+                scope.$emit('ui::showBigImage', index);
             };
         }
     };

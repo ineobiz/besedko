@@ -5,7 +5,8 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
     var reloadContent = function(scope) {
         scope.playlist = [];
         Content.resetPromise();
-        scope.$emit('event::loadContent', scope);
+        // @todo check/load local content if available
+        scope.$emit('content::load', scope);
     };
 
     return {
@@ -46,7 +47,7 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
                         scope.section = 'settings';
                         reloadContent(scope);
                     }).error(function() {
-                        //scope.error = 'Napačni dostopni podatki.';
+                        //@todo error indicator
                         scope.loginCheck = false;
                     })
                 ;
@@ -54,6 +55,9 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
 
             // sync data
             scope.buttonSync = function() {
+                // @todo fetch timestamp from current structure
+                // @todo disable when clicked
+                // @todo reset page position
                 reloadContent(scope);
             };
 
@@ -64,17 +68,27 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
             };
 
             // open keyboard
-            scope.$on('event::openKeyboard', function(event) {
+            scope.$on('ui::openKeyboard', function(event) {
                 scope.actSection('keyboard');
                 // @todo focus() on input element
             });
 
             // show big image on long press
-            scope.$on('event::showBigImage', function(event, index) {
+            scope.$on('ui::showBigImage', function(event, index) {
                 scope.imgData = scope.playlist[index];
                 scope.player.playPause();
                 scope.player.play(index, true);
                 scope.actSection('bigimage');
+            });
+
+            // content loaded
+            scope.$on('content::loaded', function(event, data) {
+                // @todo fetch all data
+/*
+                Content.fetchAllRemotes(data, Authentication.GetCredentials()).then(function() {
+                    // @todo enable sync button, ...
+                });
+*/
             });
 
             // close big image when player stops

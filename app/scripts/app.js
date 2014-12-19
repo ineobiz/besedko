@@ -64,16 +64,40 @@ var webApp = angular
         // @todo persist via localstorage?
         $rootScope.fullScreen = false;
 
-        $rootScope.$on('event::toggleFullscreen', function(event) {
+        $rootScope.$on('ui::toggleFullscreen', function(event) {
             $rootScope.fullScreen = !$rootScope.fullScreen;
         });
 
-        $rootScope.$on('event::loadContent', function(event, scope) {
-            var cred = Authentication.GetCredentials();
-            Content.get(cred).then(function(data) {
-                scope.content = Content.fetchRemotes(data.content, cred);
-                scope.favorites = Content.fetchRemotes(data.favorites, cred);
-            });
+        $rootScope.$on('content::load', function(event, scope) {
+            var credentials = Authentication.GetCredentials();
+
+            var setupScope = function(data) {
+                if (!angular.isObject(data)) {
+                    data = JSON.parse(data);
+                }
+
+                scope.content = Content.fetchRemotes(data.content, credentials);
+                scope.favorites = Content.fetchRemotes(data.favorites, credentials);
+
+                Content.saveLocalStructure(data, credentials);
+
+                $rootScope.$broadcast('content::loaded', data);
+            };
+
+            Content.isLocalStructure(credentials).then(
+                function() {
+                    Content
+                        .getLocalStructure(credentials)
+                        .then(setupScope)
+                    ;
+                },
+                function() {
+                    Content
+                        .get(credentials)
+                        .then(setupScope)
+                    ;
+                }
+            );
         });
 
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
