@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentication', 'Content', function (config, $timeout, Authentication, Content) {
-    // @todo call via event from someplace else?
-    var reloadContent = function(scope) {
+    var reloadContent = function(scope, sync) {
         scope.playlist = [];
         Content.resetPromise();
-        // @todo check/load local content if available
-        scope.$emit('content::load', scope);
+        scope.syncDisabled = true;
+        scope.$emit('content::load', scope, sync);
     };
 
     return {
@@ -18,6 +17,7 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
             // defaults
             var defaultSection = 'settings';
             scope.isOverlayVisible = false;
+            scope.syncDisabled = false;
             scope.section = defaultSection;
             scope.kbdText = null;
             scope.imgData = null;
@@ -38,6 +38,7 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
             scope.login = function() {
                 scope.loginCheck = true;
 
+                // @todo check local file first
                 Authentication
                     .Login(scope.email, scope.password)
                     .success(function() {
@@ -55,10 +56,7 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
 
             // sync data
             scope.buttonSync = function() {
-                // @todo fetch timestamp from current structure
-                // @todo disable when clicked
-                // @todo reset page position
-                reloadContent(scope);
+                reloadContent(scope, true);
             };
 
             // logout
@@ -83,12 +81,8 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
 
             // content loaded
             scope.$on('content::loaded', function(event, data) {
-                // @todo fetch all data
-/*
-                Content.fetchAllRemotes(data, Authentication.GetCredentials()).then(function() {
-                    // @todo enable sync button, ...
-                });
-*/
+                scope.currentPage = 0;
+                scope.syncDisabled = false;
             });
 
             // close big image when player stops

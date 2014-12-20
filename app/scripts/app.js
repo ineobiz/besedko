@@ -61,14 +61,13 @@ var webApp = angular
             $rootScope.activetab = newVal;
         });
 
-        // @todo persist via localstorage?
         $rootScope.fullScreen = false;
 
         $rootScope.$on('ui::toggleFullscreen', function(event) {
             $rootScope.fullScreen = !$rootScope.fullScreen;
         });
 
-        $rootScope.$on('content::load', function(event, scope) {
+        $rootScope.$on('content::load', function(event, scope, sync) {
             var credentials = Authentication.GetCredentials();
 
             var setupScope = function(data) {
@@ -76,26 +75,24 @@ var webApp = angular
                     data = JSON.parse(data);
                 }
 
-                scope.content = Content.fetchRemotes(data.content, credentials);
-                scope.favorites = Content.fetchRemotes(data.favorites, credentials);
+                Content.saveLocalStructure(data, credentials).then(function() {
+                    scope.content = Content.fetchRemotes(data.content, credentials);
+                    scope.favorites = Content.fetchRemotes(data.favorites, credentials);
 
-                Content.saveLocalStructure(data, credentials);
-
-                $rootScope.$broadcast('content::loaded', data);
+                    $rootScope.$broadcast('content::loaded', data);
+                });
             };
 
             Content.isLocalStructure(credentials).then(
                 function() {
-                    Content
-                        .getLocalStructure(credentials)
-                        .then(setupScope)
-                    ;
+                    if (sync) {
+                        Content.get(credentials).then(setupScope);
+                    } else {
+                        Content.getLocalStructure(credentials).then(setupScope);
+                    }
                 },
                 function() {
-                    Content
-                        .get(credentials)
-                        .then(setupScope)
-                    ;
+                    Content.get(credentials).then(setupScope);
                 }
             );
         });

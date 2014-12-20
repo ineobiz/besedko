@@ -61,22 +61,22 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
         return q.promise;
     }
 
-    // fetch all remote files
-    function getAllRemoteFiles(content) {
+    // fetch changed remote files
+    function getChangedFilesList(content, mTime) {
         var
             files = [],
             children = []
         ;
 
         angular.forEach(content, function(c) {
-            if (c.hasOwnProperty('image') && c.image === true) {
+            if (c.hasOwnProperty('image') && c.image === true && (!mTime || c.ts > mTime)) {
                 files.push(c.uid + '.png');
             }
-            if (c.hasOwnProperty('audio') && c.audio === true) {
+            if (c.hasOwnProperty('audio') && c.audio === true && (!mTime || c.ts > mTime)) {
                 files.push(c.uid + '.audio');
             }
             if (c.hasOwnProperty('children') && c.children.length) {
-                children = children.concat(getAllRemoteFiles(c.children));
+                children = children.concat(getChangedFilesList(c.children), mTime);
             }
         });
 
@@ -107,7 +107,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
 
 	    function contentCleanup(node, callback) {
 	        for(var key in node) {
-	            if (['uid','label','color','image','audio','children'].indexOf(key) == -1) {
+	            if (['uid','ts','label','color','image','audio','children'].indexOf(key) == -1) {
 	                delete node[key];
 	            }
 	        }
@@ -135,7 +135,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
 
         function favoriteCleanup(node, callback) {
             for(var key in node) {
-                if (['uid','label','color','image', 'content'].indexOf(key) == -1) {
+                if (['uid','ts','label','color','image', 'content'].indexOf(key) == -1) {
                     delete node[key];
                 }
             }
@@ -193,6 +193,32 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
         }
 
         return results;
+    }
+
+    function fetchChangedFiles(structure, credentials, mTime) {
+        var cnt = [], fav = [], all = [];
+
+        if (structure.content.length) {
+            cnt = getChangedFilesList(structure.content, mTime);
+        }
+
+        if (structure.favorites.length) {
+            fav = getChangedFilesList(structure.favorites, mTime);
+        }
+
+        angular.forEach(cnt.concat(fav), function(file) {
+            all.push($cordovaFile.removeFile(
+                localStructurePath(credentials) + '/' + file)
+            );
+
+            if (file.indexOf("audio", file.length - "audio".length) !== -1) {
+                all.push(getRemoteFile(file, credentials, true));
+            } else {
+                all.push(getRemoteFile(file, credentials));
+            }
+        });
+
+        return $q.all(all);
     }
 
 	return {
@@ -317,30 +343,6 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
 
 	        return content;
 		},
-		fetchAllRemotes: function(structure, credentials) {
-		    var
-		        q = $q.defer(),
-		        cnt = [], fav = [], all = []
-		    ;
-
-		    if (structure.content.length) {
-		        cnt = getAllRemoteFiles(structure.content);
-		    }
-
-		    if (structure.favorites.length) {
-		        fav = getAllRemoteFiles(structure.favorites);
-		    }
-
-		    angular.forEach(cnt.concat(fav), function(file) {
-		        if (file.indexOf("audio", file.length - "audio".length) !== -1) {
-		            all.push(getRemoteFile(file, credentials, true));
-		        } else {
-		            all.push(getRemoteFile(file, credentials));
-		        }
-		    });
-
-		    return $q.all(all);
-		},
 		isLocalStructure: function(credentials) {
             if (
                 typeof cordova !== 'object'
@@ -355,39 +357,46 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
 
             return $cordovaFile.checkFile(localFile);
 		},
-		saveLocalStructure: function(data, credentials) {
-		    if (
-	            typeof cordova !== 'object'
-		        || !angular.isObject(credentials)
-		        || data.email != credentials.email
-	        ) {
-		        return;
-		    }
+        saveLocalStructure: function(data, credentials) {
+            var q = $q.defer();
 
-		    var localFile = localStructurePath(credentials) + '.json';
+            if (
+                typeof cordova !== 'object'
+                || !angular.isObject(credentials)
+                || data.email != credentials.email
+            ) {
+                q.resolve();
+                return q.promise;
+            }
 
-		    $cordovaFile.writeFile(localFile, data, {});
-/*
-		    // @todo check if local file exists, and timestamp differs
-		    if (this.isLocalStructure(credentials)) {
-		        console.log([ "saveLocalStructure :: found local structure, reading", localFile]);
+            var localFile = localStructurePath(credentials) + '.json';
 
-		        $cordovaFile.readAsText(localFile).then(function(localStruct) {
-		            console.log([ "saveLocalStructure :: found local structure check timestamp", localStruct]);
-		            localStruct = JSON.parse(localStruct);
-		            console.log([ "saveLocalStructure :: check if ", structData.timestamp, " = ", data.timestamp]);
+            $cordovaFile.readAsText(localFile).then(
+                function(localData) {
+                    localData = JSON.parse(localData);
+                    if (localData.timestamp != data.timestamp) {
+                        $cordovaFile.writeFile(localFile, data, {}).then(function(){
+                            fetchChangedFiles(data, credentials, localData.timestamp)
+                                .then(function() {
+                                    q.resolve();
+                                })
+                            ;
+                        });
+                    } else {
+                        q.resolve();
+                    }
+                },
+                function() {
+                    $cordovaFile.writeFile(localFile, data, {}).then(function() {
+                        fetchChangedFiles(data, credentials).then(function() {
+                            q.resolve();
+                        });
+                    });
+                }
+            );
 
-		            if (structData.timestamp != data.timestamp) {
-		                console.log([ "overwriting", ]);
-		                $cordovaFile.writeFile(localFile, data, {});
-		            };
-		        },function(error) { console.log([ " saveLocalStructure :: local structure could not be read to check timestamp", ]);});
-		    } else {
-                console.log([ "saveLocalStructure :: local structure not found, writing", localFile]);
-                $cordovaFile.writeFile(localFile, data, {});
-		    }
-*/
-		},
+            return q.promise;
+        },
 		getLocalStructure: function(credentials) {
 		    if (
 	            typeof cordova !== 'object'

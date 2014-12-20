@@ -112,12 +112,16 @@ class Processor {
 		$file = $this->getUserFile($auth[0], $auth[1]);
 		$folder  = $this->getUserFolder($auth[0], $auth[1]);
 		$request = $this->getRequest();
+		$mFiles  = array_flip(array_merge(
+			array_keys($request['files']['image']),
+			array_keys($request['files']['audio'])
+		));
 
 		$data = [
 			'email'     => $auth[0],
 			'timestamp' => $this->time,
-			'content'   => $this->processContent($request['content']),
-			'favorites' => $this->processFavorites($request['favorites'])
+			'content'   => $this->processContent($request['content'], $mFiles),
+			'favorites' => $this->processFavorites($request['favorites'], $mFiles)
 		];
 
 		return file_put_contents($file, json_encode($data)) && $this->processFiles($request['files'], $folder)
@@ -130,9 +134,10 @@ class Processor {
 	 * Recursion for processing valid content data
 	 *
 	 * @param array $content content branch
+	 * @param array $files   modified files
 	 * @return false|array
 	 */
-	private function processContent($content) {
+	private function processContent($content, $files) {
 		if (!is_array($content)) {
 			return false;
 		}
@@ -142,17 +147,21 @@ class Processor {
 	    foreach ($content as $child) {
 			$data = [];
 
-			foreach(['uid', 'label', 'color', 'image', 'audio'] as $prop) {
+			foreach(['uid', 'ts', 'label', 'color', 'image', 'audio'] as $prop) {
 				if (isset($child[$prop])) {
 					$data[$prop] = $child[$prop];
 				}
 			}
 
 	    	if (!empty($child['children'])) {
-	    		$data['children'] = $this->processContent($child['children']);
+                $data['children'] = $this->processContent($child['children'], $files);
 	    	} else {
 	    		unset($data['children']);
 	    	}
+
+            if (!isset($child['ts']) || isset($files[$child['uid']])) {
+                $data['ts'] = $this->time;
+            }
 
 			$response[] = $data;
 	    }
@@ -176,10 +185,14 @@ class Processor {
 	    foreach ($favorites as $child) {
 			$data = [];
 
-			foreach(['uid', 'label', 'color', 'image', 'content'] as $prop) {
+			foreach(['uid', 'ts', 'label', 'color', 'image', 'content'] as $prop) {
 				if (isset($child[$prop])) {
 					$data[$prop] = $child[$prop];
 				}
+			}
+
+			if (!isset($child['ts']) || isset($files[$child['uid']])) {
+			    $data['ts'] = $this->time;
 			}
 
 	    	$response[] = $data;
