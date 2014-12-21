@@ -75,7 +75,7 @@ var webApp = angular
                     data = JSON.parse(data);
                 }
 
-                Content.saveLocalStructure(data, credentials).then(function() {
+                Content.saveLocalStructure(data, credentials).finally(function() {
                     scope.content = Content.fetchRemotes(data.content, credentials);
                     scope.favorites = Content.fetchRemotes(data.favorites, credentials);
 

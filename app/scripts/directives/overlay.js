@@ -68,7 +68,12 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
             // open keyboard
             scope.$on('ui::openKeyboard', function(event) {
                 scope.actSection('keyboard');
-                // @todo focus() on input element
+/*
+                // @todo keyboard popup
+                $timeout(function() {
+                    angular.element(document.querySelector('#kbdText'))[0].focus();
+                });
+*/
             });
 
             // show big image on long press
@@ -81,7 +86,11 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
 
             // content loaded
             scope.$on('content::loaded', function(event, data) {
+                //@todo goto first page
+/*
+                scope.navLevel = 0;
                 scope.currentPage = 0;
+*/
                 scope.syncDisabled = false;
             });
 

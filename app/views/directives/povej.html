@@ -24,7 +24,7 @@
 		<div class="row carousel" ng-if="content.length">
 			<div class="col-lg-3 col-md-3 col-xs-3 thumb center-content" ng-repeat="c in content | startFrom:currentPage*pageSize | limitTo:pageSize">
 				<a class="thumbnail" ng-click="select(c, content)">
-					<img class="img-responsive" alt="{{c.label}}" ng-src="{{c.image ? (c.image + '?' + c.ts) : null}}" src="data:image/gif;base64,R0lGODdhLAEsAcIAAP///wAAAN/f339/fx8fH5+fn7+/v19fXywAAAAALAEsAQAD/gi63P4wykmrvTjrzbv/YCiOZGmeaKqubOu+cCzPdG3feK7vfO//wKBwSCwaj8ikcslsOp/QqHRKrVqv2Kx2y+16v+CweEwum8/otHrNbrvf8Lh8Tq/b7/i8fs/v+/+AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq+wsbKztLW2t7i5uru8vb6/wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2Nna29zd3t/g4eLj5OXm5+jp6uvs7e7v8PHy8/T19vf4+fr7/P3+/wADChxIsKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzI5LGjx48gQ4ocSbKkyZMoU6pcybKlS5QCBhAIEIDAAAErC9DcudNASp08g/o0KSCo0QA4Sw44GnSAyZlMdxIwGTUo1ao7n2KtafLA1gNEtyYtCZRpgZ9mV8aEanPsy7dw48qdS7eu3bt48+rdy7ev37+AAwseTLiw4cOIEytezLix48eQI0ueTLmy5cuYM2vezLmz58+gQ4seTbq06dOoU6tezbq169ewY8ueTbu27du4c+vezbu379/AgwsfTry48ePIkytfzry58+fQo0ufTr269evYs2vfzr279+/gw4sfT75vAgA7" />
+					<img class="img-responsive" alt="{{c.label}}" ng-src="{{c.image}}" src="data:image/gif;base64,R0lGODdhLAEsAcIAAP///wAAAN/f339/fx8fH5+fn7+/v19fXywAAAAALAEsAQAD/gi63P4wykmrvTjrzbv/YCiOZGmeaKqubOu+cCzPdG3feK7vfO//wKBwSCwaj8ikcslsOp/QqHRKrVqv2Kx2y+16v+CweEwum8/otHrNbrvf8Lh8Tq/b7/i8fs/v+/+AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq+wsbKztLW2t7i5uru8vb6/wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2Nna29zd3t/g4eLj5OXm5+jp6uvs7e7v8PHy8/T19vf4+fr7/P3+/wADChxIsKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzI5LGjx48gQ4ocSbKkyZMoU6pcybKlS5QCBhAIEIDAAAErC9DcudNASp08g/o0KSCo0QA4Sw44GnSAyZlMdxIwGTUo1ao7n2KtafLA1gNEtyYtCZRpgZ9mV8aEanPsy7dw48qdS7eu3bt48+rdy7ev37+AAwseTLiw4cOIEytezLix48eQI0ueTLmy5cuYM2vezLmz58+gQ4seTbq06dOoU6tezbq169ewY8ueTbu27du4c+vezbu379/AgwsfTry48ePIkytfzry58+fQo0ufTr269evYs2vfzr279+/gw4sfT75vAgA7" />
 					<span class="caption" ng-class="c.color ? c.color : 'white'">{{c.label}}</span>
 				</a>
 			</div>
@@ -37,7 +37,7 @@
 		<div class="btn-group">
 			<!-- <button type="button" class="btn btn-default navbar-btn" ng-repeat="f in [1, 2, 3, 4, 5, 6]"> -->
 			<button type="button" class="btn btn-default navbar-btn" ng-repeat="f in favorites" ng-click="favoriteSelect(f)">
-				<img class="playlistImg" alt="{{f.label}}" style="height: 60px; display: block;" ng-src="{{f.image ? (f.image + '?' + f.ts) : null}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+				<img class="playlistImg" alt="{{f.label}}" style="height: 60px; display: block;" ng-src="{{f.image}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
 				<span class="caption" ng-class="f.color ? f.color : 'white'">{{f.label}}</span>
 			</button>
 		</div>

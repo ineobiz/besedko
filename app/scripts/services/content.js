@@ -13,6 +13,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
         promise
     ;
 
+    // return path to local structure
     function localStructurePath(credentials, fullPath) {
         var loc =
             cordova.file.externalDataDirectory
@@ -61,6 +62,36 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
         return q.promise;
     }
 
+    // fetch only changed files
+    function fetchChangedFiles(structure, credentials, mTime) {
+        var
+            cnt = [], fav = [], all = [], chg = [],
+            q = $q.defer(),
+            remotePath = remote + '/data/' + md5.createHash(credentials.email + credentials.password) + '/',
+            localPath  = localStructurePath(credentials)  + '/',
+            localPathFull = localStructurePath(credentials, true)  + '/'
+        ;
+
+        if (structure.content.length) {
+            cnt = getChangedFilesList(structure.content, mTime);
+        }
+
+        if (structure.favorites.length) {
+            fav = getChangedFilesList(structure.favorites, mTime);
+        }
+
+        chg = cnt.concat(fav);
+
+        for (var i = 0, len = chg.length; i < len; i++) {
+            var file = chg[i];
+
+            all.push($cordovaFile.removeFile(localPath + file).then(q.resolve));
+            all.push($cordovaFile.downloadFile(remotePath + file, localPathFull + file, true, {}).then(q.resolve));
+        }
+
+        return $q.all(all);
+    }
+
     // fetch changed remote files
     function getChangedFilesList(content, mTime) {
         var
@@ -68,7 +99,8 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
             children = []
         ;
 
-        angular.forEach(content, function(c) {
+        for (var i = 0, len = content.length; i < len; i++) {
+            var c = content[i];
             if (c.hasOwnProperty('image') && c.image === true && (!mTime || c.ts > mTime)) {
                 files.push(c.uid + '.png');
             }
@@ -76,9 +108,9 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
                 files.push(c.uid + '.audio');
             }
             if (c.hasOwnProperty('children') && c.children.length) {
-                children = children.concat(getChangedFilesList(c.children), mTime);
+                children = children.concat(getChangedFilesList(c.children, mTime));
             }
-        });
+        }
 
         return files.concat(children);
     }
@@ -193,32 +225,6 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
         }
 
         return results;
-    }
-
-    function fetchChangedFiles(structure, credentials, mTime) {
-        var cnt = [], fav = [], all = [];
-
-        if (structure.content.length) {
-            cnt = getChangedFilesList(structure.content, mTime);
-        }
-
-        if (structure.favorites.length) {
-            fav = getChangedFilesList(structure.favorites, mTime);
-        }
-
-        angular.forEach(cnt.concat(fav), function(file) {
-            all.push($cordovaFile.removeFile(
-                localStructurePath(credentials) + '/' + file)
-            );
-
-            if (file.indexOf("audio", file.length - "audio".length) !== -1) {
-                all.push(getRemoteFile(file, credentials, true));
-            } else {
-                all.push(getRemoteFile(file, credentials));
-            }
-        });
-
-        return $q.all(all);
     }
 
 	return {
@@ -376,11 +382,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
                     localData = JSON.parse(localData);
                     if (localData.timestamp != data.timestamp) {
                         $cordovaFile.writeFile(localFile, data, {}).then(function(){
-                            fetchChangedFiles(data, credentials, localData.timestamp)
-                                .then(function() {
-                                    q.resolve();
-                                })
-                            ;
+                            fetchChangedFiles(data, credentials, localData.timestamp).then(q.resolve);
                         });
                     } else {
                         q.resolve();
@@ -388,9 +390,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
                 },
                 function() {
                     $cordovaFile.writeFile(localFile, data, {}).then(function() {
-                        fetchChangedFiles(data, credentials).then(function() {
-                            q.resolve();
-                        });
+                        fetchChangedFiles(data, credentials).then(q.resolve);
                     });
                 }
             );

@@ -63,6 +63,8 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Authentication', 'Conten
                 scope.playlist = [];
 
                 // @todo resolve image/audio before adding!
+                // @todo rewrite content->content, content->favorites!!!
+                return;
                 angular.forEach(selected.content, function(val) {
                     scope.playlist.push(imageBrowser.getContent(found[val]));
                 });
