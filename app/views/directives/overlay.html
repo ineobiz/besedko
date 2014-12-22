@@ -4,7 +4,7 @@
 	<div class="middle settings" ng-show="section == 'settings'">
 		<h4 class="title">Nastavitve</h4>
 		<div class="form-group">
-			<a ng-show="credentials" ng-click="!syncDisabled && buttonSync()" ng-class="syncDisabled ? 'btn-warning' : 'btn-info'" class="btn btn-default">
+			<a ng-show="credentials && isOnline" ng-click="!syncDisabled && buttonSync()" ng-class="syncDisabled ? 'btn-warning' : 'btn-info'" class="btn btn-default">
 				<span class="glyphicon" ng-class="{'glyphicon-cloud-download' : !syncDisabled, 'glyphicon-refresh glyphicon-refresh-animate' : syncDisabled}"></span> {{syncDisabled ? 'osvežujem podatke' : 'osveži podatke'}}
 			</a>
 		</div>

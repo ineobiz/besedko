@@ -37,6 +37,9 @@ document.addEventListener("menubutton", function(ev) {
     $rootScope.$apply(function () {
         $rootScope.isOverlayVisible = !$rootScope.isOverlayVisible;
         $rootScope.section = 'settings';
+        if (navigator.hasOwnProperty('connection')) {
+            $rootScope.$broadcast('ui::networkCheck');
+        }
     });
 }, false);
 

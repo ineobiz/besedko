@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentication', 'Content', function (config, $timeout, Authentication, Content) {
+angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', '$cordovaNetwork', 'Authentication', 'Content', function (config, $timeout, $cordovaNetwork, Authentication, Content) {
     var reloadContent = function(scope, sync) {
         scope.playlist = [];
         Content.resetPromise();
@@ -18,6 +18,7 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
             var defaultSection = 'settings';
             scope.isOverlayVisible = false;
             scope.syncDisabled = false;
+            scope.isOnline = false;
             scope.section = defaultSection;
             scope.kbdText = null;
             scope.imgData = null;
@@ -38,20 +39,30 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
             scope.login = function() {
                 scope.loginCheck = true;
 
-                // @todo check local file first
-                Authentication
-                    .Login(scope.email, scope.password)
-                    .success(function() {
-                        Authentication.SetCredentials(scope.email, scope.password);
-                        scope.loginCheck = scope.error = false;
-                        scope.email = scope.password = '';
-                        scope.section = 'settings';
-                        reloadContent(scope);
-                    }).error(function() {
-                        //@todo error indicator
-                        scope.loginCheck = false;
-                    })
-                ;
+                var authenticated = function() {
+                    Authentication.SetCredentials(scope.email, scope.password);
+                    scope.loginCheck = scope.error = false;
+                    scope.email = scope.password = '';
+                    scope.section = 'settings';
+                    reloadContent(scope);
+                };
+
+                Content.isLocalStructure({
+                    email: scope.email,
+                    password: scope.password
+                }).then(
+                    authenticated,
+                    function() {
+                        Authentication
+                            .Login(scope.email, scope.password)
+                            .success(authenticated)
+                            .error(function() {
+                                //@todo error indicator
+                                scope.loginCheck = false;
+                            })
+                        ;
+                    }
+                );
             };
 
             // sync data
@@ -92,6 +103,14 @@ angular.module('webApp').directive('overlay', ['CONFIG', '$timeout', 'Authentica
                 scope.currentPage = 0;
 */
                 scope.syncDisabled = false;
+            });
+
+            // network check
+            scope.$on('ui::networkCheck', function() {
+                scope.isOnline = $cordovaNetwork.isOnline()
+                    ? true
+                    : false
+                ;
             });
 
             // close big image when player stops
