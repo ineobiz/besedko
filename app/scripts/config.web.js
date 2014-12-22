@@ -17,3 +17,7 @@ angular
     .factory('$cordovaFile', [function(){}])
     .factory('$cordovaNetwork', [function(){}])
 ;
+
+// disable modules
+angular.module('ngAnimate', []);
+angular.module('hmTouchEvents', []);

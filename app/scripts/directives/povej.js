@@ -27,7 +27,7 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Authentication', 'Conten
             return foundIndex;
         },
         add : function(scope) {
-            if (scope.favorites.length < 6) {
+            if (scope.favorites.length <= 10) {
                 var content = [];
 
                 angular.forEach(scope.playlist, function(val) {

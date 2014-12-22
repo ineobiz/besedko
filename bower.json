@@ -5,10 +5,12 @@
   "dependencies": {
     "angular": "1.2.*",
     "angular-route": "1.2.*",
+    "angular-animate": "1.2.*",
     "json3": "3.3.*",
     "es5-shim": "3.1.*",
     "angular-media-player": "0.5.*",
     "angular-ui-tree": "2.1.*",
+    "ryanmullins-angular-hammer": "v2.1.*",
     "bootstrap-css-only": "3.2.*",
     "ngImgCrop": "0.2.*"
   },

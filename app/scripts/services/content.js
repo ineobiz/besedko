@@ -24,6 +24,17 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
         return fullPath ? loc : loc.substring(loc.indexOf('Android'), loc.length);
     }
 
+    // remove local file (check before removing -- FileNotFoundException)
+    function removeLocalFile(file) {
+        var q = $q.defer();
+
+        $cordovaFile.checkFile(file).then(function() {
+            $cordovaFile.removeFile(file).then(q.resolve);
+        }, q.resolve);
+
+        return q.promise;
+    }
+
     // fetch remote file
     function getRemoteFile(file, credentials, asText) {
         var
@@ -85,7 +96,7 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
         for (var i = 0, len = chg.length; i < len; i++) {
             var file = chg[i];
 
-            all.push($cordovaFile.removeFile(localPath + file).then(q.resolve));
+            all.push(removeLocalFile(localPath + file));
             all.push($cordovaFile.downloadFile(remotePath + file, localPathFull + file, true, {}).then(q.resolve));
         }
 
@@ -172,17 +183,15 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
                 }
             }
 
-            ['image'].forEach(function(key) {
-                if (
-                    angular.isObject(node[key])
-                    || angular.isString(node[key])
-                    || node[key] === true
-                ) {
-                    node[key] = true;
-                } else {
-                    delete node[key];
-                }
-            });
+            if (
+                angular.isObject(node['image'])
+                || angular.isString(node['image'])
+                || node['image'] === true
+            ) {
+                node['image'] = true;
+            } else {
+                delete node['image'];
+            }
 
             callback(node);
         }

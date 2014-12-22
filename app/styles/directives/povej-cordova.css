@@ -156,9 +156,9 @@ povej .cyan {
 
 .ui-main {}
 
-.ui-head { height: 20%; bottom: auto; }
-.ui-body { height: 65%; top: 20%; bottom: 15%; }
-.ui-foot { height: 15%; top: auto; }
+.ui-head { height: 23%; bottom: auto; }
+.ui-body { height: 60%; top: 23%; bottom: 17%; }
+.ui-foot { height: 17%; top: auto; }
 
 .ui-body-side {
     width: 10%;
@@ -227,12 +227,13 @@ povej .cyan {
 
 .ui-head-list { 
     font-size: 0;
-    width: 70%;
+    width: 78%;
+    text-align: left;
 }
 
 .ui-head-actions {
     font-size: 0; 
-    width: 30%;
+    width: 22%;
     text-align: right;
 }
 
@@ -240,7 +241,7 @@ povej .cyan {
     display: inline-block;
     font-size: 30px;
     height: 100%;
-    padding: 0 40px;
+    min-width: 50%;
     color: #fff;
     border-left: 1px solid #86A9C7;
 }
@@ -258,12 +259,13 @@ povej .cyan {
 }
 
 .ui-foot-list {
-    width: 55%;
+    width: 90%;
+    text-align: left;
     font-size: 0;
 }
 
 .ui-foot-actions {
-    width: 45%;
+    width: 10%;
     text-align: right;
     font-size: 0;
 }
@@ -271,8 +273,8 @@ povej .cyan {
 .ui-foot-actions > .ui-btn {
     display: inline-block;
     font-size: 30px;
-    padding: 0 40px;
     height: 100%;
+    width: 100%;
     border-left: 1px solid #bdc3c7;
 }
 
@@ -333,14 +335,21 @@ povej .cyan {
     height: 100%;
 }
 
-.ui-card-list > .ui-card-list-item {
+.ui-card-list-item {
     display: inline-block;
     height: 100%;
     vertical-align: top;
     position: relative;
     max-width: 20%;
     text-align: center;
-    padding: 3px 10px;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+.ui-card-list-item-bottom {
+    max-width: 10%;
+    padding-top: 12px;
+    padding-left: 3px;
 }
 
 .ui-card-list .ui-card .ui-card-caption {
@@ -348,6 +357,21 @@ povej .cyan {
     font-weight: normal;
     line-height: 10px;
     padding: 3px;
+}
+
+.reveal-animation.ng-enter {
+    -webkit-animation: enter_sequence 0.5s linear;
+    animation: enter_sequence 0.5s linear;
+}
+
+@-webkit-keyframes enter_sequence {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes enter_sequence {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @media screen and (max-width: 590px) {
@@ -389,30 +413,11 @@ povej .cyan {
         padding: 3px;
     }
 
-    .ui-head-list {
-        width: 65%;
-    }
-
-    .ui-head-actions {
-        width: 35%;
-    }
-
     .ui-head-actions > .ui-btn {
         font-size: 18px;
-        padding: 0 20px;
-    }
-
-    .ui-foot-list {
-        width: 65%;
-    }
-
-    .ui-foot-actions {
-        width: 35%;
     }
 
     .ui-foot-actions > .ui-btn {
         font-size: 18px;
-        padding: 0 20px;
     }
-
 }

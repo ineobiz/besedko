@@ -11,8 +11,10 @@
 var webApp = angular
     .module('webApp', [
         'ngRoute',
+        'ngAnimate',
         'ui.tree',
         'mediaPlayer',
+        'hmTouchEvents',
         'ngImgCrop'
     ])
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
