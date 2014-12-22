@@ -394,6 +394,8 @@ angular.module('webApp').factory('Content', ['CONFIG', '$http', '$sce', '$q', '$
                             fetchChangedFiles(data, credentials, localData.timestamp).then(q.resolve);
                         });
                     } else {
+                        content = data.content;
+                        favorites = data.favorites;
                         q.resolve();
                     }
                 },

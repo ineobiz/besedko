@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webApp').directive('povej', ['CONFIG', 'Authentication', 'Content', function (config, Authentication, Content) {
+angular.module('webApp').directive('povej', ['CONFIG', '$timeout', 'Authentication', 'Content', function (config, $timeout, Authentication, Content) {
     var favorites = {
         check : function(scope) {
             var found = this.find(scope);
@@ -51,25 +51,31 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Authentication', 'Conten
             }
         },
         toPlaylist : function(scope, selected) {
+            // this whole process is wrong on so many levels..
+            // @todo rewrite this and content servise
             if (angular.isObject(selected.content)) {
-                var found = [];
+                var found = [], resolve = [];
 
                 Content.iterate(function(b) {
                     if (selected.content.indexOf(b.uid) !== -1) {
+                        resolve.push(b);
                         return found[b.uid] = b;
                     }
                 });
 
-                scope.playlist = [];
+                Content.fetchRemotes(
+                    resolve,
+                    Authentication.GetCredentials()
+                );
 
-                // @todo resolve image/audio before adding!
-                // @todo rewrite content->content, content->favorites!!!
-                return;
-                angular.forEach(selected.content, function(val) {
-                    scope.playlist.push(imageBrowser.getContent(found[val]));
-                });
+                $timeout(function(){
+                    angular.forEach(selected.content, function(val) {
+                        scope.playlist.push(imageBrowser.getContent(found[val]));
+                    });
 
-                scope.isFavorite = true;
+                    scope.isFavorite = true;
+                }, 100);
+
             }
         }
     };
@@ -172,6 +178,8 @@ angular.module('webApp').directive('povej', ['CONFIG', 'Authentication', 'Conten
             };
 
             scope.favoriteSelect = function(selected) {
+                scope.playlist = [];
+
                 if (!favorites.check(scope)) {
                     favorites.toPlaylist(scope, selected);
                 }
